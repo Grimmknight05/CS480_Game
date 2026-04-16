@@ -1,1 +1,1 @@
-# CS-480 Project
+# CS-480 Game
