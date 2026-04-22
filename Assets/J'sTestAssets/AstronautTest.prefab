@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6503512918522872818}
   m_Layer: 0
   m_Name: Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -253,6 +253,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1671451528472138956}
+    - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1688798303413019401}
   m_SourcePrefab: {fileID: 100100000, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
 --- !u!114 &1351067680459234461 stripped
 MonoBehaviour:
@@ -481,6 +484,18 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!114 &1688798303413019401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4484898943420984181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d847d1d6cf114854c830ae66b25e3455, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractionInputBridge
 --- !u!114 &7814431207424545474 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5825170410418727689, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
