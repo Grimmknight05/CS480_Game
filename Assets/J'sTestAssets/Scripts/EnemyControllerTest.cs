@@ -24,6 +24,8 @@ public class EnemyControllerTest : MonoBehaviour
     private int currentHealth;
     private NavMeshAgent navMeshAgent;
     private EnemyState currentState = EnemyState.Patrol;
+    //Damage system
+    private PlayerHealth playerHealth;
 
     // Patrol
     [SerializeField] private Transform[] patrolPoints;
@@ -41,18 +43,26 @@ public class EnemyControllerTest : MonoBehaviour
     [SerializeField] private float enemySoundMaxInterval = 5f;
 
     // Animation
-    private Animator animator;
+    //private Animator animator;
+
+
 
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
+        //animator = GetComponent<Animator>();
         currentHealth = maxHealth;
         playRandomSFX(enemySFX);
+        // Get and cache player's health component
+        if (player != null)
+        {
+            playerHealth = player.GetComponent<PlayerHealth>();
+        }
         if (patrolPoints.Length > 0)
         {
             navMeshAgent.SetDestination(patrolPoints[0].position);
         }
+
     }
 
     // Update is called once per frame
@@ -126,6 +136,11 @@ public class EnemyControllerTest : MonoBehaviour
             }
             // Since player dies on contact, attack is just animation/sound
             // Could add damage over time or force push here if desired
+            // Deal damage to player
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(attackDamage);
+            }
         }
     }
 
@@ -156,7 +171,7 @@ public class EnemyControllerTest : MonoBehaviour
         currentState = newState;
         navMeshAgent.isStopped = false;
 
-        // Animation triggers
+        /*// Animation triggers
         if (animator != null)
         {
             switch (newState)
@@ -174,13 +189,13 @@ public class EnemyControllerTest : MonoBehaviour
                     animator.SetTrigger("Die");
                     break;
             }
-        }
+        }*/
     }
 
     public void TakeDamage(int damage)
     {
         if (currentState == EnemyState.Dead) return;
-
+        Debug.Log($"Enemy took {damage} damage!");
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
@@ -196,6 +211,7 @@ public class EnemyControllerTest : MonoBehaviour
         {
             audioSource.PlayOneShot(deathSFX);
         }
+        Debug.Log("Enemy has died!");
         // Disable collider or destroy after animation
         GetComponent<Collider>().enabled = false;
         Destroy(gameObject, 2f); // Destroy after 2 seconds
