@@ -155,7 +155,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       propertyPath: m_Name
-      value: Astronaut (1) Variant
+      value: Astronaut
       objectReference: {fileID: 0}
     - target: {fileID: 375600284345752774, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -237,7 +237,8 @@ PrefabInstance:
       propertyPath: sensitivity
       value: 23.7
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2303572083380081579, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 907623573039300123, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
@@ -245,7 +246,7 @@ PrefabInstance:
       addedObject: {fileID: 99543002258969011}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
-      insertIndex: 6
+      insertIndex: 5
       addedObject: {fileID: 5607871249183996012}
   m_SourcePrefab: {fileID: 100100000, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
 --- !u!1 &4633424516738534701 stripped
