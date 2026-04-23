@@ -17,7 +17,6 @@ J'sTestAssets/
 │   │   ├── ActivatorConfiguration.cs    # Abstract base class
 │   │   ├── StoneConfiguration.cs        # Rotating stone puzzle rules
 │   │   ├── LeverConfiguration.cs        # Lever puzzle rules
-│   │   ├── ButtonConfiguration.cs       # Button puzzle rules
 │   │   └── Assets/                      # .asset files (created in Editor)
 │   │       ├── StoneConfigArea1.asset
 │   │       └── LeverConfig.asset
@@ -25,7 +24,6 @@ J'sTestAssets/
 │   ├── Activators/                  # Runtime behavior scripts
 │   │   ├── StoneActivator.cs        # Stone behavior & event emission
 │   │   ├── LeverActivator.cs        # Lever behavior & event emission
-│   │   └── ButtonActivator.cs       # Button behavior & event emission
 │   │
 │   └── Validators/                  # Puzzle validation logic
 │       └── PuzzleValidator.cs       # Checks if puzzles are solved
