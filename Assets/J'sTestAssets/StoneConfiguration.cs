@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "StoneConfig", menuName = "Puzzle/Stone Configuration")]
 public class StoneConfiguration : ScriptableObject
@@ -6,12 +7,16 @@ public class StoneConfiguration : ScriptableObject
     [System.Serializable]
     public class StoneRequirement
     {
-        public TurnableStone stone;
-        public float targetRotation = 0f;
+        public string stoneID;
+        public float targetRotation = 0.0f;
         
-        public bool IsSatisfied()
+        public bool IsSatisfied(Dictionary<string, TurnableStone> lookup)
         {
-            return stone != null && stone.IsAtTargetRotation();
+            if (!lookup.TryGetValue(stoneID, out var stone))
+                return false;
+
+            float diff = Mathf.Abs(Mathf.DeltaAngle(stone.CurrentRotation, targetRotation));
+            return diff <= stone.RotationTolerance;
         }
     }
     
