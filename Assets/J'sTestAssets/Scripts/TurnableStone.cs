@@ -14,7 +14,6 @@ public class TurnableStone : MonoBehaviour
     [SerializeField] private float interactionDistance = 3f;
     [SerializeField] private float facingThreshold = 0.5f;
 
-    [SerializeField] private TurnableStoneManager manager;
     [Header("Stone Reference")]
     [SerializeField] private string stoneID;
     
@@ -27,10 +26,7 @@ public class TurnableStone : MonoBehaviour
     private float currentRotation;
     private bool isRotating = false;
     private Transform playerCamera;
-    private bool isAlignedLastFrame = false;
-
     //public events
-    public event Action<TurnableStone> OnReachedTarget;
 
     // Expose variables
     public float TargetRotation => targetRotation;
@@ -46,12 +42,8 @@ public class TurnableStone : MonoBehaviour
         if (debugMode)
             Debug.Log($"[TurnableStone] {gameObject.name} initialized. Current rotation: {currentRotation}");
         
-        if (manager == null)
-        {
-            Debug.LogError($"[TurnableStone] No manager assigned on {gameObject.name}!");
-            return;
-        }
-        manager.RegisterStone(this);
+
+
         
         // Auto-assign camera (since there's only one main camera)
         if (playerCamera == null)
@@ -97,8 +89,7 @@ public class TurnableStone : MonoBehaviour
     
     private void OnDestroy()
     {
-        if (manager != null)
-            manager.UnregisterStone(this);
+
     }
     
     public void OnInteract(InputValue inputValue)
@@ -213,16 +204,7 @@ public class TurnableStone : MonoBehaviour
         bool isAligned =
             Mathf.Abs(Mathf.DeltaAngle(currentRotation, targetRotation)) <= rotationTolerance;
 
-        // fire ONLY when transitioning into aligned state
-        if (isAligned && !isAlignedLastFrame)
-        {
-            OnReachedTarget?.Invoke(this);
-
-            if (debugMode)
-                Debug.Log($"[{StoneID}] Reached target rotation!");
-        }
-
-        isAlignedLastFrame = isAligned;
+        GameEvents.RaiseStoneRotationChanged(stoneID, currentRotation);
     }
     
     private void Update()
