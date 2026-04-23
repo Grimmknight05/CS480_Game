@@ -8,28 +8,33 @@ public class PuzzleValidator : MonoBehaviour
     public class PuzzleTrigger
     {
         public string triggerName;
-        public StoneConfiguration config;
+        public ActivatorConfiguration config; // Works with any activator type now
         public UnityEvent onSolved;
 
         [HideInInspector] public bool hasFired;
     }
-    Dictionary<string, float> stoneRotations = new Dictionary<string, float>();    [SerializeField] private List<PuzzleTrigger> triggers;
+
+    // Generic state dictionary: activatorID -> state (can be float, bool, int, etc)
+    private Dictionary<string, object> activatorStates = new Dictionary<string, object>();
+
+    [SerializeField] private List<PuzzleTrigger> triggers;
 
     private void OnEnable()
     {
-        GameEvents.OnStoneRotationChanged += HandleStoneRotation;
+        GameEvents.OnActivatorStateChanged += HandleActivatorStateChanged;
     }
 
     private void OnDisable()
     {
-        GameEvents.OnStoneRotationChanged -= HandleStoneRotation;
+        GameEvents.OnActivatorStateChanged -= HandleActivatorStateChanged;
     }
-    private void HandleStoneRotation(string id, float rotation)
-    {
-        stoneRotations[id] = rotation;
 
+    private void HandleActivatorStateChanged(ActivatorState state)
+    {
+        activatorStates[state.ActivatorID] = state.State;
         CheckAllPuzzles();
     }
+
     private void CheckAllPuzzles()
     {
         foreach (var trigger in triggers)
@@ -46,14 +51,17 @@ public class PuzzleValidator : MonoBehaviour
             }
         }
     }
-    private bool IsSolved(StoneConfiguration config)
+
+    private bool IsSolved(ActivatorConfiguration config)
     {
-        foreach (var req in config.requiredStones)
+        IActivatorRequirement[] requirements = config.GetRequirements();
+
+        foreach (var requirement in requirements)
         {
-            if (!stoneRotations.TryGetValue(req.stoneID, out float rotation))
+            if (!activatorStates.TryGetValue(requirement.ActivatorID, out object state))
                 return false;
 
-            if (!req.IsSatisfied(rotation))
+            if (!requirement.IsSatisfied(state))
                 return false;
         }
 
