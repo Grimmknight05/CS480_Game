@@ -1,40 +1,62 @@
 using UnityEngine;
+using System;
 using UnityEngine.InputSystem;
 
 public class TurnableStone : MonoBehaviour
 {
+
+    [Header("Rotation Settings")]
     [SerializeField] private float rotationSpeed = 5f;
     [SerializeField] private float rotationTolerance = 2f;
-    [SerializeField] private float targetRotation;
+    [SerializeField] private float targetRotation;//What rotation stone needs to be facing
     
     [Header("Interaction Settings")]
     [SerializeField] private float interactionDistance = 3f;
     [SerializeField] private float facingThreshold = 0.5f;
-    [SerializeField] private Transform playerCamera;
+
+    [SerializeField] private TurnableStoneManager manager;
+    [Header("Stone Reference")]
+    [SerializeField] private string stoneID;
+    
+    
     
     [Header("Debug")]
     [SerializeField] private bool debugMode = true;
     
+    //Private variables
     private float currentRotation;
     private bool isRotating = false;
-    
+    private Transform playerCamera;
+    private bool isAlignedLastFrame = false;
+
+    //public events
+    public event Action<TurnableStone> OnReachedTarget;
+
+    // Expose variables
     public float TargetRotation => targetRotation;
     public float CurrentRotation => currentRotation;
     public float RotationTolerance => rotationTolerance;
+    public bool IsRotating => isRotating;
+    public string StoneID => stoneID;
     
     private void Start()
     {
         currentRotation = transform.eulerAngles.y;
-        
+        Debug.Log($"Stone loaded: {StoneID}");
         if (debugMode)
             Debug.Log($"[TurnableStone] {gameObject.name} initialized. Current rotation: {currentRotation}");
         
-        TurnableStoneManager.Instance.RegisterStone(this);
+        if (manager == null)
+        {
+            Debug.LogError($"[TurnableStone] No manager assigned on {gameObject.name}!");
+            return;
+        }
+        manager.RegisterStone(this);
         
         // Auto-assign camera (since there's only one main camera)
         if (playerCamera == null)
         {
-            playerCamera = FindAnyObjectByType<Camera>()?.transform;
+            playerCamera = FindAnyObjectByType<Camera>()?.transform;//Assign player camera
             
             if (playerCamera == null)
             {
@@ -75,8 +97,8 @@ public class TurnableStone : MonoBehaviour
     
     private void OnDestroy()
     {
-        if (TurnableStoneManager.Instance != null)
-            TurnableStoneManager.Instance.UnregisterStone(this);
+        if (manager != null)
+            manager.UnregisterStone(this);
     }
     
     public void OnInteract(InputValue inputValue)
@@ -164,17 +186,19 @@ public class TurnableStone : MonoBehaviour
         if (IsAtTargetRotation())
         {
             isRotating = false;
-            return;
+        
         }
-        
-        isRotating = true;
-        float rotationDelta = Mathf.DeltaAngle(currentRotation, targetRotation);
-        float rotationDirection = Mathf.Sign(rotationDelta);
-        
-        currentRotation += rotationDirection * rotationSpeed * Time.deltaTime;
-        currentRotation = Mathf.Repeat(currentRotation, 360f);
-        
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x, currentRotation, transform.eulerAngles.z);
+        else
+        {
+            isRotating = true;
+            float rotationDelta = Mathf.DeltaAngle(currentRotation, targetRotation);
+            float rotationDirection = Mathf.Sign(rotationDelta);
+            
+            currentRotation += rotationDirection * rotationSpeed * Time.deltaTime;
+            currentRotation = Mathf.Repeat(currentRotation, 360f);
+            
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, currentRotation, transform.eulerAngles.z);
+        }
     }
     
     public void SetTargetRotation(float rotation)
@@ -184,9 +208,26 @@ public class TurnableStone : MonoBehaviour
         if (debugMode)
             Debug.Log($"[TurnableStone] Target rotation set to: {targetRotation}");
     }
+    private void CheckAlignmentEvent()
+    {
+        bool isAligned =
+            Mathf.Abs(Mathf.DeltaAngle(currentRotation, targetRotation)) <= rotationTolerance;
+
+        // fire ONLY when transitioning into aligned state
+        if (isAligned && !isAlignedLastFrame)
+        {
+            OnReachedTarget?.Invoke(this);
+
+            if (debugMode)
+                Debug.Log($"[{StoneID}] Reached target rotation!");
+        }
+
+        isAlignedLastFrame = isAligned;
+    }
     
     private void Update()
     {
         RotateToTarget();
+        CheckAlignmentEvent();
     }
 }

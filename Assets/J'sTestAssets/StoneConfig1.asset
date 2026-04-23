@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: StoneConfig1
   m_EditorClassIdentifier: Assembly-CSharp::StoneConfiguration
   requiredStones:
-  - stone: {fileID: 0}
+  - stoneID: Area1_1
+    targetRotation: 90
+  - stoneID: Area1_2
     targetRotation: 0
-  - stone: {fileID: 0}
-    targetRotation: 0
-  - stone: {fileID: 0}
-    targetRotation: 0
+  - stoneID: Area1_3
+    targetRotation: 180

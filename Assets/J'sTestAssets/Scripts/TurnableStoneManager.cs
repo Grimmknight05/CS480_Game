@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 public class TurnableStoneManager : MonoBehaviour
 {
-    public static TurnableStoneManager Instance { get; private set; }
+
     
     [System.Serializable]
-    public class StoneEventTrigger
+    public class StoneEventTrigger //Trigger event
     {
         public string triggerName;
         public StoneConfiguration stoneConfig;
@@ -15,46 +15,59 @@ public class TurnableStoneManager : MonoBehaviour
         
         [HideInInspector] public bool hasBeenTriggered = false;
     }
-    
-    [SerializeField] private List<StoneEventTrigger> eventTriggers = new List<StoneEventTrigger>();
-    [SerializeField] private float checkInterval = 0.2f; // Check every 0.2 seconds
-    
-    private List<TurnableStone> registeredStones = new List<TurnableStone>();
-    private float checkTimer = 0f;
+    //Event trigger list
+    [SerializeField] private List<StoneEventTrigger> eventTriggers = new List<StoneEventTrigger>();    
+    private Dictionary<string, TurnableStone> stoneLookup; //Registered Stones Dict
     
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        stoneLookup = new Dictionary<string, TurnableStone>();
+
+        var stones = FindObjectsByType<TurnableStone>(FindObjectsSortMode.None);
+
+        foreach (var stone in stones)
         {
-            Destroy(gameObject);
-            return;
+            if (string.IsNullOrEmpty(stone.StoneID))
+                continue;
+
+            stoneLookup[stone.StoneID] = stone;
+
+            // IMPORTANT: subscribe to event
+            stone.OnReachedTarget += HandleStoneChanged;
         }
-        Instance = this;
     }
-    
+    private void HandleStoneChanged(TurnableStone stone)
+    {
+        
+        Debug.Log($"Stone changed: {stone.StoneID}");
+
+        CheckAllTriggers();
+    }
+    private void OnDestroy()
+    {
+        foreach (var stone in stoneLookup.Values)
+        {
+            stone.OnReachedTarget -= HandleStoneChanged;
+        }
+    }
     public void RegisterStone(TurnableStone stone)
     {
-        if (!registeredStones.Contains(stone))
-            registeredStones.Add(stone);
+        if (stone == null || string.IsNullOrEmpty(stone.StoneID))
+            return;
+
+        if (!stoneLookup.ContainsKey(stone.StoneID))
+            stoneLookup.Add(stone.StoneID, stone);
     }
     
     public void UnregisterStone(TurnableStone stone)
     {
-        registeredStones.Remove(stone);
+        if (stone == null) return;
+
+        if (stoneLookup.ContainsKey(stone.StoneID))
+            stoneLookup.Remove(stone.StoneID);
     }
     
-    private void Update()
-    {
-        checkTimer += Time.deltaTime;
-        
-        if (checkTimer >= checkInterval)
-        {
-            CheckAllTriggers();
-            checkTimer = 0f;
-        }
-    }
-    
-    private void CheckAllTriggers()
+    private void CheckAllTriggers()//CheckTriggers
     {
         foreach (StoneEventTrigger trigger in eventTriggers)
         {
@@ -73,11 +86,14 @@ public class TurnableStoneManager : MonoBehaviour
     
     private bool IsPuzzleSolved(StoneConfiguration config)
     {
+        Debug.Log($"Checking config: {config.name}");
         foreach (var requirement in config.requiredStones)
         {
-            if (requirement.stone == null || !requirement.IsSatisfied())
+            Debug.Log($"Checking requirement: {requirement.stoneID}");
+            if (!requirement.IsSatisfied(stoneLookup))
                 return false;
         }
+        Debug.Log("PUZZLE SOLVED TRIGGER FIRED");
         return true;
     }
     
