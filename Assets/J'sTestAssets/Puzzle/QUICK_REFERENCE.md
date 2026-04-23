@@ -48,7 +48,7 @@ Activator emits state → PuzzleValidator receives → Checks Configuration → 
    }
    ```
 
-3. **Step 3-5: Create a ScriptableObject** 
+3. **Step 3-5: Create a ScriptableObject**
     1. Right-click in `Puzzle/Configurations/Assets/` → Create → Puzzle → Your Type
     2. Assign to PuzzleValidator trigger
     3. Attach YourActivator to GameObject
