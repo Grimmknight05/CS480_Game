@@ -8,15 +8,13 @@ public class StoneConfiguration : ScriptableObject
     public class StoneRequirement
     {
         public string stoneID;
-        public float targetRotation = 0.0f;
+        public float activationRotation = 0.0f;
+        public float rotationTolerance = 0.0f;
         
-        public bool IsSatisfied(Dictionary<string, TurnableStone> lookup)
+        public bool IsSatisfied(float currentRotation)
         {
-            if (!lookup.TryGetValue(stoneID, out var stone))
-                return false;
-
-            float diff = Mathf.Abs(Mathf.DeltaAngle(stone.CurrentRotation, targetRotation));
-            return diff <= stone.RotationTolerance;
+            float diff = Mathf.Abs(Mathf.DeltaAngle(currentRotation, activationRotation));
+            return diff <= rotationTolerance;
         }
     }
     
