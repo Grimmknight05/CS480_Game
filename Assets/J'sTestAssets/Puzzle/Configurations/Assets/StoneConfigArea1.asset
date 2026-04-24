@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StoneConfiguration
   requiredStones:
   - stoneID: Area1_1
-    activationRotation: 90
-    rotationTolerance: 5
-  - stoneID: Area1_2
     activationRotation: 0
     rotationTolerance: 5
-  - stoneID: Area1_3
+  - stoneID: Area1_2
     activationRotation: 180
+    rotationTolerance: 5
+  - stoneID: Area1_3
+    activationRotation: 270
     rotationTolerance: 5
