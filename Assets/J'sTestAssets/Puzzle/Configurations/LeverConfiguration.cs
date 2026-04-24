@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// Author: Joshua Henrikson, GitHub Copilot (April 2026)
 [CreateAssetMenu(fileName = "LeverConfig", menuName = "Puzzle/Lever Configuration")]
 public class LeverConfiguration : ActivatorConfiguration
 {
@@ -7,7 +8,7 @@ public class LeverConfiguration : ActivatorConfiguration
     public class LeverRequirement : IActivatorRequirement
     {
         public string leverID;
-        public bool mustBeEngaged = true; // Lever must be pulled/pushed to a specific state
+        public bool mustBeEngaged = true;
 
         public string ActivatorID => leverID;
 

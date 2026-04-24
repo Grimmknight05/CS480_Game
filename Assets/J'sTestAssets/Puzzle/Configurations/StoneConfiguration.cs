@@ -1,5 +1,7 @@
 using UnityEngine;
 
+// Author: Joshua Henrikson
+// Modified by: GitHub Copilot (refactored for generic activator system, April 2026)
 [CreateAssetMenu(fileName = "StoneConfig", menuName = "Puzzle/Stone Configuration")]
 public class StoneConfiguration : ActivatorConfiguration
 {

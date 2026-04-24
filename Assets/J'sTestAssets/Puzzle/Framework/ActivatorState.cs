@@ -1,7 +1,9 @@
-/// <summary>
-/// Generic holder for any activator's current state.
-/// Works with rotations, button presses, lever positions, etc.
-/// </summary>
+using UnityEngine;
+
+// Author: Joshua Henrikson, GitHub Copilot (April 2026)
+
+
+// Generic holder for any activator's current state.
 public struct ActivatorState
 {
     public string ActivatorID { get; set; }
