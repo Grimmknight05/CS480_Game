@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI countText; //Referance to Score UI element
     [SerializeField] private TextMeshProUGUI winUI;//Ref to Win UI 
     [SerializeField] private TextMeshProUGUI deathUI;//Ref to Death UI 
+    
 
 
     /*Score*/
@@ -47,7 +48,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float deceleration = 15.0f;
     [SerializeField] private float zgDeceleration = 0.0f;
 
-
+    
     /*Jump*/
     [SerializeField] private int maxInAirjumps = 1;//Extra jumps in air
     private int jumpCharges;//air jumps left
