@@ -1,8 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// Example: How a lever activator reports its engaged state.
-/// </summary>
 public class LeverActivator : MonoBehaviour
 {
     [SerializeField] private string leverID = "lever_1";

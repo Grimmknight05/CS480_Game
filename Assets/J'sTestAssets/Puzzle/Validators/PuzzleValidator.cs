@@ -2,19 +2,20 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Collections.Generic;
 
+// Author: Joshua Henrikson
+// Modified by: GitHub Copilot (documentation & architecture refactor, April 2026)
 public class PuzzleValidator : MonoBehaviour
 {
     [System.Serializable]
     public class PuzzleTrigger
     {
         public string triggerName;
-        public ActivatorConfiguration config; // Works with any activator type now
+        public ActivatorConfiguration config;
         public UnityEvent onSolved;
 
         [HideInInspector] public bool hasFired;
     }
 
-    // Generic state dictionary: activatorID -> state (can be float, bool, int, etc)
     private Dictionary<string, object> activatorStates = new Dictionary<string, object>();
 
     [SerializeField] private List<PuzzleTrigger> triggers;
@@ -46,7 +47,6 @@ public class PuzzleValidator : MonoBehaviour
             {
                 trigger.hasFired = true;
                 trigger.onSolved?.Invoke();
-
                 Debug.Log($"PUZZLE SOLVED: {trigger.triggerName}");
             }
         }

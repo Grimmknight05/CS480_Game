@@ -1,7 +1,8 @@
 using UnityEngine;
 using System;
 using UnityEngine.InputSystem;
-
+// Author: Joshua Henrikson
+// Modified by: GitHub Copilot (refactored documentation, April 2026)
 public class TurnableStone : MonoBehaviour
 {
 
@@ -139,7 +140,7 @@ public class TurnableStone : MonoBehaviour
             float rotationDelta = Mathf.DeltaAngle(currentRotation, targetRotation);//Finds the shortest path/direction to travel between the two angles
             float rotationStep = rotationSpeed * Time.deltaTime;//Amount of rotation per step
 
-            currentRotation += Mathf.Clamp(rotationDelta, -rotationStep, rotationStep);//Clamp rotationDelta within rotationStep and -rotationStep
+            currentRotation += rotationStep;//Mathf.Clamp(rotationDelta, -rotationStep, rotationStep);//Clamp rotationDelta within rotationStep and -rotationStep
             currentRotation = Mathf.Repeat(currentRotation, 360f);//Wraps rotation within 360 degrees
             
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, currentRotation, transform.eulerAngles.z);//Applies the rotation to the object with calculated currentRotation
