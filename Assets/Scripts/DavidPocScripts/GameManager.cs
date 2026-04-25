@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int fuelTarget = 4;
     [SerializeField] private int fuelCollected = 0;
 
+    [SerializeField] private FuelCollectedChannel fuelCollectedChannel;
+    [SerializeField] private FuelStateChannel fuelStateChannel;
+
     public event Action<int, int> FuelChanged;
 
     public int FuelCollected => fuelCollected;
@@ -24,15 +27,29 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
+    void OnEnable()
+    {
+        if (fuelCollectedChannel != null)
+            fuelCollectedChannel.OnRaised += HandleFuelCollected;
+    }
+
+    void OnDisable()
+    {
+        if (fuelCollectedChannel != null)
+            fuelCollectedChannel.OnRaised -= HandleFuelCollected;
+    }
+
     void Start()
     {
         FuelChanged?.Invoke(fuelCollected, fuelTarget);
+        fuelStateChannel?.Raise(new FuelState(fuelCollected, fuelTarget));
     }
 
-    public void CollectFuel()
+    void HandleFuelCollected()
     {
         fuelCollected = Mathf.Min(fuelCollected + 1, fuelTarget);
         Debug.Log($"Fuel: {fuelCollected}/{fuelTarget}");
         FuelChanged?.Invoke(fuelCollected, fuelTarget);
+        fuelStateChannel?.Raise(new FuelState(fuelCollected, fuelTarget));
     }
 }
