@@ -6,30 +6,35 @@ public class FuelUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI fuelText;
     [SerializeField] private Slider fuelSlider;
+    [SerializeField] private FuelStateChannel fuelState;
 
-    void Start()
+    void OnEnable()
     {
-        if (GameManager.Instance == null)
+        if (fuelState == null)
         {
-            Debug.LogWarning("FuelUI: no GameManager in scene.");
+            Debug.LogWarning("FuelUI: no FuelStateChannel assigned.", this);
             return;
         }
 
         if (fuelText == null && fuelSlider == null)
-            Debug.LogWarning("FuelUI has no Text or Slider assigned.");
+            Debug.LogWarning("FuelUI has no Text or Slider assigned.", this);
 
-        GameManager.Instance.FuelChanged += OnFuelChanged;
-        OnFuelChanged(GameManager.Instance.FuelCollected, GameManager.Instance.FuelTarget);
+        fuelState.OnRaised += OnFuelChanged;
+
+        if (fuelState.HasValue)
+            OnFuelChanged(fuelState.LastValue);
     }
 
-    void OnDestroy()
+    void OnDisable()
     {
-        if (GameManager.Instance != null)
-            GameManager.Instance.FuelChanged -= OnFuelChanged;
+        if (fuelState != null)
+            fuelState.OnRaised -= OnFuelChanged;
     }
 
-    void OnFuelChanged(int collected, int target)
+    void OnFuelChanged((int collected, int target) state)
     {
+        var (collected, target) = state;
+
         if (fuelText != null)
             fuelText.text = $"Fuel: {collected}/{target}";
 

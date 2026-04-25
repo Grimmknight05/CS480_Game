@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -8,10 +7,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int fuelTarget = 4;
     [SerializeField] private int fuelCollected = 0;
 
-    public event Action<int, int> FuelChanged;
+    [SerializeField] private FuelCollectedChannel fuelCollectedChannel;
+    [SerializeField] private FuelStateChannel fuelStateChannel;
 
-    public int FuelCollected => fuelCollected;
-    public int FuelTarget => fuelTarget;
     public bool IsFullyFueled => fuelCollected >= fuelTarget;
 
     void Awake()
@@ -24,15 +22,33 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
-    void Start()
+    void OnEnable()
     {
-        FuelChanged?.Invoke(fuelCollected, fuelTarget);
+        if (fuelCollectedChannel != null)
+            fuelCollectedChannel.OnRaised += HandleFuelCollected;
     }
 
-    public void CollectFuel()
+    void OnDisable()
+    {
+        if (fuelCollectedChannel != null)
+            fuelCollectedChannel.OnRaised -= HandleFuelCollected;
+    }
+
+    void Start()
+    {
+        RaiseState();
+    }
+
+    void HandleFuelCollected()
     {
         fuelCollected = Mathf.Min(fuelCollected + 1, fuelTarget);
         Debug.Log($"Fuel: {fuelCollected}/{fuelTarget}");
-        FuelChanged?.Invoke(fuelCollected, fuelTarget);
+        RaiseState();
+    }
+
+    void RaiseState()
+    {
+        if (fuelStateChannel != null)
+            fuelStateChannel.Raise((fuelCollected, fuelTarget));
     }
 }
