@@ -67,45 +67,6 @@ public class PlayerController : MonoBehaviour
 
     private PlayerInput playerInput;
 
-    /* ============================================================
-     * Dialogue Integration
-     * Listens to the shared dialogue channels so player movement
-     * and jump input are paused while a conversation is active.
-     * ============================================================ */
-    [Header("Dialogue")]
-    [SerializeField] private DialogueEventChannelSO dialogueStartedChannel;
-    [SerializeField] private DialogueEndedChannelSO dialogueEndedChannel;
-    private bool dialogueLock = false;
-
-    void OnEnable()
-    {
-        if (dialogueStartedChannel != null) dialogueStartedChannel.OnRaised += HandleDialogueStarted;
-        if (dialogueEndedChannel != null)   dialogueEndedChannel.OnRaised   += HandleDialogueEnded;
-    }
-
-    void OnDisable()
-    {
-        if (dialogueStartedChannel != null) dialogueStartedChannel.OnRaised -= HandleDialogueStarted;
-        if (dialogueEndedChannel != null)   dialogueEndedChannel.OnRaised   -= HandleDialogueEnded;
-    }
-
-    private void HandleDialogueStarted(DialogueSO _)
-    {
-        dialogueLock = true;
-        // Zero pending input so the player doesn't keep drifting once locked.
-        moveX = moveY = moveZ = 0f;
-        if (rb != null)
-        {
-            // Preserve vertical velocity so the player still falls naturally if airborne.
-            rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
-        }
-    }
-
-    private void HandleDialogueEnded()
-    {
-        dialogueLock = false;
-    }
-
     void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -135,20 +96,12 @@ public class PlayerController : MonoBehaviour
     */
     void OnMove(InputValue movementValue)//On any movement?
     {
-        // Katie: ignore movement input while a dialogue is active.
-        if (dialogueLock)
-        {
-            moveX = moveY = moveZ = 0f;
-            return;
-        }
         Vector2 movementVector = movementValue.Get<Vector2>();//Getting movement direction from movementValue param, and set it to Vector2 movementVector; (x,y)
         moveX = movementVector.x; // extract x from movementVector (x,y) make avalable to rest of code
         moveY = movementVector.y; // extract y from movementVector (y,x) make avalable to rest of code 
     }
     void OnJump(InputValue jumpValue)//Jump input
     {
-        // Katie: suppress jump input while a dialogue is active.
-        if (dialogueLock) return;
         if (jumpValue.isPressed)
         {
             jump();

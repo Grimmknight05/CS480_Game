@@ -675,7 +675,7 @@ GameObject:
   - component: {fileID: 8495722937744921435}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -844,6 +844,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f464308872adb24592e0d92d118a01a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  maxInAirjumps: 1
+  jumpForce: 5
+  airJumpForce: 8
+  canJump: 1
+  playerSpeed: 5
   countText: {fileID: 2945197621559073528}
   winUI: {fileID: 6792448491932656392}
   deathUI: {fileID: 6202277487676118183}
@@ -855,21 +860,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: bc18fe1a807ecc04fab7d60e3e616add, type: 3}
   - {fileID: 8300000, guid: 96fb674b02da5f549b2196a4f919db42, type: 3}
   - {fileID: 8300000, guid: 55af11cfc862f074984db678bf147411, type: 3}
-  defaultMode: 2
-  moveMode: 0
-  playerSpeed: 5
-  zgAcceleration: 1
-  acceleration: 10
-  deceleration: 15
-  zgDeceleration: 0
-  maxInAirjumps: 1
-  jumpForce: 5
-  airJumpForce: 8
-  jumpRayDistance: 0.6
-  canJump: 1
-  cameraPivot: {fileID: 0}
-  dialogueStartedChannel: {fileID: 11400000, guid: 63eb2f358c2644f718e1bbb1b8dc25fa, type: 2}
-  dialogueEndedChannel: {fileID: 11400000, guid: b5e30c45ee0c145d48f736706cdf110f, type: 2}
 --- !u!82 &8495722937744921435
 AudioSource:
   m_ObjectHideFlags: 0
