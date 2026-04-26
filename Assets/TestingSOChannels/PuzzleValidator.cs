@@ -3,7 +3,8 @@ using UnityEngine.Events;
 using System.Collections.Generic;
 
 // Author: Joshua Henrikson
-// Modified by: GitHub Copilot (documentation & architecture refactor, April 2026)
+// Modified by: GitHub Copilot / Architecture Refactor (April 2026)
+// David - Updated to work with new ActivatorStateChannel and ActivatorConfiguration system (4/25/26)
 public class PuzzleValidator : MonoBehaviour
 {
     [System.Serializable]
@@ -16,23 +17,37 @@ public class PuzzleValidator : MonoBehaviour
         [HideInInspector] public bool hasFired;
     }
 
-    private Dictionary<string, object> activatorStates = new Dictionary<string, object>();
+    [Header("Event Channels")]
+    [Tooltip("The channel to listen to for stone/lever updates.")]
+    [SerializeField] private ActivatorStateChannel stateChannel;
 
+    [Header("Puzzle Configuration")]
     [SerializeField] private List<PuzzleTrigger> triggers;
+
+    private Dictionary<string, object> activatorStates = new Dictionary<string, object>();
 
     private void OnEnable()
     {
-        GameEvents.OnActivatorStateChanged += HandleActivatorStateChanged;
+        // Safe subscription to prevent memory leaks
+        if (stateChannel != null)
+        {
+            stateChannel.OnStateChanged += HandleActivatorStateChanged;
+        }
     }
 
     private void OnDisable()
     {
-        GameEvents.OnActivatorStateChanged -= HandleActivatorStateChanged;
+        // Safe unsubscription
+        if (stateChannel != null)
+        {
+            stateChannel.OnStateChanged -= HandleActivatorStateChanged;
+        }
     }
 
-    private void HandleActivatorStateChanged(ActivatorState state)
+    // Signature updated to match the new ActivatorStateChannel (string, object)
+    private void HandleActivatorStateChanged(string activatorID, object state)
     {
-        activatorStates[state.ActivatorID] = state.State;
+        activatorStates[activatorID] = state;
         CheckAllPuzzles();
     }
 
@@ -46,8 +61,10 @@ public class PuzzleValidator : MonoBehaviour
             if (IsSolved(trigger.config))
             {
                 trigger.hasFired = true;
+                
+                // Fire the UnityEvent to trigger environment changes!
                 trigger.onSolved?.Invoke();
-                Debug.Log($"PUZZLE SOLVED: {trigger.triggerName}");
+                Debug.Log($"[PuzzleValidator] PUZZLE SOLVED: {trigger.triggerName}");
             }
         }
     }
@@ -58,6 +75,7 @@ public class PuzzleValidator : MonoBehaviour
 
         foreach (var requirement in requirements)
         {
+            // If we haven't heard from a required stone yet, puzzle isn't solved
             if (!activatorStates.TryGetValue(requirement.ActivatorID, out object state))
                 return false;
 

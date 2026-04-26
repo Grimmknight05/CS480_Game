@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 0.55
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.27990386, g: 0.29094464, b: 0.3207547, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: a4be220830e90ea4eb88b48b7fd376ce, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -2091,24 +2091,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df43918d3d12fa74984a157e1ba21ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PuzzleValidator
+  stateChannel: {fileID: 11400000, guid: 7e45909d0e56544439bbf6f81a226562, type: 2}
   triggers:
-  - triggerName: Area1Complete
-    config: {fileID: 11400000, guid: dee6c5a2bbccbc240a94fd9bc16d5d8c, type: 2}
+  - triggerName: Pillar Puzzle
+    config: {fileID: 11400000, guid: 927750bf5207945279f2fbcc2ccca511, type: 2}
     onSolved:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1409201958}
-          m_TargetAssemblyTypeName: Pusher, Assembly-CSharp
-          m_MethodName: OnActivate
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
         - m_Target: {fileID: 919075622}
           m_TargetAssemblyTypeName: CameraShake, Assembly-CSharp
           m_MethodName: ShakeEvent
@@ -2120,6 +2109,18 @@ MonoBehaviour:
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 8788591081118479826, guid: 790bed971c4602c439708fd7dfa3c840, type: 3}
+          m_TargetAssemblyTypeName: Pusher, Assembly-CSharp
+          m_MethodName: OnActivate
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
           m_CallState: 2
         - m_Target: {fileID: 427213437}
           m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
@@ -7196,7 +7197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
       propertyPath: stoneID
-      value: Area1_3
+      value: Stone_1
       objectReference: {fileID: 0}
     - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
       propertyPath: targetRotation
@@ -9592,6 +9593,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 428044974}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &462264686 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6117965267710683488, guid: 567c8bf496f81704bb2dad3bb286dcb0, type: 3}
+  m_PrefabInstance: {fileID: 919075621}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &475717914
 GameObject:
   m_ObjectHideFlags: 0
@@ -10841,7 +10847,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
       propertyPath: stoneID
-      value: Area1_1
+      value: Stone_3
       objectReference: {fileID: 0}
     - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
       propertyPath: interactionDistance
@@ -13213,6 +13219,20 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3476146364203435984, guid: 567c8bf496f81704bb2dad3bb286dcb0, type: 3}
   m_PrefabInstance: {fileID: 919075621}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &759925411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 462264686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9da60e5a343354799a94c51cb24920a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OrbitCameraYaw
+  sensitivity: 300
+  requireRightMouse: 0
 --- !u!1 &761223392
 GameObject:
   m_ObjectHideFlags: 0
@@ -15511,14 +15531,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7689568859371109309, guid: 567c8bf496f81704bb2dad3bb286dcb0, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7689568859371109309, guid: 567c8bf496f81704bb2dad3bb286dcb0, type: 3}
       propertyPath: enemyLayer.m_Bits
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8918272072924615629, guid: 567c8bf496f81704bb2dad3bb286dcb0, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2070797341659846614, guid: 567c8bf496f81704bb2dad3bb286dcb0, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6117965267710683488, guid: 567c8bf496f81704bb2dad3bb286dcb0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 759925411}
   m_SourcePrefab: {fileID: 100100000, guid: 567c8bf496f81704bb2dad3bb286dcb0, type: 3}
 --- !u!114 &919075622 stripped
 MonoBehaviour:
@@ -18198,7 +18229,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
       propertyPath: stoneID
-      value: Area1_2
+      value: Stone_2
       objectReference: {fileID: 0}
     - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
       propertyPath: debugMode
@@ -24564,17 +24595,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4602626950755899625, guid: 790bed971c4602c439708fd7dfa3c840, type: 3}
   m_PrefabInstance: {fileID: 2567398390948668632}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1409201958 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8788591081118479826, guid: 790bed971c4602c439708fd7dfa3c840, type: 3}
-  m_PrefabInstance: {fileID: 2567398390948668632}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1409201953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 898c8d733369df947bbdcc69fbe6740d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Pusher
 --- !u!54 &1409201959
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -41454,6 +41474,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6567177479453041607, guid: 790bed971c4602c439708fd7dfa3c840, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8045634734813363093, guid: 790bed971c4602c439708fd7dfa3c840, type: 3}
+      propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8788591081118479826, guid: 790bed971c4602c439708fd7dfa3c840, type: 3}
