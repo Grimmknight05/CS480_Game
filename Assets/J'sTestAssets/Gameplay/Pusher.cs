@@ -30,7 +30,7 @@ public class Pusher : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    void FixedUpdate()
+ void FixedUpdate()
     {
         if (pushing)
         {
@@ -38,20 +38,26 @@ public class Pusher : MonoBehaviour
             float t = Mathf.Clamp01(pushTimer);
             
             Vector3 newPos = Vector3.Lerp(startPos, targetPos, t);
-            rb.linearVelocity = (newPos - transform.position) / Time.fixedDeltaTime;
+            
+            // 1. Is FixedUpdate actually ticking, and what are the coordinates?
+            Debug.Log($"[Pusher] Moving to: {newPos} | t: {t} | Distance: {pushDistance}");
+
+            rb.MovePosition(newPos);
 
             // Stop pushing when reached target
             if (t >= 1f)
             {
                 pushing = false;
                 pushTimer = 0f;
-                rb.linearVelocity = Vector3.zero;
+                // 2. Did it instantly finish?
+                Debug.Log("[Pusher] Push complete."); 
             }
         }
     }
-
+    
     public void OnActivate()
     {
+        Debug.Log($"[Pusher] OnActivate was successfully called! Target direction: {pushDirection}");
         switch (pushDirection)
         {
             case PushDirections.zPositive:

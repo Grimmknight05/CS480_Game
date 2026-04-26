@@ -5,6 +5,7 @@ public class Fuel : MonoBehaviour
 {
     [SerializeField] private string playerTag = "Player";
     [SerializeField] private GameObject pickupVFXPrefab;
+    [SerializeField] private FuelCollectedChannel fuelCollectedChannel;
 
     void Reset()
     {
@@ -16,8 +17,7 @@ public class Fuel : MonoBehaviour
     {
         if (!other.CompareTag(playerTag)) return;
 
-        GameManager gm = GameManager.Instance;
-        if (gm != null) gm.CollectFuel();
+        if (fuelCollectedChannel != null) fuelCollectedChannel.Raise();
 
         if (pickupVFXPrefab != null)
             Instantiate(pickupVFXPrefab, transform.position, Quaternion.identity);
