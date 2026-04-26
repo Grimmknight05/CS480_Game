@@ -12,7 +12,8 @@ using UnityEngine.UI;
 public class PlayerControllerWithHealth : MonoBehaviour
 {
    /*Variables*/
-
+    [Header("Look & Rotation")]
+    [SerializeField] private float rotationSpeed = 10f; // Move in cached direction, not raw mouse delta, to avoid input blips
     /*Health*/
     private PlayerHealth playerHealth; //Ref to player health component
 
@@ -353,6 +354,16 @@ public class PlayerControllerWithHealth : MonoBehaviour
 
                 rb.linearVelocity = newVelocity;
                 break;
+        }
+
+        // If we have input, rotate the player to face the movement direction
+        if (cachedMoveDirection != Vector3.zero && moveMode != MovementMode.ZeroGrav)
+        {
+            // Determine the rotation we need to look in the direction of movement
+            Quaternion targetRotation = Quaternion.LookRotation(cachedMoveDirection);
+            
+            // Smoothly rotate from our current rotation to the target rotation
+            rb.MoveRotation(Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * rotationSpeed));
         }
         
         checkGround();//check if player is on the ground
