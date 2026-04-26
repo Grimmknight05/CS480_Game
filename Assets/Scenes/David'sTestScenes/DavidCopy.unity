@@ -2110,7 +2110,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 8788591081118479826, guid: 790bed971c4602c439708fd7dfa3c840, type: 3}
+        - m_Target: {fileID: 1409201965}
           m_TargetAssemblyTypeName: Pusher, Assembly-CSharp
           m_MethodName: OnActivate
           m_Mode: 1
@@ -24618,15 +24618,26 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
+  m_IsKinematic: 1
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!4 &1409201963 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6567177479453041607, guid: 790bed971c4602c439708fd7dfa3c840, type: 3}
   m_PrefabInstance: {fileID: 2567398390948668632}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1409201965 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8788591081118479826, guid: 790bed971c4602c439708fd7dfa3c840, type: 3}
+  m_PrefabInstance: {fileID: 2567398390948668632}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1409201953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 898c8d733369df947bbdcc69fbe6740d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pusher
 --- !u!1 &1412288593
 GameObject:
   m_ObjectHideFlags: 0
@@ -41482,7 +41493,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8788591081118479826, guid: 790bed971c4602c439708fd7dfa3c840, type: 3}
       propertyPath: pushSpeed
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8788591081118479826, guid: 790bed971c4602c439708fd7dfa3c840, type: 3}
       propertyPath: pushDirection
