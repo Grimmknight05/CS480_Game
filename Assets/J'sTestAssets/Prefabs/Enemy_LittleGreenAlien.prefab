@@ -323,15 +323,15 @@ PrefabInstance:
       addedObject: {fileID: 4328148675867487753}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6119564443351769560, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8779050939353294773}
+      insertIndex: 8
+      addedObject: {fileID: 3603185762511210729}
   m_SourcePrefab: {fileID: 100100000, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
 --- !u!1 &1460167165643720819 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6119564443351769560, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
   m_PrefabInstance: {fileID: 4660804764424333739}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8779050939353294773
+--- !u!114 &3603185762511210729
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -340,9 +340,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1460167165643720819}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3acc38929e288542bcad52c41e73481, type: 3}
+  m_Script: {fileID: 11500000, guid: d1610711674d1224594824dc27678069, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyStatusEffect
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
+  maxHealth: 100
 --- !u!4 &7581752068766563705 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2997508850667230418, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
