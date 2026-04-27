@@ -269,12 +269,6 @@ PrefabInstance:
       addedObject: {fileID: 4162354563578128423}
     - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1780823874524565549}
-    - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6499479600394349122}
-    - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 5588977761234331242}
     - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       insertIndex: -1
@@ -306,6 +300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerControllerWithHealth
   rotationSpeed: 10
+  countText: {fileID: 6081200292079735585}
   winUI: {fileID: 2519813716631366353}
   deathUI: {fileID: 3074085322492403070}
   HUD: {fileID: 5857596770502321848}
@@ -330,35 +325,6 @@ MonoBehaviour:
   jumpRayDistance: 1.1
   canJump: 1
   cameraPivot: {fileID: 0}
---- !u!114 &1780823874524565549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 444487910713961110}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36fc5d6e5c29a364e82ad76e19e655f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthUI
-  playerHealth: {fileID: 5588977761234331242}
-  healthBar: {fileID: 0}
---- !u!114 &6499479600394349122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 444487910713961110}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8ff1d359fafb7c4d895c73313bcaead, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ToolHUD
-  toolSystem: {fileID: 0}
-  toolNameText: {fileID: 0}
-  toolIcon: {fileID: 0}
 --- !u!114 &5588977761234331242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -535,3 +501,14 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6195184971283553936, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
   m_PrefabInstance: {fileID: 338872585661315112}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6081200292079735585 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5825170410418727689, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
+  m_PrefabInstance: {fileID: 338872585661315112}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI

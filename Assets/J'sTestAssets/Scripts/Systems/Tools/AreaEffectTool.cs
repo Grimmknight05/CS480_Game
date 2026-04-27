@@ -6,6 +6,7 @@ public class AreaEffectTool : Tool
     [Header("Area Effect Settings")]
     [SerializeField] public int damagePerHit = 50;
     [SerializeField] public float effectRadius = 20f;
+    [SerializeField] public float knockbackForce = 10f;
 
     public override void Use(Transform usePoint, AudioSource audioSource, LayerMask layerMask)
     {
@@ -19,20 +20,21 @@ public class AreaEffectTool : Tool
 
         foreach (Collider collider in enemiesInRange)
         {
-            if (!collider.CompareTag("Enemy"))
-                continue;
-
-            Vector3 dir = (collider.transform.position - usePoint.position).normalized;
-
-            // damage (your existing system)
-            IDamageable enemy = collider.GetComponent<IDamageable>();
-            if (enemy != null)
-                enemy.TakeDamage(damagePerHit);
-
-            // status effects (NEW SYSTEM)
-            foreach (StatusEffect effect in effects)
+            if (collider.CompareTag("Enemy"))
             {
-                effect.Apply(collider.gameObject, dir);
+                EnemyControllerTest enemy = collider.GetComponent<EnemyControllerTest>();
+                if (enemy != null)
+                {
+                    enemy.TakeDamage(damagePerHit);
+                    
+                    // Optional: apply knockback
+                    Rigidbody rb = collider.GetComponent<Rigidbody>();
+                    if (rb != null)
+                    {
+                        Vector3 knockbackDir = (collider.transform.position - usePoint.position).normalized;
+                        rb.AddForce(knockbackDir * knockbackForce, ForceMode.Impulse);
+                    }
+                }
             }
         }
     }
