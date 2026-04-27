@@ -24,7 +24,7 @@ public class PlayerControllerWithHealth : MonoBehaviour
     [SerializeField] private TextMeshProUGUI countText; //Referance to Score UI element
     [SerializeField] private TextMeshProUGUI winUI;//Ref to Win UI 
     [SerializeField] private TextMeshProUGUI deathUI;//Ref to Death UI 
-    
+    [SerializeField] private GameObject HUD;
 
 
     /*Score*/
@@ -76,6 +76,7 @@ public class PlayerControllerWithHealth : MonoBehaviour
     void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
+        HUD.SetActive(true);
     }
 
     void Start()
