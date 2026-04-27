@@ -27,7 +27,6 @@ public class BurnEffect : StatusEffect
     {
         GameObject vfx = null;
 
-        // 🔥 Attach fire VFX
         if (vfxHandler != null && fireVFXPrefab != null)
         {
             vfx = vfxHandler.AttachVFX(vfxKey, fireVFXPrefab);
