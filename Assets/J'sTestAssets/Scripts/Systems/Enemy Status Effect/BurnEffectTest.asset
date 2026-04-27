@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 530bc287388fb6149a006ff6ff0b7aa3, type: 3}
+  m_Name: BurnEffectTest
+  m_EditorClassIdentifier: Assembly-CSharp::BurnEffect
+  duration: 2
+  tickDamage: 20
+  tickRate: 0.5
+  fireVFXPrefab: {fileID: 7729888427693169340, guid: c0d9c9ceff7b23640b3b19676dd6acdc, type: 3}
+  vfxKey: Burn

@@ -10,6 +10,8 @@ public abstract class Tool : ScriptableObject
     [SerializeField] public Sprite toolIcon; // For UI display
     [Header("Targeting")]
     [SerializeField] protected LayerMask targetLayer;
+    [Header("Status Effects")]
+    [SerializeField] protected StatusEffect[] effects;
 
     public LayerMask GetTargetLayer()
     {

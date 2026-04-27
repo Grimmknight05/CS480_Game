@@ -16,10 +16,12 @@ MonoBehaviour:
   toolDescription: A generic tool
   cooldown: 0.5
   useSFX: {fileID: 8300000, guid: bc18fe1a807ecc04fab7d60e3e616add, type: 3}
-  toolIcon: {fileID: 0}
+  toolIcon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   targetLayer:
     serializedVersion: 2
     m_Bits: 4294967295
-  damagePerHit: 50
-  effectRadius: 20
-  knockbackForce: 10
+  effects:
+  - {fileID: 11400000, guid: c35df04121022fc44a6f344c8dbbf663, type: 2}
+  - {fileID: 11400000, guid: 629a7a849c143b84f8795f9eaefd0ca0, type: 2}
+  damagePerHit: 20
+  effectRadius: 10
