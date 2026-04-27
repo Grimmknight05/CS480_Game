@@ -16,9 +16,8 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
     private Transform player; // Player's transform
     [SerializeField] private float detectionRange = 10f; // How far the enemy can detect the player
     [SerializeField] private float fieldOfViewAngle = 90f; // The angle of the enemy's field of view
-    [SerializeField] private float attackRange = 2f; // Distance to attack player
-    [SerializeField] private float attackCooldown = 1f; // Time between attacks
-    [SerializeField] private int attackDamage = 10; // Damage dealt per attack
+
+    [SerializeField] private AttackData attackData;
     private float lastAttackTime;
     private NavMeshAgent navMeshAgent;
     private EnemyState currentState = EnemyState.Patrol;
@@ -90,14 +89,14 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
                 {
                     ChangeState(EnemyState.Patrol);
                 }
-                else if (Vector3.Distance(transform.position, player.position) <= attackRange)
+                else if (Vector3.Distance(transform.position, player.position) <= attackData.attackRange)
                 {
                     ChangeState(EnemyState.Attack);
                 }
                 break;
             case EnemyState.Attack:
                 Attack();
-                if (Vector3.Distance(transform.position, player.position) > attackRange)
+                if (Vector3.Distance(transform.position, player.position) > attackData.attackRange)
                 {
                     ChangeState(EnemyState.Chase);
                 }
@@ -126,19 +125,30 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
     private void Attack()
     {
         navMeshAgent.isStopped = true;
-        if (Time.time - lastAttackTime >= attackCooldown)
+
+        if (player == null)
+            return;
+
+        if (Time.time - lastAttackTime < attackData.attackCooldown)
+            return;
+
+        lastAttackTime = Time.time;
+
+        if (attackSFX != null)
+            audioSource.PlayOneShot(attackSFX);
+
+        if (playerDamageable != null)
         {
-            lastAttackTime = Time.time;
-            if (attackSFX != null)
+            playerDamageable.TakeDamage(attackData.attackDamage);
+        }
+
+        var runner = player.GetComponent<StatusEffectRunner>();
+
+        if (runner != null && attackData != null)
+        {
+            foreach (var effect in attackData.effects)
             {
-                audioSource.PlayOneShot(attackSFX);
-            }
-            // Since player dies on contact, attack is just animation/sound
-            // Could add damage over time or force push here if desired
-            // Deal damage to player
-            if (playerDamageable != null)
-            {
-                playerDamageable.TakeDamage(attackDamage);
+                effect.Apply(player.gameObject, transform.forward);
             }
         }
     }
@@ -237,7 +247,7 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
 
         // Attack range
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.DrawWireSphere(transform.position, attackData.attackRange);
 
         // Patrol waypoints
         if (patrolPoints != null && patrolPoints.Length > 0)

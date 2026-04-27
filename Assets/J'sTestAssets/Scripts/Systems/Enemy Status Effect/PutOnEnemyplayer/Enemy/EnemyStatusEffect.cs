@@ -24,13 +24,18 @@ public class EnemyStatusEffect : MonoBehaviour, IKnockbackable
     {
         agent.isStopped = true;
 
-        agent.velocity = direction.normalized * force;
+        Vector3 knockDir = direction.normalized;
 
-        yield return new WaitForSeconds(stunDuration);
+        float elapsed = 0f;
 
-        agent.velocity = Vector3.zero;
+        while (elapsed < stunDuration)
+        {
+            agent.Move(knockDir * force * Time.deltaTime);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
         agent.isStopped = false;
-
         stunRoutine = null;
     }
 }

@@ -241,6 +241,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: c82a4205644ad7546a42449a7af8ff95, type: 3}
     - target: {fileID: -4112908063208124420, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
+      propertyPath: attackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 62c1dff24d941a24bb9febf37d2630fd, type: 2}
+    - target: {fileID: -4112908063208124420, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
       propertyPath: fieldOfViewAngle
       value: 360
       objectReference: {fileID: 0}
