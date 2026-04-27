@@ -21,7 +21,7 @@ public class PlayerControllerWithHealth : MonoBehaviour
     private Rigidbody rb; //Ref to rigidbody
 
     /*UI*/
-    [SerializeField] private TextMeshProUGUI countText; //Referance to Score UI element
+    //[SerializeField] private TextMeshProUGUI countText; //Referance to Score UI element
     [SerializeField] private TextMeshProUGUI winUI;//Ref to Win UI 
     [SerializeField] private TextMeshProUGUI deathUI;//Ref to Death UI 
     [SerializeField] private GameObject HUD;
@@ -82,7 +82,7 @@ public class PlayerControllerWithHealth : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>(); //Uses GetComponent to set rd to Rigidbody component
-        setPlayerScore();// update UI
+        //setPlayerScore();// update UI
         jumpable = LayerMask.GetMask("Jumpable");//get layermask
         playerHealth = GetComponent<PlayerHealth>(); //Get PlayerHealth component
 
@@ -226,14 +226,14 @@ public class PlayerControllerWithHealth : MonoBehaviour
     }
 
     /*  Handle players score  */
-    public int getPlayerScore()
+    /*public int getPlayerScore()
     {
         return playerPoints;
     }
     void setPlayerScore()//Displays player's score on UI
     {
-        countText.text = "Score: " + playerPoints.ToString();
-    }
+        //countText.text = "Score: " + playerPoints.ToString();
+    }*/
     public void ShowWinScreen()
     {
         winUI.gameObject.SetActive(true);
@@ -268,7 +268,7 @@ public class PlayerControllerWithHealth : MonoBehaviour
             pickUp.onPickup();//call pickUp's onPickup function
             playerPoints += pickUp.points;//check pickups point value stored in PickUpDefault script
             print("PlayerPoints: " + playerPoints);//Debug
-            setPlayerScore();// update UI
+            //setPlayerScore();// update UI
             OnScoreChanged?.Invoke(playerPoints);//Notify listeners for score update passing playerPoints
 
         }

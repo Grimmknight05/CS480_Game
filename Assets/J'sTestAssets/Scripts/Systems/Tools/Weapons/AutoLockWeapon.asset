@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a04e122dc5319594d96753e52c778406, type: 3}
   m_Name: AutoLockWeapon
   m_EditorClassIdentifier: Assembly-CSharp::AutoLockWeapon
-  toolName: Tool
+  toolName: Laser
   toolDescription: A generic tool
   cooldown: 0.5
   useSFX: {fileID: 8300000, guid: 6dfb29eabf596e94fbc04076304862ce, type: 3}
@@ -21,7 +21,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   damagePerHit: 34
-  lockOnRange: 50
-  lockOnConeAngle: 90
+  lockOnRange: 10
+  lockOnConeAngle: 85
   aimAssistStrength: 1
   laserPrefab: {fileID: 7126521720523635901, guid: f67306764cdd891469ac112d0a427361, type: 3}

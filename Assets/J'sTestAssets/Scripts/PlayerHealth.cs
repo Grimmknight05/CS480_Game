@@ -13,11 +13,11 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip damageSFX;
     [SerializeField] private AudioClip deathSFX;
-
-    void Start()
+    void Awake()
     {
         currentHealth = maxHealth;
     }
+
 
     /// <summary>
     /// Apply damage to the player
