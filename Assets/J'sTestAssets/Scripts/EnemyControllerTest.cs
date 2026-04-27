@@ -13,7 +13,7 @@ public enum EnemyState
 public class EnemyControllerTest : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public Transform player; // Player's transform
+    private Transform player; // Player's transform
     [SerializeField] private float detectionRange = 10f; // How far the enemy can detect the player
     [SerializeField] private float fieldOfViewAngle = 90f; // The angle of the enemy's field of view
     [SerializeField] private float attackRange = 2f; // Distance to attack player
@@ -53,6 +53,7 @@ public class EnemyControllerTest : MonoBehaviour
         //animator = GetComponent<Animator>();
         currentHealth = maxHealth;
         playRandomSFX(enemySFX);
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         // Get and cache player's health component
         if (player != null)
         {
