@@ -56,6 +56,11 @@ public class ToolSystem : MonoBehaviour
             UseTool();
         }
     }
+    void OnSwitchTool(InputValue switchInput)
+    {
+        Debug.Log("Switch Tool");
+        SwitchTool();
+    }
     private void Update()
     {
         if (switchToolAction != null && switchToolAction.triggered)
