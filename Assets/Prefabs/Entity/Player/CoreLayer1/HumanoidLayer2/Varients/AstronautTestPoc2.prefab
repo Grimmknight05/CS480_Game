@@ -1303,8 +1303,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2303572083380081579, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
+      propertyPath: m_Height
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303572083380081579, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       propertyPath: m_Radius
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303572083380081579, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
+      propertyPath: m_Center.y
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2313079248265342493, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       propertyPath: moveMode
