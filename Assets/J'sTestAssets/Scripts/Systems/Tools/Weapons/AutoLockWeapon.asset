@@ -20,6 +20,8 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 4294967295
+  effects:
+  - {fileID: 11400000, guid: 629a7a849c143b84f8795f9eaefd0ca0, type: 2}
   damagePerHit: 34
   lockOnRange: 10
   lockOnConeAngle: 85

@@ -41793,6 +41793,14 @@ PrefabInstance:
       propertyPath: cameraPivot
       value: 
       objectReference: {fileID: 554863618}
+    - target: {fileID: 3802287370810943646, guid: 4f9d66a9aba0d584c9931db736afc4a0, type: 3}
+      propertyPath: m_text
+      value: You Lose
+      objectReference: {fileID: 0}
+    - target: {fileID: 6054074774107865082, guid: 4f9d66a9aba0d584c9931db736afc4a0, type: 3}
+      propertyPath: m_Name
+      value: LoseScreen
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
