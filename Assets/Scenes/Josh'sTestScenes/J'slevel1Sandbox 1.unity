@@ -11011,6 +11011,105 @@ Transform:
   m_Children: []
   m_Father: {fileID: 641247509}
   m_LocalEulerAnglesHint: {x: 0, y: -37.363, z: 15.389}
+--- !u!1 &571023906
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 571023908}
+  - component: {fileID: 571023907}
+  m_Layer: 0
+  m_Name: Area1Puzzle (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &571023907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 571023906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df43918d3d12fa74984a157e1ba21ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PuzzleValidator
+  triggers:
+  - triggerName: Area1Complete
+    config: {fileID: 11400000, guid: dee6c5a2bbccbc240a94fd9bc16d5d8c, type: 2}
+    onSolved:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1409201958}
+          m_TargetAssemblyTypeName: Pusher, Assembly-CSharp
+          m_MethodName: OnActivate
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 919075622}
+          m_TargetAssemblyTypeName: CameraShake, Assembly-CSharp
+          m_MethodName: ShakeEvent
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 427213437}
+          m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+          m_MethodName: PlayOneShot
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 8300000, guid: 17c7821ac5f397148a0af72489863452, type: 3}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 322049504}
+          m_TargetAssemblyTypeName: EmissionController, Assembly-CSharp
+          m_MethodName: EnableEmission
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    hasFired: 0
+--- !u!4 &571023908
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 571023906}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -34.59016, y: 0, z: -21.49266}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &577150886
 GameObject:
   m_ObjectHideFlags: 0
@@ -41567,6 +41666,7 @@ SceneRoots:
   - {fileID: 919075621}
   - {fileID: 1477718104}
   - {fileID: 121629933}
+  - {fileID: 571023908}
   - {fileID: 1005843775}
   - {fileID: 564790165}
   - {fileID: 1045071607}
