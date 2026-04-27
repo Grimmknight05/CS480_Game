@@ -50,7 +50,7 @@ public class BasicProjectile : MonoBehaviour, IProjectile
             EnemyControllerTest enemy = collision.GetComponent<EnemyControllerTest>();
             if (enemy != null)
             {
-                enemy.TakeDamage(damage);
+                //enemy.TakeDamage(damage);
                 Debug.Log($"[BasicProjectile] Dealt {damage} damage!");
                 Explode();
             }

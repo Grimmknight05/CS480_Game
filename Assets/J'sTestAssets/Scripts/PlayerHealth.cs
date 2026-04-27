@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : MonoBehaviour, IDamageable
 {
     [SerializeField] private int maxHealth = 100;
     private int currentHealth;
@@ -17,12 +17,7 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
     }
-
-
-    /// <summary>
-    /// Apply damage to the player
-    /// </summary>
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage)//Overload IDamageable TakeDamage
     {
         if (currentHealth <= 0) return; // Already dead
 
@@ -43,10 +38,7 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Heal the player
-    /// </summary>
-    public void Heal(int amount)
+    public void Heal(int amount) //Overload IDamageable Heal
     {
         if (currentHealth <= 0) return; // Can't heal when dead
 
@@ -56,9 +48,6 @@ public class PlayerHealth : MonoBehaviour
         OnHealthChanged?.Invoke();
     }
 
-    /// <summary>
-    /// Handle player death
-    /// </summary>
     private void Die()
     {
         if (deathSFX != null && audioSource != null)

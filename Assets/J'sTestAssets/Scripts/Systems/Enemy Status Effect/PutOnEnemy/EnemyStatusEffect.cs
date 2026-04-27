@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyStatusEffect : MonoBehaviour
+public class EnemyStatusEffect : MonoBehaviour, IKnockbackable
 {
     private NavMeshAgent agent;
     private Coroutine stunRoutine;

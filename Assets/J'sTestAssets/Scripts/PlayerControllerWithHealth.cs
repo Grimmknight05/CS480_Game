@@ -113,7 +113,15 @@ public class PlayerControllerWithHealth : MonoBehaviour
     {
         Debug.Log($"[PlayerControllerWithHealth] OnInteract called! isPressed: {inputValue.isPressed}");
     }
-
+    public float getPlayerSpeed()
+    {
+        return playerSpeed;
+    }
+    public void setPlayerSpeed(float newSpeed)
+    {
+        playerSpeed = newSpeed;
+        return;
+    }
     void OnMove(InputValue movementValue)//On any movement?
     {
         Vector2 movementVector = movementValue.Get<Vector2>();//Getting movement direction from movementValue param, and set it to Vector2 movementVector; (x,y)

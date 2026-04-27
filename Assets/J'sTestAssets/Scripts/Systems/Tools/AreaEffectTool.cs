@@ -25,7 +25,7 @@ public class AreaEffectTool : Tool
             Vector3 dir = (collider.transform.position - usePoint.position).normalized;
 
             // damage (your existing system)
-            EnemyControllerTest enemy = collider.GetComponent<EnemyControllerTest>();
+            IDamageable enemy = collider.GetComponent<IDamageable>();
             if (enemy != null)
                 enemy.TakeDamage(damagePerHit);
 

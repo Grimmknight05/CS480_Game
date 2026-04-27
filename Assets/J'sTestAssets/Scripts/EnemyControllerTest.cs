@@ -10,7 +10,7 @@ public enum EnemyState
     Dead
 }
 
-public class EnemyControllerTest : MonoBehaviour
+public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for TakeDamage() definition
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private Transform player; // Player's transform
@@ -20,12 +20,11 @@ public class EnemyControllerTest : MonoBehaviour
     [SerializeField] private float attackCooldown = 1f; // Time between attacks
     [SerializeField] private int attackDamage = 10; // Damage dealt per attack
     private float lastAttackTime;
-    [SerializeField] private int maxHealth = 100;
-    private int currentHealth;
     private NavMeshAgent navMeshAgent;
     private EnemyState currentState = EnemyState.Patrol;
     //Damage system
-    private PlayerHealth playerHealth;
+    private IDamageable playerDamageable;
+
 
     // Patrol
     [SerializeField] private Transform[] patrolPoints;
@@ -51,13 +50,12 @@ public class EnemyControllerTest : MonoBehaviour
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         //animator = GetComponent<Animator>();
-        currentHealth = maxHealth;
         playRandomSFX(enemySFX);
         player = GameObject.FindGameObjectWithTag("Player").transform;
         // Get and cache player's health component
         if (player != null)
         {
-            playerHealth = player.GetComponent<PlayerHealth>();
+            playerDamageable = player.GetComponent<IDamageable>();
         }
         if (patrolPoints.Length > 0)
         {
@@ -138,9 +136,9 @@ public class EnemyControllerTest : MonoBehaviour
             // Since player dies on contact, attack is just animation/sound
             // Could add damage over time or force push here if desired
             // Deal damage to player
-            if (playerHealth != null)
+            if (playerDamageable != null)
             {
-                playerHealth.TakeDamage(attackDamage);
+                playerDamageable.TakeDamage(attackDamage);
             }
         }
     }
@@ -193,29 +191,23 @@ public class EnemyControllerTest : MonoBehaviour
         }*/
     }
 
-    public void TakeDamage(int damage)
-    {
-        if (currentState == EnemyState.Dead) return;
-        Debug.Log($"Enemy took {damage} damage!");
-        currentHealth -= damage;
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
-    }
+    public bool IsDead { get; private set; }
 
-    private void Die()
+    public void Die()
     {
+        if (IsDead) return;
+
+        IsDead = true;
         ChangeState(EnemyState.Dead);
+
         navMeshAgent.isStopped = true;
+
         if (deathSFX != null)
-        {
             audioSource.PlayOneShot(deathSFX);
-        }
-        Debug.Log("Enemy has died!");
-        // Disable collider or destroy after animation
+
         GetComponent<Collider>().enabled = false;
-        Destroy(gameObject, 2f); // Destroy after 2 seconds
+
+        Destroy(gameObject, 2f);
     }
 
     private void HandleSound()

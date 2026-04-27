@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+//Deprecated
 public class RaycastDamage : MonoBehaviour
 {
     [SerializeField] private float rayDistance = 100f; // How far the raycast travels
@@ -11,7 +11,7 @@ public class RaycastDamage : MonoBehaviour
     
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip fireSFX;
-    [SerializeField] private LineRenderer lineRenderer; // Optional: visualize the raycast
+    [SerializeField] private LineRenderer lineRenderer;
 
     private float lastFireTime = 0f;
     private PlayerInput playerInput;
@@ -73,7 +73,6 @@ public class RaycastDamage : MonoBehaviour
             audioSource.PlayOneShot(fireSFX);
         }
 
-        // Visualize raycast (optional)
         if (lineRenderer != null)
         {
             lineRenderer.SetPosition(0, rayOrigin);
@@ -92,7 +91,7 @@ public class RaycastDamage : MonoBehaviour
                 if (enemy != null)
                 {
                     Debug.Log("Dealing damage! Enemy!");
-                    enemy.TakeDamage(damagePerHit);
+                    //enemy.TakeDamage(damagePerHit);
                 }
                 else
                 {
@@ -106,9 +105,6 @@ public class RaycastDamage : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Fire in a specific direction
-    /// </summary>
     public void FireInDirection(Vector3 direction)
     {
         if (Time.time - lastFireTime < fireCooldown)
@@ -142,7 +138,7 @@ public class RaycastDamage : MonoBehaviour
                 if (enemy != null)
                 {
                     Debug.Log("Dealing damage!");
-                    enemy.TakeDamage(damagePerHit);
+                    //enemy.TakeDamage(damagePerHit);
                 }
                 else
                 {
