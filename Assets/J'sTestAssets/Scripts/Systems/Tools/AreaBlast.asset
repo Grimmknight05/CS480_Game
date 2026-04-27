@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b467d2c5e0cc43f4aa027b937f13ce16, type: 3}
   m_Name: AreaBlast
   m_EditorClassIdentifier: Assembly-CSharp::AreaEffectTool
-  toolName: Tool
+  toolName: AreaBlast
   toolDescription: A generic tool
   cooldown: 0.5
   useSFX: {fileID: 8300000, guid: bc18fe1a807ecc04fab7d60e3e616add, type: 3}
