@@ -304,6 +304,27 @@ public class PlayerControllerWithHealth : MonoBehaviour
             resetAirJumps();
         }
     }
+    void PreventWallSticking(ref Vector3 velocity)
+    {
+        Vector3 horizontal = new Vector3(velocity.x, 0, velocity.z);
+
+        float speed = horizontal.magnitude;
+        if (speed < 0.01f) return;
+
+        RaycastHit hit;
+
+        if (Physics.SphereCast(transform.position, 0.5f, horizontal.normalized, out hit, 0.6f))
+        {
+            // Only remove velocity pushing INTO the wall
+            if (Vector3.Dot(horizontal, hit.normal) < 0)
+            {
+                horizontal = Vector3.ProjectOnPlane(horizontal, hit.normal);
+            }
+        }
+
+        velocity.x = horizontal.x;
+        velocity.z = horizontal.z;
+    }
     /*Update*/
     void FixedUpdate()//Fixed interval update ensures physics is consistant regaurdless of framerate
     {
@@ -312,42 +333,30 @@ public class PlayerControllerWithHealth : MonoBehaviour
         
         switch (moveMode)
         {
-            case MovementMode.ForceBased:
-                //Construct movement vector3
-                //Vector3 movement = new Vector3(moveX, 0.0f, moveY); // Asign new Vector3(x,z,y) with moveX and moveY input, and no z input
+        case MovementMode.AccelerationBased:
 
-                //Add force to player in cormovement
-                /*rb.AddForce(movement * playerSpeed);//multiply movement Vector3 by playerSpeed varible
-                break;
-            case MovementMode.VelocityBased:
-                Vector3 velocity = new Vector3(moveX * playerSpeed, rb.linearVelocity.y, moveY * playerSpeed);
-                rb.linearVelocity = velocity;
-                break;*/
-            case MovementMode.AccelerationBased:
+            if (movement.sqrMagnitude > 1f)
+                movement.Normalize();
 
-                //Vector3 aMovement = new Vector3(moveX, 0f, moveY); // Asign new Vector3(x,z,y) with moveX and moveY input, and no z input
+            Vector3 targetVelocity = movement * playerSpeed;
+            targetVelocity.y = rb.linearVelocity.y;
 
-                if (movement.sqrMagnitude > 1f) //Normalize to limit faster diagonal movement
-                    movement.Normalize();
+            float accelRate = (movement.sqrMagnitude > 0.01f) ? acceleration : deceleration;
+            float t = 1f - Mathf.Exp(-accelRate * Time.fixedDeltaTime);
 
+            Vector3 velocity = Vector3.Lerp(rb.linearVelocity, targetVelocity, t);
 
+            // Clamp horizontal speed
+            Vector3 horizontal = new Vector3(velocity.x, 0, velocity.z);
+            horizontal = Vector3.ClampMagnitude(horizontal, playerSpeed);
 
-                Vector3 targetVelocity = movement * playerSpeed; //find target velocity
-                targetVelocity.y = rb.linearVelocity.y;//keep y velocity uneffected
+            velocity = new Vector3(horizontal.x, velocity.y, horizontal.z);
 
-                float accelRate = (movement.sqrMagnitude > 0.01f) ? acceleration : deceleration;//Calculate acceleration rate
+            PreventWallSticking(ref velocity);
+            
+            rb.linearVelocity = velocity;
 
-                float t = 1f - Mathf.Exp(-accelRate * Time.fixedDeltaTime);//Smooth t
-
-                Vector3 avelocity = Vector3.Lerp(rb.linearVelocity, targetVelocity, t); // Lerp velocity
-
-                // Clamp horizontal speed
-                Vector3 horizontal = new Vector3(avelocity.x, 0, avelocity.z);
-                horizontal = Vector3.ClampMagnitude(horizontal, playerSpeed);
-
-                rb.linearVelocity = new Vector3(horizontal.x, avelocity.y, horizontal.z); //set velocity
-                
-                break;
+            break;
             case MovementMode.ZeroGrav:
                 // Target velocity in full 3D
                 Vector3 targetzVelocity = movement * playerSpeed;
