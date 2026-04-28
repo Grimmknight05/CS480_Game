@@ -49,7 +49,7 @@ public class PlayerControllerAnimatorWithHealth : MonoBehaviour
     private float moveX; //X Movement variable
     private float moveY; //Y Movement variable
     private float moveZ;
-    [SerializeField] private float playerSpeed = 5.0f;//Speed of character movement Default 5
+    [SerializeField] private float playerSpeed = 5.0f;//Speed of character movement Default 5 in meters per second
     [SerializeField] private float zgAcceleration = 1.0f;
     [SerializeField] private float acceleration = 10.0f;
     [SerializeField] private float deceleration = 15.0f;
@@ -61,7 +61,7 @@ public class PlayerControllerAnimatorWithHealth : MonoBehaviour
     private int jumpCharges;//air jumps left
     [SerializeField] private float jumpForce = 5.0f;
     [SerializeField] private float airJumpForce = 8.0f;
-    [SerializeField] private float jumpRayDistance = 0.6f; //Raydistance important to account for player height
+    private CapsuleCollider capsule;
     private bool onGround = false;
     [SerializeField] private bool canJump = true;//Default player can jump //maybe also add inair jump only
     private LayerMask jumpable;//Jumpable layer mask
@@ -93,7 +93,7 @@ public class PlayerControllerAnimatorWithHealth : MonoBehaviour
         //setPlayerScore();// update UI
         jumpable = LayerMask.GetMask("Jumpable");//get layermask
         playerHealth = GetComponent<PlayerHealth>(); //Get PlayerHealth component
-
+        capsule = GetComponent<CapsuleCollider>();
         Cursor.lockState = CursorLockMode.Locked;//Lock cursor
         Cursor.visible = false;
 
@@ -199,6 +199,8 @@ public class PlayerControllerAnimatorWithHealth : MonoBehaviour
                     //resetAirJumps();//reset airjumps on ground
                     handleJump(jumpForce);//Physics
                     animator.SetBool("isJumping", true);
+                    animator.ResetTrigger("Jump");
+                    animator.SetTrigger("Jump");
                     playRandomSFX(jumpSFX);//Sound
                     Debug.Log("Jump");
                     //canceling the jump animation quickly but requiring it to run fully
@@ -209,6 +211,8 @@ public class PlayerControllerAnimatorWithHealth : MonoBehaviour
                 {
                     --jumpCharges;
                     handleJump(airJumpForce);//Physics
+                    animator.ResetTrigger("Jump");
+                    animator.SetTrigger("Jump");
                     playRandomSFX(airJumpSFX);//Sound
                     Debug.Log("DoubleJump");
                     //canceling the jump animation quickly but requiring it to run fully
@@ -221,10 +225,24 @@ public class PlayerControllerAnimatorWithHealth : MonoBehaviour
         }
 
 }
-    void checkGround()//raycast bellow player check for ground
+    void checkGround()
     {
-        onGround = Physics.Raycast(transform.position, Vector3.down, jumpRayDistance, jumpable); //(origon position, direction, length, Layer(like you cant jump on water) difined in gameobjects
-        //Debug.Log("onGround: " + onGround);
+        float radius = capsule.radius * 0.95f; // slightly smaller to avoid wall hits
+        
+        float castDistance = (capsule.height * 0.5f) - capsule.radius + 0.1f;
+
+        Vector3 origin = transform.position + Vector3.up * 0.1f;
+
+        onGround = Physics.SphereCast(
+            origin,
+            radius,
+            Vector3.down,
+            out RaycastHit hit,
+            castDistance,
+            jumpable
+        );
+
+        Debug.DrawRay(origin, Vector3.down * castDistance, onGround ? Color.green : Color.red);
     }
 
     void handleJump(float jumpHight)//Takes in jump hight
@@ -399,16 +417,26 @@ public class PlayerControllerAnimatorWithHealth : MonoBehaviour
 
         }
         checkGround();
-        if (onGround==true)//check if player is on the ground
-        {
-            animator.SetBool("isJumping", false);
-        }
+    }
+    float NormalizeVelocity()
+    {
+        // Most efficient — no Vector3 allocation, single calculation
+        float horizontalSpeedSqr = rb.linearVelocity.x * rb.linearVelocity.x + rb.linearVelocity.z * rb.linearVelocity.z;
+        float normalizedSpeed = Mathf.Clamp01(Mathf.Sqrt(horizontalSpeedSqr) / playerSpeed);
+        if (normalizedSpeed < 0.01f)
+        normalizedSpeed = 0f;
+        return normalizedSpeed;
     }
     void Update()
     {
         //look();
         Vector3 forward = cameraPivot.forward;
         Vector3 right = cameraPivot.right;
+        animator.SetBool("onGround", onGround);
+        if (onGround==true)//check if player is on the ground
+        {
+            animator.SetBool("isJumping", false);
+        }
         switch (moveMode)
         {
             case MovementMode.ZeroGrav:
@@ -433,6 +461,9 @@ public class PlayerControllerAnimatorWithHealth : MonoBehaviour
                     animator.SetBool("isWalking", false);
                 else
                     animator.SetBool("isWalking", true);
+                    float normalizedVelocity = NormalizeVelocity();
+                    animator.SetFloat("Speed", normalizedVelocity);
+                    //Debug.Log("S: " + rb.linearVelocity.magnitude + "N: "+ normalizedVelocity);
                 break;
         }
 
