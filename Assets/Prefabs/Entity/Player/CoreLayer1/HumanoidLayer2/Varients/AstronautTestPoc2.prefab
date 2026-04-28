@@ -1482,10 +1482,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 55af11cfc862f074984db678bf147411, type: 3}
   defaultMode: 2
   moveMode: 2
-  playerSpeed: 5
+  playerSpeed: 7
   zgAcceleration: 1
-  acceleration: 5
-  deceleration: 1
+  acceleration: 120
+  deceleration: 10
   zgDeceleration: 0
   maxInAirjumps: 0
   jumpForce: 500
