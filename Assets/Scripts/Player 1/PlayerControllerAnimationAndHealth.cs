@@ -203,19 +203,16 @@ public class PlayerControllerAnimatorWithHealth : MonoBehaviour
                     animator.SetTrigger("Jump");
                     playRandomSFX(jumpSFX);//Sound
                     Debug.Log("Jump");
-                    //canceling the jump animation quickly but requiring it to run fully
-
                 }
                 //Air jump logic
                 if (!onGround && canJump && jumpCharges > 0)
                 {
                     --jumpCharges;
-                    handleJump(airJumpForce);//Physics
                     animator.ResetTrigger("Jump");
                     animator.SetTrigger("Jump");
+                    handleJump(airJumpForce);//Physics
                     playRandomSFX(airJumpSFX);//Sound
                     Debug.Log("DoubleJump");
-                    //canceling the jump animation quickly but requiring it to run fully
 
                 }
                     //check if on ground and has jumpcharge  max 3  3jump charges
