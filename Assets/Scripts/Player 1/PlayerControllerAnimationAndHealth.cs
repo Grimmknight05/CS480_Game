@@ -10,7 +10,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 //using static UnityEditor.Experimental.GraphView.GraphView;
 
-public class PlayerControllerWithHealth : MonoBehaviour
+public class PlayerControllerAnimatorWithHealth : MonoBehaviour
 {
    /*Variables*/
     [Header("Look & Rotation")]
@@ -49,7 +49,7 @@ public class PlayerControllerWithHealth : MonoBehaviour
     private float moveX; //X Movement variable
     private float moveY; //Y Movement variable
     private float moveZ;
-    [SerializeField] private float playerSpeed = 5.0f;//Speed of character movement Default 5
+    [SerializeField] private float playerSpeed = 5.0f;//Speed of character movement Default 5 in meters per second
     [SerializeField] private float zgAcceleration = 1.0f;
     [SerializeField] private float acceleration = 10.0f;
     [SerializeField] private float deceleration = 15.0f;
@@ -73,12 +73,12 @@ public class PlayerControllerWithHealth : MonoBehaviour
     private Vector2 lookInput;
 
     private PlayerInput playerInput;
-
+    
     /*Tie in Animations*/
     public Animator animator;
 
 
-
+    
     void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -96,7 +96,6 @@ public class PlayerControllerWithHealth : MonoBehaviour
         capsule = GetComponent<CapsuleCollider>();
         Cursor.lockState = CursorLockMode.Locked;//Lock cursor
         Cursor.visible = false;
-
 
         // Subscribe to player death event from health component
         if (playerHealth != null)
@@ -223,7 +222,7 @@ public class PlayerControllerWithHealth : MonoBehaviour
         }
 
 }
-    void checkGround()//raycast bellow player check for ground
+    void checkGround()
     {
         float radius = capsule.radius * 0.95f; // slightly smaller to avoid wall hits
         
@@ -404,7 +403,7 @@ public class PlayerControllerWithHealth : MonoBehaviour
                 break;
         }
 
-        // If we have input, rotate the player to face the movement direction
+        // If we have input, rotate the player to face the movement direction, and set to walking
         if (cachedMoveDirection != Vector3.zero && moveMode != MovementMode.ZeroGrav)
         {
             // Determine the rotation we need to look in the direction of movement
@@ -412,9 +411,9 @@ public class PlayerControllerWithHealth : MonoBehaviour
             
             // Smoothly rotate from our current rotation to the target rotation
             rb.MoveRotation(Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * rotationSpeed));
+
         }
-        
-        checkGround();//check if player is on the ground
+        checkGround();
     }
     float NormalizeVelocity()
     {
@@ -430,7 +429,6 @@ public class PlayerControllerWithHealth : MonoBehaviour
         //look();
         Vector3 forward = cameraPivot.forward;
         Vector3 right = cameraPivot.right;
-        animator.SetBool("onGround", onGround);
         animator.SetBool("onGround", onGround);
         if (onGround==true)//check if player is on the ground
         {
