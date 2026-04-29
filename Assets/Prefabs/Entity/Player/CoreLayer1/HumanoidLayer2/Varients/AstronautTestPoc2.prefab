@@ -1252,7 +1252,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: AstronautEx
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5866666021909216657, guid: 59aa49b0929ea92438688f8b8aed2470, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1326,12 +1327,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1502183490333673874, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2303572083380081579, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       propertyPath: m_Height
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2303572083380081579, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       propertyPath: m_Radius
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303572083380081579, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2303572083380081579, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
@@ -1390,6 +1399,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LoseScreen
       objectReference: {fileID: 0}
+    - target: {fileID: 5907194790850824730, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6195184971283553936, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1401,6 +1414,8 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 5143488271374805510, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
     - {fileID: 2313079248265342493, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
+    - {fileID: 1502183490333673874, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
+    - {fileID: 7189963183889519808, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
     m_RemovedGameObjects:
     - {fileID: 1186040571074567211, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
     m_AddedGameObjects:
@@ -1424,19 +1439,19 @@ PrefabInstance:
       addedObject: {fileID: 2001091127076304365}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
-      insertIndex: 6
+      insertIndex: 4
       addedObject: {fileID: 7251568014375211776}
     - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
-      insertIndex: 7
+      insertIndex: 5
       addedObject: {fileID: 722806112739342378}
     - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
-      insertIndex: 8
+      insertIndex: 6
       addedObject: {fileID: 498034020618727363}
     - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
-      insertIndex: 9
+      insertIndex: 7
       addedObject: {fileID: 2367156700388603427}
     - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
-      insertIndex: 10
+      insertIndex: 8
       addedObject: {fileID: 7099387779371207670}
     - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       insertIndex: -1
@@ -1456,9 +1471,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 791799260863854199}
-    - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3223705743707530290}
     - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4311117212020250035}
@@ -1519,7 +1531,7 @@ MonoBehaviour:
   airJumpForce: 400
   canJump: 1
   cameraPivot: {fileID: 0}
-  animator: {fileID: 0}
+  animator: {fileID: 4311117212020250035}
 --- !u!114 &722806112739342378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1760,31 +1772,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d847d1d6cf114854c830ae66b25e3455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InteractionInputBridge
---- !u!143 &3223705743707530290
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6199216321286383420}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &4311117212020250035
 Animator:
   serializedVersion: 7
