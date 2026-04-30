@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f8d405713ba3244bb1c81c78086dff3, type: 3}
+  m_Name: TestStoneConfig
+  m_EditorClassIdentifier: Assembly-CSharp::StoneConfig
+  requirements:
+  - stoneID: {fileID: 11400000, guid: c79bfc2d856b8b74aab08d418c929ccc, type: 2}
+    targetRotation: 270
+    tolerance: 4
+  - stoneID: {fileID: 11400000, guid: 6a18463df5cce4d4f80a5e1c7fd5b4f2, type: 2}
+    targetRotation: 180
+    tolerance: 4
+  - stoneID: {fileID: 11400000, guid: c01cab0ef132b2d41acfbb2477a1f61d, type: 2}
+    targetRotation: 0
+    tolerance: 4
