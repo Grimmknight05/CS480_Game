@@ -1,6 +1,6 @@
 using UnityEngine;
 // Author: Joshua Henrikson
-public class Pusher : MonoBehaviour
+public class Pusher : MonoBehaviour, ILock
 {
     private Vector3 startPos;
     private Rigidbody rb;
@@ -23,6 +23,18 @@ public class Pusher : MonoBehaviour
     private Vector3 pushVector = Vector3.forward;
     private Vector3 targetPos;
     private float pushTimer = 0f;
+
+    private bool _lockState = false;
+    public bool LockState 
+    { 
+        get { return _lockState; }
+        set { _lockState = value; }
+    }
+    public void Lock(bool lockstate)
+    {
+        LockState = lockstate;
+        Debug.Log($"Pusher is now {(lockstate ? "LOCKED" : "UNLOCKED")}");
+    }
 
     void Start()
     {
@@ -58,6 +70,7 @@ public class Pusher : MonoBehaviour
     public void OnActivate()
     {
         Debug.Log($"[Pusher] OnActivate was successfully called! Target direction: {pushDirection}");
+        IsLocked();
         switch (pushDirection)
         {
             case PushDirections.zPositive:
@@ -84,9 +97,21 @@ public class Pusher : MonoBehaviour
         pushing = true;
         pushTimer = 0f;
     }
-
+    void IsLocked()
+    {
+        if (LockState)
+        {
+            Debug.LogWarning("Pusher is locked!");
+            return;
+        }
+    }
     public void Reset()
     {
+        if (LockState)
+        {
+            Debug.LogWarning("Pusher is locked!");
+            return;
+        }
         transform.position = startPos;
         pushing = false;
         pushTimer = 0f;
