@@ -13,8 +13,10 @@ public class PuzzleValidator : MonoBehaviour
         public string triggerName;
         public ActivatorConfiguration config;
         public UnityEvent onSolved;
-
+        public UnityEvent onUnsolved;
+        public bool reTriggerable;
         [HideInInspector] public bool hasFired;
+        [HideInInspector] public bool isCurrentlySolved;
     }
 
     [Header("Event Channels")]
@@ -55,16 +57,28 @@ public class PuzzleValidator : MonoBehaviour
     {
         foreach (var trigger in triggers)
         {
-            if (trigger.hasFired || trigger.config == null)
+            if (trigger.config == null)
                 continue;
-
-            if (IsSolved(trigger.config))
-            {
-                trigger.hasFired = true;
                 
-                // Fire the UnityEvent to trigger environment changes!
+            bool nowSolved = IsSolved(trigger.config);
+            bool wasSolved = trigger.isCurrentlySolved;
+
+            if (nowSolved && !wasSolved)//unsolved to solved
+            {
+                if(!trigger.reTriggerable && trigger.hasFired){continue;}
+                trigger.hasFired = true;
+                trigger.isCurrentlySolved = true;
+                // Fire the UnityEvent to trigger environment changes
                 trigger.onSolved?.Invoke();
                 Debug.Log($"[PuzzleValidator] PUZZLE SOLVED: {trigger.triggerName}");
+            }
+            else if(!nowSolved && wasSolved)//Solved to unsolved
+            {
+                if(!trigger.reTriggerable && trigger.hasFired){continue;}
+                trigger.isCurrentlySolved = false;
+                trigger.hasFired = false;
+                trigger.onUnsolved?.Invoke();
+                Debug.Log($"[PuzzleValidator] PUZZLE UNSOLVED: {trigger.triggerName}");
             }
         }
     }
