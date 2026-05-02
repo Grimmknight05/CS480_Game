@@ -239,6 +239,7 @@ public class PlayerControllerWithHealth : MonoBehaviour
             castDistance,
             jumpable
         );
+        
 
         Debug.DrawRay(origin, Vector3.down * castDistance, onGround ? Color.green : Color.red);
     }
@@ -343,7 +344,7 @@ public class PlayerControllerWithHealth : MonoBehaviour
 
         RaycastHit hit;
 
-        if (Physics.SphereCast(transform.position, 0.5f, horizontal.normalized, out hit, 0.6f))
+        if (Physics.SphereCast(transform.position,0.5f,horizontal.normalized,out hit,0.6f,~0,QueryTriggerInteraction.Ignore))
         {
             // Only remove velocity pushing INTO the wall
             if (Vector3.Dot(horizontal, hit.normal) < 0)
