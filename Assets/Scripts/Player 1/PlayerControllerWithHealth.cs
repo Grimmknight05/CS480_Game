@@ -337,23 +337,37 @@ public class PlayerControllerWithHealth : MonoBehaviour
     }
     void PreventWallSticking(ref Vector3 velocity)
     {
-        Vector3 horizontal = new Vector3(velocity.x, 0, velocity.z);
+        Vector3 horizontal = new Vector3(velocity.x, 0f, velocity.z);
+        if (horizontal.sqrMagnitude < 0.0001f) return;
 
-        float speed = horizontal.magnitude;
-        if (speed < 0.01f) return;
+        // Cast from capsule center, not the root pivot (feet on animated rigs).
+        Vector3 origin = transform.TransformPoint(capsule.center);
+        float radius   = capsule.radius * 0.95f;
+        float distance = 0.1f;
 
-        RaycastHit hit;
+        int mask = ~LayerMask.GetMask("Player"); // make sure astronaut root + children are on "Player"
 
-        if (Physics.SphereCast(transform.position,0.5f,horizontal.normalized,out hit,0.6f,~0,QueryTriggerInteraction.Ignore))
+        if (Physics.SphereCast(origin, radius, horizontal.normalized,
+                            out RaycastHit hit, distance, mask,
+                            QueryTriggerInteraction.Ignore))
         {
-            if (hit.rigidbody != null && !hit.rigidbody.isKinematic)
-                return;
+            // Floors / tops of boxes are not walls — never project against them.
+            if (hit.normal.y > 0.5f) return;
 
-            // Only remove velocity pushing INTO the wall
-            if (Vector3.Dot(horizontal, hit.normal) < 0)
+            // Dynamic rigidbodies: let the physics solver handle push/contact instead of
+            // overriding linearVelocity into them. Zero only the inward component so we
+            // don't keep ramming and don't glue to the side either.
+            if (hit.rigidbody != null && !hit.rigidbody.isKinematic)
             {
-                horizontal = Vector3.ProjectOnPlane(horizontal, hit.normal);
+                float into = Vector3.Dot(horizontal, -hit.normal);
+                if (into > 0f) horizontal += hit.normal * into;  // cancel inward push
+                velocity.x = horizontal.x;
+                velocity.z = horizontal.z;
+                return;
             }
+
+            if (Vector3.Dot(horizontal, hit.normal) < 0f)
+                horizontal = Vector3.ProjectOnPlane(horizontal, hit.normal);
         }
 
         velocity.x = horizontal.x;
