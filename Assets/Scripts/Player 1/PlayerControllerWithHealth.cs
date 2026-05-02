@@ -361,8 +361,6 @@ public class PlayerControllerWithHealth : MonoBehaviour
             {
                 float into = Vector3.Dot(horizontal, -hit.normal);
                 if (into > 0f) horizontal += hit.normal * into;  // cancel inward push
-                velocity.x = horizontal.x;
-                velocity.z = horizontal.z;
                 return;
             }
 
