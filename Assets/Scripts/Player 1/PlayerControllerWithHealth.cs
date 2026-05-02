@@ -346,6 +346,9 @@ public class PlayerControllerWithHealth : MonoBehaviour
 
         if (Physics.SphereCast(transform.position,0.5f,horizontal.normalized,out hit,0.6f,~0,QueryTriggerInteraction.Ignore))
         {
+            if (hit.rigidbody != null && !hit.rigidbody.isKinematic)
+                return;
+
             // Only remove velocity pushing INTO the wall
             if (Vector3.Dot(horizontal, hit.normal) < 0)
             {
