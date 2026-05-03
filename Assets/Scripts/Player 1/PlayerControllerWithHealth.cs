@@ -54,6 +54,7 @@ public class PlayerControllerWithHealth : MonoBehaviour
     [SerializeField] private float acceleration = 10.0f;
     [SerializeField] private float deceleration = 15.0f;
     [SerializeField] private float zgDeceleration = 0.0f;
+    [SerializeField] private float maxWalkableSlopeAngle = 45f;
 
     
     /*Jump*/
@@ -63,6 +64,7 @@ public class PlayerControllerWithHealth : MonoBehaviour
     [SerializeField] private float airJumpForce = 8.0f;
     private CapsuleCollider capsule;
     private bool onGround = false;
+    private Vector3 groundNormal = Vector3.up;
     [SerializeField] private bool canJump = true;//Default player can jump //maybe also add inair jump only
     private LayerMask jumpable;//Jumpable layer mask
 
@@ -239,7 +241,8 @@ public class PlayerControllerWithHealth : MonoBehaviour
             castDistance,
             jumpable
         );
-        
+
+        groundNormal = onGround ? hit.normal : Vector3.up;
 
         Debug.DrawRay(origin, Vector3.down * castDistance, onGround ? Color.green : Color.red);
     }
@@ -385,7 +388,17 @@ public class PlayerControllerWithHealth : MonoBehaviour
                 movement.Normalize();
 
             Vector3 targetVelocity = movement * playerSpeed;
-            targetVelocity.y = rb.linearVelocity.y;
+            // --- Begin slope handling ---
+            // Slope handling logic 05-02-26 - Claude Assisted -- David Haddad
+            float slopeAngle = Vector3.Angle(Vector3.up, groundNormal);
+            bool ascending = rb.linearVelocity.y > 0.1f; // jumping or otherwise being pushed up — don't clamp
+            bool onWalkableSlope = onGround && !ascending && slopeAngle > 0.1f && slopeAngle <= maxWalkableSlopeAngle;
+
+            if (onWalkableSlope)
+                targetVelocity = Vector3.ProjectOnPlane(targetVelocity, groundNormal);
+            else
+                targetVelocity.y = rb.linearVelocity.y;
+            // --- End slope handling ---
 
             float accelRate = (movement.sqrMagnitude > 0.01f) ? acceleration : deceleration;
             float t = 1f - Mathf.Exp(-accelRate * Time.fixedDeltaTime);
@@ -398,8 +411,12 @@ public class PlayerControllerWithHealth : MonoBehaviour
 
             velocity = new Vector3(horizontal.x, velocity.y, horizontal.z);
 
+            // Zero-friction anti-slide: hold position on walkable slopes when no input. 05-02-26 -- David Haddad
+            if (onWalkableSlope && cachedMoveDirection.sqrMagnitude < 0.01f)
+                velocity = Vector3.zero;
+
             PreventWallSticking(ref velocity);
-            
+
             rb.linearVelocity = velocity;
 
             break;
