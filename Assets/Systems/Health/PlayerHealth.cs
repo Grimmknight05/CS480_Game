@@ -5,11 +5,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 {
     [SerializeField] private int maxHealth = 100;
     private int currentHealth;
-
+    
     // Events - public so other scripts can subscribe
     public UnityEvent OnHealthChanged; // Invoked when health changes
     public UnityEvent OnPlayerDeath; // Invoked when player dies
-
+    
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip damageSFX;
     [SerializeField] private AudioClip deathSFX;
