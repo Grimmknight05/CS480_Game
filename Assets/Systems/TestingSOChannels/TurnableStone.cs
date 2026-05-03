@@ -13,6 +13,11 @@ public class TurnableStone : MonoBehaviour
     [Header("Rotation Settings")]
     [SerializeField] private float rotationSpeed = 90f; // Adjusted for degree-per-second rotation
     [SerializeField] private float rotationTolerance = 0.5f;
+
+    [Header("Input Buffer")]
+    [Tooltip("How many turns can the player queue up by spamming E?")]
+    [SerializeField] private int maxQueuedTurns = 3;
+    private int currentQueuedTurns = 0;
     
     [Header("Restrictions")]
     [SerializeField] private bool Inputlock = false;//Lock all input channel
@@ -90,17 +95,29 @@ public class TurnableStone : MonoBehaviour
     }
     public void setTargetRot()
     {
-        if (isRotating) return; // Prevent spamming while it's already turning
+        // Instead of blocking interaction entirely, block it if the queue is full
+        if (currentQueuedTurns >= maxQueuedTurns) return; 
         
         if (debugMode)
-            Debug.Log($"[TurnableStone] {stoneID} interacted! Setting new target.");
+            Debug.Log($"[TurnableStone] {stoneID} interacted! Turn queued.");
         
-        targetRotation += 90f;
-        targetRotation = Mathf.Repeat(targetRotation, 360f);
-        
+        currentQueuedTurns++;
+
+        // If it's not currently moving, kickstart the rotation process
+        if (!isRotating)
+        {
+            SetNext90DegreeTarget();
+        }
+    }
+
+    private void SetNext90DegreeTarget()
+    {
+        // Safely add exactly 90 degrees to our CURRENT physical rotation
+        targetRotation = currentRotation + 90f; 
         isRotating = true;
         hasRaisedEventForCurrentTarget = false;
     }
+
     private void Update()
     {
         if (isRotating)
@@ -111,37 +128,57 @@ public class TurnableStone : MonoBehaviour
 
     private void RotateToTarget()
     {
-        float difference = Mathf.Abs(Mathf.DeltaAngle(currentRotation, targetRotation));
+        // Don't use DeltaAngle here, use standard difference so we don't accidentally spin backward
+        float difference = Mathf.Abs(targetRotation - currentRotation);
         
         if (difference <= rotationTolerance)
         {
-            // Snap to exact target and stop rotating
+            // Snap to exact target 
             currentRotation = targetRotation;
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, initialRotationY + currentRotation, transform.eulerAngles.z);
-            isRotating = false;
 
-            // Fire the event ONLY ONCE when rotation finishes
+            // We reached a 90 degree stop. Fire the event for the puzzle/platforms!
             if (!hasRaisedEventForCurrentTarget)
             {
                 hasRaisedEventForCurrentTarget = true;
+                
+                // Normalize for the broadcast (e.g. 360 becomes 0) so the Puzzle Validator understands it
+                float normalizedRotation = Mathf.Repeat(currentRotation, 360f);
                 if (stateChannel != null)
-                    stateChannel.RaiseEvent(stoneID, currentRotation);
+                    stateChannel.RaiseEvent(stoneID, normalizedRotation);
             }
+
+            // We finished one turn. Remove it from the queue.
+            currentQueuedTurns--;
+
+            // If the player spammed E and we have more turns in the queue, immediately start the next one
+            if (currentQueuedTurns > 0)
+            {
+                SetNext90DegreeTarget();
+            }
+            else
+            {
+                // Queue is empty, finally stop resting.
+                isRotating = false;
+                // Normalize the underlying math variables so they don't climb to infinity
+                currentRotation = Mathf.Repeat(currentRotation, 360f);
+                targetRotation = currentRotation; 
+            }
+            
+            // Apply final physical transform
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, initialRotationY + currentRotation, transform.eulerAngles.z);
         }
         else
         {
-            // Interpolate rotation smoothly
-            float rotationDelta = Mathf.DeltaAngle(currentRotation, targetRotation);
-            float rotationStep = Mathf.Sign(rotationDelta) * rotationSpeed * Time.deltaTime;
+            // Interpolate rotation smoothly forward
+            float rotationStep = rotationSpeed * Time.deltaTime;
 
-            // Prevent overshooting the target
-            if (Mathf.Abs(rotationStep) > Mathf.Abs(rotationDelta))
+            // Prevent overshooting
+            if (rotationStep > difference)
             {
-                rotationStep = rotationDelta;
+                rotationStep = difference;
             }
 
             currentRotation += rotationStep;
-            currentRotation = Mathf.Repeat(currentRotation, 360f);
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, initialRotationY + currentRotation, transform.eulerAngles.z);
         }
     }
