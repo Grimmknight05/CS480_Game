@@ -1474,6 +1474,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4311117212020250035}
+    - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4810321632097608958}
   m_SourcePrefab: {fileID: 100100000, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
 --- !u!1 &101740259894602514 stripped
 GameObject:
@@ -1519,6 +1522,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: bc18fe1a807ecc04fab7d60e3e616add, type: 3}
   - {fileID: 8300000, guid: 96fb674b02da5f549b2196a4f919db42, type: 3}
   - {fileID: 8300000, guid: 55af11cfc862f074984db678bf147411, type: 3}
+  deathChannel: {fileID: 11400000, guid: 061249312f19d4481bdf19bd8be922e5, type: 2}
   defaultMode: 2
   moveMode: 2
   playerSpeed: 7
@@ -1526,6 +1530,7 @@ MonoBehaviour:
   acceleration: 120
   deceleration: 10
   zgDeceleration: 0
+  maxWalkableSlopeAngle: 45
   maxInAirjumps: 0
   jumpForce: 500
   airJumpForce: 400
@@ -1647,6 +1652,7 @@ MonoBehaviour:
   OnPlayerDeath:
     m_PersistentCalls:
       m_Calls: []
+  deathChannel: {fileID: 0}
   audioSource: {fileID: 6448667773203093288}
   damageSFX: {fileID: 0}
   deathSFX: {fileID: 0}
@@ -1794,6 +1800,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4810321632097608958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6199216321286383420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b96a7e334ed142a8a2243231047b7dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSpawnPositioner
+  sessionData: {fileID: 11400000, guid: fb6a72f62a7a44455b773838b346032a, type: 2}
 --- !u!82 &6448667773203093288 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 1003888192449536682, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}

@@ -6,7 +6,7 @@ public class MovementZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        PlayerController player = other.GetComponent<PlayerController>();
+        PlayerControllerWithHealth player = other.GetComponent<PlayerControllerWithHealth>();
 
         if (player != null)
         {
@@ -15,7 +15,7 @@ public class MovementZone : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        PlayerController player = other.GetComponent<PlayerController>();
+        PlayerControllerWithHealth player = other.GetComponent<PlayerControllerWithHealth>();
 
         if (player != null)
         {
