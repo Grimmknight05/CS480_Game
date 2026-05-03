@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 332987736235147215}
   - component: {fileID: 7091514219807175759}
   - component: {fileID: 8376046724932903472}
+  - component: {fileID: 6496517903491499633}
   m_Layer: 6
   m_Name: Rune4
   m_TagString: Untagged
@@ -90,3 +91,20 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6496517903491499633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2173258184843094836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bc6534c2f7d5da4db96be6c55581fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MaterialController
+  Object:
+  - ObjectToChange: {fileID: 8376046724932903472}
+    startMaterial: {fileID: 2100000, guid: 42dee58d74b78e743a18758be86050c4, type: 2}
+    targetMaterial: {fileID: 2100000, guid: f00dc7289f38d054b97879d3603ec2e0, type: 2}
+    state: 0
