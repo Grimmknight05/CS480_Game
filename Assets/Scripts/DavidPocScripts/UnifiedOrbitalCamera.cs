@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class OrbitalCamera : MonoBehaviour
+public class UnifiedOrbitalCamera : MonoBehaviour
 {
     [Header("Camera Collision")]
     public LayerMask collisionLayers; // Set this in the Inspector to "Default" or your Environment layers
