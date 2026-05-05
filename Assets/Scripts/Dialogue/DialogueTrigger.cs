@@ -9,6 +9,11 @@
 //   * Player Tag     — tag used to detect the player collider
 //
 // Reusable across any future character with no code changes.
+//
+// Uses the Command pattern: starting dialogue is wrapped in a
+// StartDialogueCommand rather than calling startChannel.Raise() directly.
+//
+// Contributor: Katie Trinh — Command pattern refactor
 // =====================================================================
 
 using UnityEngine;
@@ -42,6 +47,8 @@ public class DialogueTrigger : MonoBehaviour
     private bool hasPlayedOnce = false;
     private bool isActive = false;
     private float cooldownEndsAt = 0f;
+
+    private IDialogueCommand startCommand;
 
     void OnEnable()
     {
@@ -97,7 +104,8 @@ public class DialogueTrigger : MonoBehaviour
 
         Debug.Log($"[DialogueTrigger] Raising start for dialogue '{dialogue.name}'", this);
         isActive = true;
-        startChannel.Raise(dialogue);
+        startCommand = new StartDialogueCommand(startChannel, dialogue);
+        startCommand.Execute();
     }
 
     private bool CanPlay()
