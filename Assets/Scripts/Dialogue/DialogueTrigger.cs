@@ -47,7 +47,6 @@ public class DialogueTrigger : MonoBehaviour
     private bool hasPlayedOnce = false;
     private bool isActive = false;
     private float cooldownEndsAt = 0f;
-
     private IDialogueCommand startCommand;
 
     void OnEnable()
