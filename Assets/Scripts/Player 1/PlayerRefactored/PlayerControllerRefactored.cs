@@ -79,7 +79,33 @@ public class PlayerControllerRefactored : MonoBehaviour
     private bool hasGroundHit = false; // whether groundHit is valid this frame
     public JumpAbility jumpAbility;
     private Queue<ICommand> inputQueue = new Queue<ICommand>();
-    
+    private InputAction jumpAction;
+
+    void OnEnable()
+    {
+        var inputActions = GetComponent<PlayerInput>().actions;
+        jumpAction = inputActions.FindAction("Jump");
+        jumpAction.started += OnJumpStarted;   // button down
+        jumpAction.canceled += OnJumpCanceled; // button up
+    }
+
+    void OnDisable()
+    {
+        jumpAction.started -= OnJumpStarted;
+        jumpAction.canceled -= OnJumpCanceled;
+    }
+    private void OnJumpStarted(InputAction.CallbackContext ctx)
+    {
+        if (jumpAbility.CanExecute(this))
+        {
+            QueueCommand(new JumpCommand());
+        }
+    }
+
+    private void OnJumpCanceled(InputAction.CallbackContext ctx)
+    {
+        jumpAbility.OnJumpReleased();
+    }
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -135,11 +161,11 @@ public class PlayerControllerRefactored : MonoBehaviour
         moveY = v.y;
     }
 
-    void OnJump(InputValue value)
+    /*void OnJump(InputValue value)
     {
         if (!value.isPressed) return;
         QueueCommand(new JumpCommand());
-    }
+    }*/
 
     public void OnInteract(InputValue value)
     {
@@ -469,6 +495,7 @@ public class PlayerControllerRefactored : MonoBehaviour
     {
         checkGround();
         currentState.FixedTick(this);
+        jumpAbility?.OnJumpHeld(this);
         HandleRotation();
     }
 
@@ -479,6 +506,8 @@ public class PlayerControllerRefactored : MonoBehaviour
         // Process input queue
         jumpAbility.UpdateAbility(this);
         ProcessCommandQueue();
+        
+        
         
     }
 }

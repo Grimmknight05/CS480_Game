@@ -12,7 +12,11 @@ public class JumpAbility : MovementAbility
 
     [SerializeField] private float groundResetDelay = 0.2f;   // delay after landing until jumps reset
     [SerializeField] private float jumpCooldown = 0.1f;       // prevents multiple jumps from spamming
-
+    [SerializeField] private float jumpHoldMaxTime = 0.5f;    // how long you can hold for extra height
+    [SerializeField] private float jumpHoldVelocityPerFrame  = 0.1f; // force per second while holding
+    [SerializeField] private float maxJumpVelocity = 15f;
+    private float jumpHoldTimer = 0f;
+    private bool isJumpHolding = false;
     private float groundCooldown = 0f;      // >0 = cannot jump on ground (recharging)
     private float lastJumpTime = -999f;     // last time any jump was performed
     private bool wasGrounded;
@@ -98,7 +102,9 @@ public class JumpAbility : MovementAbility
             player.animator.SetBool("isJumping", true);
             player.animator.ResetTrigger("Jump");
             player.animator.SetTrigger("Jump");
-            // Note: ground jump does NOT consume airJumpsLeft
+            isJumpHolding = true;
+            jumpHoldTimer = 0f;
+            Debug.Log("Jump executed, holding started");
         }
         else
         {
@@ -110,7 +116,32 @@ public class JumpAbility : MovementAbility
             player.animator.SetTrigger("Jump");
         }
     }
-
+    public void OnJumpHeld(PlayerControllerRefactored player)
+    {
+        if (!isJumpHolding) return;
+        
+        jumpHoldTimer += Time.fixedDeltaTime;
+        if (jumpHoldTimer < jumpHoldMaxTime)
+        {
+            // Add force, but don't exceed max velocity
+            float currentY = player.rb.linearVelocity.y;
+            if (currentY < maxJumpVelocity)
+            {
+                float remaining = maxJumpVelocity - currentY;
+                float add = Mathf.Min(jumpHoldVelocityPerFrame, remaining);
+                player.rb.AddForce(Vector3.up * add, ForceMode.VelocityChange);
+            }
+        }
+        else
+        {
+            isJumpHolding = false;
+        }
+    }
+    // Call this when the jump button is released
+    public void OnJumpReleased()
+    {
+        isJumpHolding = false;
+    }
     private void PlayRandomClip(AudioClip[] clips)
     {
         if (clips == null || clips.Length == 0 || audioSource == null) return;

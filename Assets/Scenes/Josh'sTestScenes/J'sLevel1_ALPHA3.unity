@@ -24265,6 +24265,10 @@ PrefabInstance:
       value: AstronautTestPoc2
       objectReference: {fileID: 0}
     - target: {fileID: 6469733361490637446, guid: 5207f4b59f593e64a80a21b6a9441baa, type: 3}
+      propertyPath: jumpForce
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 6469733361490637446, guid: 5207f4b59f593e64a80a21b6a9441baa, type: 3}
       propertyPath: cameraPivot
       value: 
       objectReference: {fileID: 554863618}
