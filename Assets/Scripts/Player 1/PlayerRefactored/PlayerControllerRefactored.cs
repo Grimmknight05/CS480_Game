@@ -79,7 +79,6 @@ public class PlayerControllerRefactored : MonoBehaviour
     private bool hasGroundHit = false; // whether groundHit is valid this frame
     public JumpAbility jumpAbility;
     private Queue<ICommand> inputQueue = new Queue<ICommand>();
-    [SerializeField] private float defaultCommandLifetime = 0.2f; // seconds
     
     void Awake()
     {
@@ -189,8 +188,8 @@ public class PlayerControllerRefactored : MonoBehaviour
 
         onGround = newGrounded;
 
-        if (newGrounded && !wasGrounded)
-            jumpAbility.ResetOnGround();
+        //if (newGrounded && !wasGrounded)
+        //    jumpAbility.ResetOnGround();
 
         wasGrounded = newGrounded;
 
@@ -403,8 +402,8 @@ public class PlayerControllerRefactored : MonoBehaviour
     }
     void OnCollisionEnter(Collision collision)
     {
-        if ((jumpable.value & (1 << collision.gameObject.layer)) > 0)
-            jumpAbility.ResetOnGround();
+        //if ((jumpable.value & (1 << collision.gameObject.layer)) > 0)
+            //jumpAbility.ResetOnGround();
     }
 
     void OnTriggerEnter(Collider other)
@@ -478,6 +477,8 @@ public class PlayerControllerRefactored : MonoBehaviour
         currentState.Tick(this);
         UpdateAnimations();
         // Process input queue
+        jumpAbility.UpdateAbility(this);
         ProcessCommandQueue();
+        
     }
 }

@@ -7,7 +7,8 @@ public class GroundedMovementState : MovementState
         player.rb.linearDamping = 0f;
         player.jumpAbility.IsEnabled = true;
         // Reset air jumps when entering grounded state (like original's OnCollisionEnter with ground)
-        player.jumpAbility.ResetOnGround();
+        //player.jumpAbility.ResetOnGround();
+        
     }
 
     public override void Exit(PlayerControllerRefactored player)
