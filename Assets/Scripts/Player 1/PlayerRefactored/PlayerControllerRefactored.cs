@@ -56,6 +56,7 @@ public class PlayerControllerRefactored : MonoBehaviour
     private Vector3 groundNormal = Vector3.up;
     private LayerMask jumpable;
     private bool wasGrounded;
+    private bool onSteepSlope;
 
     [Header("Look & Camera")]
     [SerializeField] private Transform cameraPivot;
@@ -116,7 +117,6 @@ public class PlayerControllerRefactored : MonoBehaviour
         currentState.Enter(this);
     }
 
-    // Public method to switch movement mode (mirrors original SetMovementMode)
     public void SetMovementMode(MovementMode mode)
     {
         if (mode == MovementMode.ZeroGrav)
@@ -187,7 +187,6 @@ public class PlayerControllerRefactored : MonoBehaviour
             }
         }
 
-        // CRITICAL: update the actual onGround flag
         onGround = newGrounded;
 
         if (newGrounded && !wasGrounded)
@@ -229,7 +228,6 @@ public class PlayerControllerRefactored : MonoBehaviour
         }
     }
 
-    // Wall sticking prevention – identical to original
     public void PreventWallSticking(ref Vector3 velocity)
     {
         if (rb.linearVelocity.y > 0.2f) return; // allow upward movement
@@ -265,28 +263,24 @@ public class PlayerControllerRefactored : MonoBehaviour
         velocity.x = horizontal.x;
         velocity.z = horizontal.z;
     }
-    // Ground movement logic – exact copy of original's AccelerationBased branch
     public void HandleGroundMovement()
     {
         Vector3 movement = cachedMoveDirection;
-        // --- Slope limit: if on ground and slope too steep, cancel movement ---
         float slopeAngle = Vector3.Angle(Vector3.up, groundNormal);
         bool ascending = rb.linearVelocity.y > 0.1f;
         bool onWalkableSlope = onGround && !ascending && slopeAngle > 0.1f && slopeAngle <= maxWalkableSlopeAngle;
         bool isSmallLip = false;
         if (onGround && slopeAngle > maxWalkableSlopeAngle)
         {
-            // Check if the contact point is just a small vertical bump
-            float verticalDiff = transform.position.y - groundHit.point.y; // need the hit point from checkGround
+            float verticalDiff = transform.position.y - groundHit.point.y;
             
-            // You'll need to store the ground hit point in a class variable
-            // For simplicity, assume you have a private RaycastHit groundHit from checkGround.
+
             if (verticalDiff < 0.3f && Mathf.Abs(Vector3.Dot(cachedMoveDirection, groundNormal)) > 0.7f)
             {
                 isSmallLip = true;
             }
         }
-        bool onSteepSlope = onGround && !isSmallLip && slopeAngle > maxWalkableSlopeAngle;
+        onSteepSlope = onGround && !isSmallLip && slopeAngle > maxWalkableSlopeAngle;
         if (onSteepSlope && !isSmallLip)
         {
             // Cancel player input
@@ -294,7 +288,6 @@ public class PlayerControllerRefactored : MonoBehaviour
             float slideAcceleration = 25f; // tune this for desired slide speed
             rb.AddForce(slideDirection * slideAcceleration, ForceMode.Acceleration);
             
-            // Optional: reduce friction so player doesn't "stick"
             rb.linearDamping = 0.5f;
             return;
         }
@@ -333,7 +326,6 @@ public class PlayerControllerRefactored : MonoBehaviour
         rb.linearVelocity = velocity;
     }
 
-    // Zero‑G movement – exact copy with exponential smoothing using zgAcceleration/zgDeceleration
     public void HandleZeroGMovement()
     {
         Vector3 movement = cachedMoveDirection;
@@ -348,7 +340,6 @@ public class PlayerControllerRefactored : MonoBehaviour
         rb.linearVelocity = newVelocity;
     }
 
-    // Rotation – only in non‑ZeroGrav and when input exists
     public void HandleRotation()
     {
         if (currentState is ZeroGMovementState) 
@@ -390,7 +381,6 @@ public class PlayerControllerRefactored : MonoBehaviour
             cachedMoveDirection.Normalize();
     }
 
-    // Normalized speed for animator (exact original)
     float NormalizeVelocity()
     {
         float horizontalSpeedSqr = rb.linearVelocity.x * rb.linearVelocity.x + rb.linearVelocity.z * rb.linearVelocity.z;
@@ -399,7 +389,6 @@ public class PlayerControllerRefactored : MonoBehaviour
         return normalizedSpeed;
     }
 
-    // Animation updates (original Update logic)
     void UpdateAnimations()
     {
         animator.SetBool("onGround", onGround);
@@ -412,8 +401,6 @@ public class PlayerControllerRefactored : MonoBehaviour
         float normalizedSpeed = NormalizeVelocity();
         animator.SetFloat("Speed", normalizedSpeed);
     }
-
-    // Collision reset – original resets air jumps on ANY jumpable collision, even mid‑air
     void OnCollisionEnter(Collision collision)
     {
         if ((jumpable.value & (1 << collision.gameObject.layer)) > 0)
@@ -445,8 +432,6 @@ public class PlayerControllerRefactored : MonoBehaviour
     }
     private void ProcessCommandQueue()
     {
-        // Process from oldest to newest, but only the first valid one per frame
-        // (or process all? Usually one per frame feels right)
         while (inputQueue.Count > 0)
         {
             ICommand cmd = inputQueue.Peek();
@@ -460,7 +445,7 @@ public class PlayerControllerRefactored : MonoBehaviour
             if (cmd.CanExecute(this))
             {
                 cmd.Execute(this);
-                inputQueue.Dequeue(); // Remove executed command
+                inputQueue.Dequeue(); 
                 break; // Only one command per frame
             }
             else
