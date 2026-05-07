@@ -2,27 +2,33 @@ using UnityEngine;
 
 public class JumpAbility : MovementAbility
 {
+    //General
+    private float groundJumpForce;
+    //Doublejump
     private int maxAirJumps;
     private int airJumpsLeft;
-    private float groundJumpForce;
     private float airJumpForce;
     private AudioClip[] groundJumpClips;
     private AudioClip[] airJumpClips;
     private AudioSource audioSource;
-
+    //Ground Jump cooldown
     [SerializeField] private float groundResetDelay = 0.2f;   // delay after landing until jumps reset
+    private float groundCooldownTimer = 0f;      // groundCooldowntimer
+    private bool wasGrounded;
+    //In between jump cooldown
     [SerializeField] private float jumpCooldown = 0.1f;       // prevents multiple jumps from spamming
+    private float lastJumpTime = -999f;     // last time any jump was performed
+    
+    //Variable height jump on hold
     [SerializeField] private float jumpHoldMaxTime = 0.5f;    // how long you can hold for extra height
     [SerializeField] private float jumpHoldVelocityPerFrame  = 0.1f; // force per second while holding
-    [SerializeField] private float maxJumpVelocity = 15f;
+    [SerializeField] private float maxJumpVelocity = 15f; // Maximum jump Velocity cap
     private float jumpHoldTimer = 0f;
     private bool isJumpHolding = false;
-    private float groundCooldown = 0f;      // >0 = cannot jump on ground (recharging)
-    private float lastJumpTime = -999f;     // last time any jump was performed
-    private bool wasGrounded;
 
+    //MainCall
     public JumpAbility(int maxAirJumps, float groundForce, float airForce,
-                       AudioClip[] groundClips, AudioClip[] airClips, AudioSource src)
+                       AudioClip[] groundClips, AudioClip[] airClips, AudioSource src)//Might be worth while to implement a config SO that can be passed into player and hold all these settings
     {
         this.maxAirJumps = maxAirJumps;
         this.groundJumpForce = groundForce;
@@ -36,33 +42,9 @@ public class JumpAbility : MovementAbility
     public override void Enter(PlayerControllerRefactored player)
     {
         airJumpsLeft = maxAirJumps;
-        groundCooldown = 0f;
+        groundCooldownTimer = 0f;
         lastJumpTime = -999f;
         wasGrounded = player.OnGround;
-    }
-
-    public void UpdateAbility(PlayerControllerRefactored player)
-    {
-        // Detect landing
-        bool onGround = player.OnGround;
-        if (onGround && !wasGrounded)
-        {
-            // Just landed – start recharge delay (blocks ground jumps until it finishes)
-            groundCooldown = groundResetDelay;
-        }
-        wasGrounded = onGround;
-
-        // Update ground cooldown
-        if (groundCooldown > 0)
-        {
-            groundCooldown -= Time.deltaTime;
-            if (groundCooldown <= 0f)
-            {
-                // Recharge complete: restore all air jumps
-                airJumpsLeft = maxAirJumps;
-                // ground jump becomes available automatically in CanExecute
-            }
-        }
     }
 
     public override bool CanExecute(PlayerControllerRefactored player)
@@ -76,7 +58,7 @@ public class JumpAbility : MovementAbility
         if (player.OnGround)
         {
             // On ground: can jump only if ground cooldown finished AND CanJump
-            return groundCooldown <= 0f && player.CanJump;
+            return groundCooldownTimer <= 0f && player.CanJump;
         }
         else
         {
@@ -142,6 +124,30 @@ public class JumpAbility : MovementAbility
     {
         isJumpHolding = false;
     }
+    public void UpdateAbility(PlayerControllerRefactored player)
+    {
+        // Detect landing
+        bool onGround = player.OnGround;
+        if (onGround && !wasGrounded)
+        {
+            // Just landed – start recharge delay (blocks ground jumps until it finishes)
+            groundCooldownTimer = groundResetDelay;
+        }
+        wasGrounded = onGround;
+
+        // Update ground cooldown
+        if (groundCooldownTimer > 0)
+        {
+            groundCooldownTimer -= Time.deltaTime;
+            if (groundCooldownTimer <= 0f)
+            {
+                // Recharge complete: restore all air jumps
+                airJumpsLeft = maxAirJumps;
+                // ground jump becomes available automatically in CanExecute
+            }
+        }
+    }
+    //Effect Helpers
     private void PlayRandomClip(AudioClip[] clips)
     {
         if (clips == null || clips.Length == 0 || audioSource == null) return;
