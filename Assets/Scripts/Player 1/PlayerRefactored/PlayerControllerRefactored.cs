@@ -74,8 +74,12 @@ public class PlayerControllerRefactored : MonoBehaviour
     public float ZGDeceleration => zgDeceleration;
     public float MaxWalkableSlopeAngle => maxWalkableSlopeAngle;
     public bool CanJump => canJump;
+    private RaycastHit groundHit;      // stores the most recent ground hit
+    private bool hasGroundHit = false; // whether groundHit is valid this frame
     public JumpAbility jumpAbility;
-
+    private Queue<ICommand> inputQueue = new Queue<ICommand>();
+    [SerializeField] private float defaultCommandLifetime = 0.2f; // seconds
+    
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -120,7 +124,10 @@ public class PlayerControllerRefactored : MonoBehaviour
         else
             SetMovementState(new GroundedMovementState());
     }
-
+    public void QueueCommand(ICommand command)
+    {
+        inputQueue.Enqueue(command);
+    }
     // Input callbacks
     void OnMove(InputValue value)
     {
@@ -132,16 +139,13 @@ public class PlayerControllerRefactored : MonoBehaviour
     void OnJump(InputValue value)
     {
         if (!value.isPressed) return;
-        if (jumpAbility.CanExecute(this))
-            jumpAbility.Execute(this);
+        QueueCommand(new JumpCommand());
     }
 
     public void OnInteract(InputValue value)
     {
         Debug.Log($"[PlayerController] OnInteract called, isPressed: {value.isPressed}");
     }
-
-    // Ground detection (exact copy from original)
     void checkGround()
     {
         if (capsule == null) return;
@@ -150,21 +154,86 @@ public class PlayerControllerRefactored : MonoBehaviour
         float castDistance = (capsule.height * 0.5f) - capsule.radius + 0.1f;
         Vector3 origin = transform.position + Vector3.up * 0.1f;
 
-        bool newGrounded = Physics.SphereCast(origin, radius, Vector3.down, out RaycastHit hit, castDistance, jumpable);
-        onGround = newGrounded;
-        groundNormal = newGrounded ? hit.normal : Vector3.up;
+        bool newGrounded = Physics.SphereCast(origin, radius, Vector3.down, out groundHit, castDistance, jumpable);
+        hasGroundHit = newGrounded;
+        if (newGrounded)
+            groundNormal = groundHit.normal;
+        else
+            groundNormal = Vector3.up;
 
-        // Reset air jumps only when landing (original resets on CollisionEnter, but we keep both for exactness)
+        // Forward-down ray for small steps
+        if (!newGrounded && rb.linearVelocity.y <= 0.2f)
+        {
+            Vector3 moveDir = cachedMoveDirection.sqrMagnitude > 0.01f ? cachedMoveDirection.normalized : transform.forward;
+            Vector3 kneeOrigin = transform.position + Vector3.up * 0.5f;
+            float stepDistance = 0.4f;
+            if (Physics.Raycast(kneeOrigin, moveDir, out RaycastHit stepWall, stepDistance, jumpable))
+            {
+                if (stepWall.normal.y < 0.2f)
+                {
+                    Vector3 aboveStep = kneeOrigin + Vector3.up * 0.3f + moveDir * stepWall.distance;
+                    if (Physics.Raycast(aboveStep, Vector3.down, out RaycastHit stepTop, 0.5f, jumpable))
+                    {
+                        float stepHeight = stepTop.point.y - transform.position.y;
+                        if (stepHeight > 0.05f && stepHeight < 0.35f)
+                        {
+                            newGrounded = true;
+                            groundNormal = stepTop.normal;
+                            groundHit = stepTop;
+                            hasGroundHit = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        // CRITICAL: update the actual onGround flag
+        onGround = newGrounded;
+
         if (newGrounded && !wasGrounded)
             jumpAbility.ResetOnGround();
 
         wasGrounded = newGrounded;
-        Debug.DrawRay(origin, Vector3.down * castDistance, newGrounded ? Color.green : Color.red);
+
+        Debug.DrawRay(origin, Vector3.down * castDistance, onGround ? Color.green : Color.red);
+        Debug.DrawRay(origin + Vector3.down * castDistance, Vector3.up * 0.2f, Color.yellow);
+    }
+
+    private void HandleStepUp()
+    {
+        if (!onGround || rb.linearVelocity.y > 0.1f) return;
+
+        float stepHeight = 0.3f;
+        float stepCheckDistance = 0.4f;
+
+        Vector3 moveDir = cachedMoveDirection;
+        if (moveDir.sqrMagnitude < 0.01f) return;
+
+        Vector3 origin = transform.position + Vector3.up * 0.1f; // foot level
+        if (!Physics.Raycast(origin, moveDir.normalized, out RaycastHit wallHit, stepCheckDistance, jumpable))
+            return;
+
+        if (wallHit.normal.y > 0.2f) return; // not a vertical wall
+
+        Vector3 aboveOrigin = origin + Vector3.up * stepHeight + moveDir.normalized * wallHit.distance;
+        if (Physics.Raycast(aboveOrigin, Vector3.down, out RaycastHit stepHit, stepHeight + 0.2f, jumpable))
+        {
+            float stepHeightActual = stepHit.point.y - transform.position.y;
+            if (stepHeightActual > 0.05f && stepHeightActual <= stepHeight)
+            {
+                Vector3 newPos = transform.position;
+                newPos.y = stepHit.point.y + 0.05f;
+                transform.position = newPos;
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+            }
+        }
     }
 
     // Wall sticking prevention – identical to original
     public void PreventWallSticking(ref Vector3 velocity)
     {
+        if (rb.linearVelocity.y > 0.2f) return; // allow upward movement
+
         Vector3 horizontal = new Vector3(velocity.x, 0f, velocity.z);
         if (horizontal.sqrMagnitude < 0.0001f) return;
 
@@ -175,7 +244,12 @@ public class PlayerControllerRefactored : MonoBehaviour
 
         if (Physics.SphereCast(origin, radius, horizontal.normalized, out RaycastHit hit, distance, mask, QueryTriggerInteraction.Ignore))
         {
+            Debug.DrawRay(hit.point, hit.normal, Color.blue, 0.5f);
             if (hit.normal.y > 0.5f) return;
+
+            float lipThreshold = 0.2f;
+            if (hit.normal.y > lipThreshold && horizontal.magnitude < 2f)
+                return;   // allow gentle step up
 
             if (hit.rigidbody != null && !hit.rigidbody.isKinematic)
             {
@@ -191,19 +265,52 @@ public class PlayerControllerRefactored : MonoBehaviour
         velocity.x = horizontal.x;
         velocity.z = horizontal.z;
     }
-
     // Ground movement logic – exact copy of original's AccelerationBased branch
     public void HandleGroundMovement()
     {
         Vector3 movement = cachedMoveDirection;
+        // --- Slope limit: if on ground and slope too steep, cancel movement ---
+        float slopeAngle = Vector3.Angle(Vector3.up, groundNormal);
+        bool ascending = rb.linearVelocity.y > 0.1f;
+        bool onWalkableSlope = onGround && !ascending && slopeAngle > 0.1f && slopeAngle <= maxWalkableSlopeAngle;
+        bool isSmallLip = false;
+        if (onGround && slopeAngle > maxWalkableSlopeAngle)
+        {
+            // Check if the contact point is just a small vertical bump
+            float verticalDiff = transform.position.y - groundHit.point.y; // need the hit point from checkGround
+            
+            // You'll need to store the ground hit point in a class variable
+            // For simplicity, assume you have a private RaycastHit groundHit from checkGround.
+            if (verticalDiff < 0.3f && Mathf.Abs(Vector3.Dot(cachedMoveDirection, groundNormal)) > 0.7f)
+            {
+                isSmallLip = true;
+            }
+        }
+        bool onSteepSlope = onGround && !isSmallLip && slopeAngle > maxWalkableSlopeAngle;
+        if (onSteepSlope && !isSmallLip)
+        {
+            // Cancel player input
+            Vector3 slideDirection = Vector3.ProjectOnPlane(Vector3.down, groundNormal).normalized;
+            float slideAcceleration = 25f; // tune this for desired slide speed
+            rb.AddForce(slideDirection * slideAcceleration, ForceMode.Acceleration);
+            
+            // Optional: reduce friction so player doesn't "stick"
+            rb.linearDamping = 0.5f;
+            return;
+        }
+        else
+        {
+            // Reset damping when not on steep slope
+            rb.linearDamping = 0f;
+        }
+
         if (movement.sqrMagnitude > 1f)
             movement.Normalize();
 
         Vector3 targetVelocity = movement * playerSpeed;
+        HandleStepUp();
+        
 
-        float slopeAngle = Vector3.Angle(Vector3.up, groundNormal);
-        bool ascending = rb.linearVelocity.y > 0.1f;
-        bool onWalkableSlope = onGround && !ascending && slopeAngle > 0.1f && slopeAngle <= maxWalkableSlopeAngle;
 
         if (onWalkableSlope)
             targetVelocity = Vector3.ProjectOnPlane(targetVelocity, groundNormal);
@@ -244,14 +351,23 @@ public class PlayerControllerRefactored : MonoBehaviour
     // Rotation – only in non‑ZeroGrav and when input exists
     public void HandleRotation()
     {
-        if (currentState is ZeroGMovementState) return;
+        if (currentState is ZeroGMovementState) 
+        
+        return;
         Vector3 dir = cachedMoveDirection;
         dir.y = 0f;
         if (dir.sqrMagnitude < 0.001f) return;
         Quaternion target = Quaternion.LookRotation(dir);
         rb.MoveRotation(Quaternion.Slerp(rb.rotation, target, rotationSpeed * Time.fixedDeltaTime));
     }
-
+    public void FaceCameraDirection()
+    {
+        Vector3 camForward = cameraPivot.forward;
+        camForward.y = 0f;
+        if (camForward.sqrMagnitude < 0.001f) return;
+        Quaternion target = Quaternion.LookRotation(camForward);
+        rb.MoveRotation(Quaternion.Slerp(rb.rotation, target, rotationSpeed * Time.fixedDeltaTime));
+    }
     // Input direction builders (mirror original)
     public void UpdateGroundMovementInput()
     {
@@ -327,7 +443,33 @@ public class PlayerControllerRefactored : MonoBehaviour
             }
         }
     }
-
+    private void ProcessCommandQueue()
+    {
+        // Process from oldest to newest, but only the first valid one per frame
+        // (or process all? Usually one per frame feels right)
+        while (inputQueue.Count > 0)
+        {
+            ICommand cmd = inputQueue.Peek();
+            // Remove if expired
+            if (Time.time > cmd.ExpiryTime)
+            {
+                inputQueue.Dequeue();
+                continue;
+            }
+            // Attempt execute
+            if (cmd.CanExecute(this))
+            {
+                cmd.Execute(this);
+                inputQueue.Dequeue(); // Remove executed command
+                break; // Only one command per frame
+            }
+            else
+            {
+                // Cannot execute yet, keep it in queue (maybe move to back? Usually keep order)
+                break;
+            }
+        }
+    }
     // Health & UI
     private void OnHealthDeath()
     {
@@ -350,5 +492,7 @@ public class PlayerControllerRefactored : MonoBehaviour
     {
         currentState.Tick(this);
         UpdateAnimations();
+        // Process input queue
+        ProcessCommandQueue();
     }
 }

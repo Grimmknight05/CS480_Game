@@ -24,5 +24,6 @@ public class ZeroGMovementState : MovementState
     public override void FixedTick(PlayerControllerRefactored player)
     {
         player.HandleZeroGMovement();
+        player.FaceCameraDirection();
     }
 }
