@@ -96,10 +96,7 @@ public class PlayerControllerRefactored : MonoBehaviour
     }
     private void OnJumpStarted(InputAction.CallbackContext ctx)
     {
-        if (jumpAbility.CanExecute(this))
-        {
-            QueueCommand(new JumpCommand());
-        }
+        QueueCommand(new JumpCommand());
     }
 
     private void OnJumpCanceled(InputAction.CallbackContext ctx)
@@ -460,22 +457,25 @@ public class PlayerControllerRefactored : MonoBehaviour
         while (inputQueue.Count > 0)
         {
             ICommand cmd = inputQueue.Peek();
-            // Remove if expired
+            Debug.Log($"Processing command: {cmd.GetType()}, Expires at {cmd.ExpiryTime}, Now {Time.time}");
+            
             if (Time.time > cmd.ExpiryTime)
             {
+                Debug.Log("Command expired, removing");
                 inputQueue.Dequeue();
                 continue;
             }
-            // Attempt execute
+            
             if (cmd.CanExecute(this))
             {
+                Debug.Log("Command can execute, doing it");
                 cmd.Execute(this);
                 inputQueue.Dequeue(); 
-                break; // Only one command per frame
+                break;
             }
             else
             {
-                // Cannot execute yet, keep it in queue (maybe move to back? Usually keep order)
+                Debug.Log("Command cannot execute yet, waiting");
                 break;
             }
         }
