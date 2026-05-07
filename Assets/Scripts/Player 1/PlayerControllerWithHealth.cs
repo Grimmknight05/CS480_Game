@@ -378,6 +378,7 @@ public class PlayerControllerWithHealth : MonoBehaviour
     void FixedUpdate()//Fixed interval update ensures physics is consistant regaurdless of framerate
     {
 
+        checkGround();
         Vector3 movement = cachedMoveDirection;
         
         switch (moveMode)
@@ -447,7 +448,6 @@ public class PlayerControllerWithHealth : MonoBehaviour
             rb.MoveRotation(Quaternion.Slerp(transform.rotation, targetRotation, Time.fixedDeltaTime * rotationSpeed));
         }
         
-        checkGround();//check if player is on the ground
     }
     float NormalizeVelocity()
     {
