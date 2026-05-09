@@ -1575,102 +1575,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7060759569015407617, guid: 849a2953bd45e6641b5949533b662758, type: 3}
   m_PrefabInstance: {fileID: 625689608}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &633266565
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 633266567}
-  - component: {fileID: 633266566}
-  m_Layer: 0
-  m_Name: PuzzleCommandHistory
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &633266566
+--- !u!114 &633266566 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 6829198105615833345, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+  m_PrefabInstance: {fileID: 1207375250424352134}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 633266565}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 78c4dd2985c01420493bd163a09979d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PuzzleCommandHistory
-  capacity: 64
---- !u!4 &633266567
+--- !u!4 &642299411 stripped
 Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+  m_PrefabInstance: {fileID: 1207375250424352134}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 633266565}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.1899414, y: 0.36689043, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 642299411}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &642299409
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 642299411}
-  - component: {fileID: 642299410}
-  m_Layer: 0
-  m_Name: MushroomPuzzle
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &642299410
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 642299409}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e15c4180118046ba878fb1371b1dd60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MushroomSequenceTracker
-  mushroomChannel: {fileID: 0}
-  puzzleChannel: {fileID: 0}
-  sequenceID: MushroomSequence
-  maxHistory: 20
---- !u!4 &642299411
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 642299409}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -50.49553, y: -7.81408, z: -25}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 633266567}
-  - {fileID: 2082155382}
-  - {fileID: 6645823806523466610}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &647213011
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3099,6 +3019,39 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1240534163}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1245764562
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1245764563}
+  m_Layer: 0
+  m_Name: MushroomPuzzleHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1245764563
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245764562}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -50.49553, y: -7.81408, z: -25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6645823806523466610}
+  - {fileID: 642299411}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1275709219
 GameObject:
   m_ObjectHideFlags: 0
@@ -4186,60 +4139,98 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0, y: 1}
---- !u!1 &2082155380
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2082155382}
-  - component: {fileID: 2082155381}
-  m_Layer: 0
-  m_Name: MushroomTimerComponent
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2082155381
+--- !u!114 &2082155381 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 3521266585878685436, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+  m_PrefabInstance: {fileID: 1207375250424352134}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2082155380}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7c333e51b7dcb46d6bcb40e619122620, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MushroomTimerComponent
-  remaining: 0
-  running: 0
---- !u!4 &2082155382
-Transform:
+--- !u!1001 &1207375250424352134
+PrefabInstance:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2082155380}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5949793, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 642299411}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1245764563}
+    m_Modifications:
+    - target: {fileID: 2028326153001472348, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: puzzleChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 7e45909d0e56544439bbf6f81a226562, type: 2}
+    - target: {fileID: 2028326153001472348, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: mushroomChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 62d28254fe4604c24944f3e29bb7bc37, type: 2}
+    - target: {fileID: 2813633804991596651, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_Name
+      value: MushroomPuzzle
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
 --- !u!1001 &2787876196247280908
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 642299411}
+    m_TransformParent: {fileID: 1245764563}
     m_Modifications:
+    - target: {fileID: 1959128557721331996, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 99.99997
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959128557721331996, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 99.99997
+      objectReference: {fileID: 0}
     - target: {fileID: 1959128557721331996, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.49295807
@@ -4320,4 +4311,4 @@ SceneRoots:
   - {fileID: 275973842}
   - {fileID: 647213011}
   - {fileID: 202521476}
-  - {fileID: 642299411}
+  - {fileID: 1245764563}
