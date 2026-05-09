@@ -245,8 +245,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 62c1dff24d941a24bb9febf37d2630fd, type: 2}
     - target: {fileID: -4112908063208124420, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
+      propertyPath: chaseSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -4112908063208124420, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
+      propertyPath: patrolSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -4112908063208124420, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
+      propertyPath: detectionRange
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -4112908063208124420, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
       propertyPath: fieldOfViewAngle
-      value: 60
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: -4112908063208124420, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
       propertyPath: enemySFX.Array.size
@@ -268,6 +280,10 @@ PrefabInstance:
       propertyPath: 'enemySFX.Array.data[3]'
       value: 
       objectReference: {fileID: 8300000, guid: dfefcd1719bcc584bab9caeccf7c9957, type: 3}
+    - target: {fileID: 1473834978120730895, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2997508850667230418, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
       propertyPath: m_LocalPosition.x
       value: -92.03948
@@ -307,6 +323,26 @@ PrefabInstance:
     - target: {fileID: 2997508850667230418, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3690442071766818916, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
+      propertyPath: m_AutoRepath
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3690442071766818916, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
+      propertyPath: m_AutoTraverseOffMeshLink
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4108958463786939944, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4108958463786939944, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4108958463786939944, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
+      propertyPath: m_Size.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6119564443351769560, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
       propertyPath: m_Name
@@ -363,7 +399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71d880db46f704ff9be4d841b50d8d06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RigidbodyBlastReceiver
-  pushForce: 15
+  pushForce: 30
 --- !u!4 &7581752068766563705 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2997508850667230418, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
