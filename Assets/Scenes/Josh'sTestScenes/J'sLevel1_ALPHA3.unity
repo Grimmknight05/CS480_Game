@@ -1008,6 +1008,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 451066765713483351, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: fieldOfViewAngle
+      value: 120
+      objectReference: {fileID: 0}
     - target: {fileID: 1460167165643720819, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
       propertyPath: m_Name
       value: Enemy_LittleGreenAlien
@@ -4910,7 +4914,7 @@ MonoBehaviour:
   cameraRadius: 0.3
   playerRef: {fileID: 122273012}
   targetOffset: {x: -1, y: 2, z: 0}
-  distance: 5
+  distance: 8
   minDistance: 2
   maxDistance: 10
   yawSpeed: 0.2
@@ -24148,6 +24152,10 @@ PrefabInstance:
       propertyPath: visualFirePoint
       value: 
       objectReference: {fileID: 1274802132}
+    - target: {fileID: 7158635935423842002, guid: 5207f4b59f593e64a80a21b6a9441baa, type: 3}
+      propertyPath: 'tools.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 926daff96dcc74c729dfffa931b46f25, type: 2}
     - target: {fileID: 7158635935423842002, guid: 5207f4b59f593e64a80a21b6a9441baa, type: 3}
       propertyPath: 'tools.Array.data[1]'
       value: 
