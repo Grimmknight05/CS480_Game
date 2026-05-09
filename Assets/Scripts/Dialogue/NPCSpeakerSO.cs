@@ -9,6 +9,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Dialogue/NPC Speaker", fileName = "NewNPCSpeaker")]
+
 public class NPCSpeakerSO : ScriptableObject
 {
     [Header("Identity")]

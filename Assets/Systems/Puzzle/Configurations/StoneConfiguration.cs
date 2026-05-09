@@ -9,6 +9,8 @@ public class StoneConfiguration : ActivatorConfiguration
     public class StoneRequirement : IActivatorRequirement
     {
         public string stoneID;
+        [Header("Optional Rotation Check")]
+        public bool requireSpecificRotation = true;
         public float activationRotation = 0.0f;
         public float rotationTolerance = 0.0f;
         
@@ -16,6 +18,8 @@ public class StoneConfiguration : ActivatorConfiguration
 
         public bool IsSatisfied(object activatorState)
         {
+            if (!requireSpecificRotation)//Requires rotation?
+                return activatorState is float;
             if (activatorState is float rotation)
             {
                 float diff = Mathf.Abs(Mathf.DeltaAngle(rotation, activationRotation));

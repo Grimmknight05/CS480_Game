@@ -1,15 +1,11 @@
 // =====================================================================
-// A single scene-level controller that owns the runtime flow of a
-// conversation. Subscribes to the shared DialogueEventChannelSO so any
-// NPC trigger can start a conversation. Iterates the lines in the
-// supplied DialogueSO, drives the DialogueUI, and advances when the
-// player presses the Interact action (already defined on the project's
-// PlayerInput asset).
-//
 // While a conversation is active, additional start requests are
 // ignored so two NPCs can't talk over each other. When the last line
 // is dismissed, raises the DialogueEndedChannelSO so the player and
 // other systems can resume normal behavior.
+//
+// Input creates an AdvanceDialogueCommand
+// rather than calling TryAdvance() directly, decoupling input from action.
 // =====================================================================
 
 using System.Collections;
@@ -49,7 +45,20 @@ public class DialogueRunner : MonoBehaviour
     private bool advanceLockedUntilDelay = false;
     private float advanceUnlockTime = 0f;
 
+    // Command pattern: each dialogue action is wrapped in a command object.
+    // This decouples *what* happens from *who/when* triggers it.
+    private IDialogueCommand advanceCommand;
+    private IDialogueCommand skipRevealCommand;
+    private IDialogueCommand endDialogueCommand;
+
     public bool IsRunning => active != null;
+
+    void Start()
+    {
+        advanceCommand = new AdvanceDialogueCommand(this);
+        skipRevealCommand = new SkipRevealCommand(this);
+        endDialogueCommand = new EndDialogueCommand(this);
+    }
 
     void OnEnable()
     {
@@ -67,7 +76,7 @@ public class DialogueRunner : MonoBehaviour
         if (Keyboard.current == null) return;
         if (Keyboard.current[advanceKey].wasPressedThisFrame)
         {
-            TryAdvance();
+            advanceCommand.Execute();
         }
     }
 
@@ -83,14 +92,14 @@ public class DialogueRunner : MonoBehaviour
         ShowNextLine();
     }
 
-    private void TryAdvance()
+    public void TryAdvance()
     {
         if (advanceLockedUntilDelay && Time.time < advanceUnlockTime) return;
 
         if (!revealComplete)
         {
-            // First press: finish the current bubble immediately.
-            CompleteCurrentReveal();
+            // First press: execute the skip-reveal command to show all text.
+            skipRevealCommand.Execute();
         }
         else
         {
@@ -171,7 +180,7 @@ public class DialogueRunner : MonoBehaviour
         FinishReveal();
     }
 
-    private void CompleteCurrentReveal()
+    public void CompleteCurrentReveal()
     {
         if (revealRoutine != null)
         {
@@ -195,7 +204,7 @@ public class DialogueRunner : MonoBehaviour
         if (ui != null) ui.SetContinueIndicatorVisible(true);
     }
 
-    private void EndConversation()
+    public void EndConversation()
     {
         active = null;
         lineIndex = -1;
