@@ -267,17 +267,6 @@ public class PlayerController : MonoBehaviour
         
         switch (moveMode)
         {
-            case MovementMode.ForceBased:
-                //Construct movement vector3
-                //Vector3 movement = new Vector3(moveX, 0.0f, moveY); // Asign new Vector3(x,z,y) with moveX and moveY input, and no z input
-
-                //Add force to player in cormovement
-                rb.AddForce(movement * playerSpeed);//multiply movement Vector3 by playerSpeed varible
-                break;
-            case MovementMode.VelocityBased:
-                Vector3 velocity = new Vector3(moveX * playerSpeed, rb.linearVelocity.y, moveY * playerSpeed);
-                rb.linearVelocity = velocity;
-                break;
             case MovementMode.AccelerationBased:
 
                 //Vector3 aMovement = new Vector3(moveX, 0f, moveY); // Asign new Vector3(x,z,y) with moveX and moveY input, and no z input

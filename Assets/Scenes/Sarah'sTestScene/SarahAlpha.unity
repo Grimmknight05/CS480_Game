@@ -212,6 +212,94 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc6534c2f7d5da4db96be6c55581fa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MaterialController
+--- !u!1001 &8205951
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1282286736}
+    m_Modifications:
+    - target: {fileID: 1959128557721331996, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.49295044
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959128557721331996, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959128557721331996, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959128557721331996, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071067
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959128557721331996, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959128557721331996, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959128557721331996, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959128557721331996, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959128557721331996, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1959128557721331996, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1990261408718380149, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: capLight
+      value: 
+      objectReference: {fileID: 203844588}
+    - target: {fileID: 5680599145635207045, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: 7d11de44c1752a84ab73ddd8ec8027c9, type: 3}
+    - target: {fileID: 6428301952590230790, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: m_Name
+      value: GreenMushroom
+      objectReference: {fileID: 0}
+    - target: {fileID: 8360821142167476317, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: history
+      value: 
+      objectReference: {fileID: 1611350655}
+    - target: {fileID: 8360821142167476317, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: timerComp
+      value: 
+      objectReference: {fileID: 389994440}
+    - target: {fileID: 9158035140515014916, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9158035140515014916, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9158035140515014916, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      propertyPath: m_ProvidesContacts
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6428301952590230790, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1283504315}
+  m_SourcePrefab: {fileID: 100100000, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
 --- !u!1001 &22708550
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2411,6 +2499,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+--- !u!114 &389994440 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3521266585878685436, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+  m_PrefabInstance: {fileID: 1255890590}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c333e51b7dcb46d6bcb40e619122620, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MushroomTimerComponent
 --- !u!1 &392746068 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7701664733924112734, guid: 849a2953bd45e6641b5949533b662758, type: 3}
@@ -11705,6 +11804,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7060759569015407617, guid: 849a2953bd45e6641b5949533b662758, type: 3}
   m_PrefabInstance: {fileID: 564790165}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1255890590
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1282286736}
+    m_Modifications:
+    - target: {fileID: 2813633804991596651, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_Name
+      value: MushroomPuzzle
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.49295044
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.1461401
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
 --- !u!114 &1255943170 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
@@ -11956,6 +12112,71 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4498913128055081279, guid: ac53597cfd5d6ad49913b0fec544d9e2, type: 3}
   m_PrefabInstance: {fileID: 1285254205}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1282286735
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1282286736}
+  m_Layer: 0
+  m_Name: MushroomPuzzle1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1282286736
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282286735}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -51.0117, y: 11.377, z: 444.03}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1580368302}
+  - {fileID: 1283504314}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1283504308 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6428301952590230790, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+  m_PrefabInstance: {fileID: 8205951}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1283504314 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1959128557721331996, guid: 7980d67f985aa4589b7e50d010a14c44, type: 3}
+  m_PrefabInstance: {fileID: 8205951}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1283504315
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283504308}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2534964839176971238, guid: a3e2223f32e8b496daff3668844143fd, type: 3}
 --- !u!1001 &1285254205
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15567,6 +15788,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+--- !u!4 &1580368302 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5332030010626998735, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+  m_PrefabInstance: {fileID: 1255890590}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1584498407 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5719520922627312922, guid: 263f665f6f27edc47898f10548c63b7a, type: 3}
@@ -15816,6 +16042,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
+--- !u!114 &1611350655 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6829198105615833345, guid: 3f1f1e768c30d4d66a896d3b689c1c7a, type: 3}
+  m_PrefabInstance: {fileID: 1255890590}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78c4dd2985c01420493bd163a09979d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PuzzleCommandHistory
 --- !u!4 &1622735145 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6365448175039443724, guid: e56954a07599ae44c8ba690a51978115, type: 3}
@@ -24404,7 +24641,7 @@ Transform:
   m_GameObject: {fileID: 2141216592426841767}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 74.82, y: 7.2, z: 481.87}
+  m_LocalPosition: {x: -55.0117, y: 13, z: 444.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -27945,3 +28182,4 @@ SceneRoots:
   - {fileID: 168700145}
   - {fileID: 590163792}
   - {fileID: 478995208}
+  - {fileID: 1282286736}
