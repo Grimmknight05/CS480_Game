@@ -1397,7 +1397,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5682036793703854642, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       propertyPath: m_Name
-      value: LoseScreen
+      value: LooseScreen
       objectReference: {fileID: 0}
     - target: {fileID: 5907194790850824730, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       propertyPath: m_Enabled
@@ -1443,15 +1443,18 @@ PrefabInstance:
       addedObject: {fileID: 7251568014375211776}
     - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       insertIndex: 5
-      addedObject: {fileID: 722806112739342378}
+      addedObject: {fileID: 6469733361490637446}
     - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       insertIndex: 6
-      addedObject: {fileID: 498034020618727363}
+      addedObject: {fileID: 722806112739342378}
     - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       insertIndex: 7
-      addedObject: {fileID: 2367156700388603427}
+      addedObject: {fileID: 498034020618727363}
     - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       insertIndex: 8
+      addedObject: {fileID: 2367156700388603427}
+    - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
+      insertIndex: 9
       addedObject: {fileID: 7099387779371207670}
     - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       insertIndex: -1
@@ -1502,7 +1505,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6199216321286383420}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b181140d35cf6194c844c035088baa3b, type: 3}
   m_Name: 
@@ -1526,7 +1529,45 @@ MonoBehaviour:
   acceleration: 120
   deceleration: 10
   zgDeceleration: 0
+  maxWalkableSlopeAngle: 45
   maxInAirjumps: 0
+  jumpForce: 500
+  airJumpForce: 400
+  canJump: 1
+  cameraPivot: {fileID: 0}
+  animator: {fileID: 4311117212020250035}
+--- !u!114 &6469733361490637446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6199216321286383420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d4a2e74a9f1a3549b117c329bd0752c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerControllerRefactored
+  rotationSpeed: 10
+  rb: {fileID: 0}
+  winUI: {fileID: 8276213386889635707}
+  deathUI: {fileID: 8829994608587788500}
+  HUD: {fileID: 101740259894602514}
+  audioSource: {fileID: 6448667773203093288}
+  jumpSFX:
+  - {fileID: 8300000, guid: 7d11de44c1752a84ab73ddd8ec8027c9, type: 3}
+  - {fileID: 8300000, guid: 5e26159eb8f563b4f9420afdcd0959ce, type: 3}
+  airJumpSFX:
+  - {fileID: 8300000, guid: bc18fe1a807ecc04fab7d60e3e616add, type: 3}
+  - {fileID: 8300000, guid: 96fb674b02da5f549b2196a4f919db42, type: 3}
+  - {fileID: 8300000, guid: 55af11cfc862f074984db678bf147411, type: 3}
+  playerSpeed: 7
+  zgAcceleration: 1
+  acceleration: 120
+  deceleration: 10
+  zgDeceleration: 0
+  maxWalkableSlopeAngle: 45
+  maxInAirjumps: 1
   jumpForce: 500
   airJumpForce: 400
   canJump: 1

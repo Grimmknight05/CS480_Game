@@ -6,7 +6,7 @@ public class MovementZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        PlayerController player = other.GetComponent<PlayerController>();
+        PlayerControllerRefactored player = other.GetComponent<PlayerControllerRefactored>();
 
         if (player != null)
         {
@@ -15,12 +15,12 @@ public class MovementZone : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        PlayerController player = other.GetComponent<PlayerController>();
+        PlayerControllerRefactored player = other.GetComponent<PlayerControllerRefactored>();
 
         if (player != null)
         {
             // Revert to default when leaving
-            player.SetMovementMode(player.GetDefaultMode());
+            //player.SetMovementMode(player.GetDefaultMode());
         }
     }
 }
