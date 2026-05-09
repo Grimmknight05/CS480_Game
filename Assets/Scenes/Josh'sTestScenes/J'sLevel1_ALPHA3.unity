@@ -297,6 +297,63 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 263f665f6f27edc47898f10548c63b7a, type: 3}
+--- !u!1001 &34431689
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1460167165643720819, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_Name
+      value: Enemy_LittleGreenAlien (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 76.28962
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.0062246
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 489.23074
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
 --- !u!1001 &53886188
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -931,6 +988,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6151856376921987852, guid: 17fc1b86e4f37404c909b46bfc98d5b5, type: 3}
   m_PrefabInstance: {fileID: 4494652}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &156363224
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1460167165643720819, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_Name
+      value: Enemy_LittleGreenAlien
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 69.51796
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.0062256
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 491.22052
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581752068766563705, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 46470e21dd835b64c80a661bb9a03a29, type: 3}
 --- !u!1 &166350154
 GameObject:
   m_ObjectHideFlags: 0
@@ -23997,6 +24111,10 @@ PrefabInstance:
       propertyPath: initialMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7158635935423842002, guid: 5207f4b59f593e64a80a21b6a9441baa, type: 3}
+      propertyPath: 'tools.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 88cb76adb2e434207b410783433045d0, type: 2}
     - target: {fileID: 7251568014375211776, guid: 5207f4b59f593e64a80a21b6a9441baa, type: 3}
       propertyPath: friction
       value: 0
@@ -24220,3 +24338,5 @@ SceneRoots:
   - {fileID: 168700145}
   - {fileID: 590163792}
   - {fileID: 478995208}
+  - {fileID: 156363224}
+  - {fileID: 34431689}

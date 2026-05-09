@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8018978800315871867}
   - component: {fileID: 4574720488813167883}
   - component: {fileID: 6094422560320583940}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Eye2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 3782090605347266081}
   - component: {fileID: 1844577821266674773}
   - component: {fileID: 3782269360578125961}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Eye1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -220,7 +220,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -314,7 +314,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6119564443351769560, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -329,6 +329,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6119564443351769560, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
       insertIndex: 8
       addedObject: {fileID: 3603185762511210729}
+    - targetCorrespondingSourceObject: {fileID: 6119564443351769560, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4495762923888791963}
   m_SourcePrefab: {fileID: 100100000, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
 --- !u!1 &1460167165643720819 stripped
 GameObject:
@@ -348,6 +351,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   maxHealth: 100
+--- !u!114 &4495762923888791963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1460167165643720819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71d880db46f704ff9be4d841b50d8d06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RigidbodyBlastReceiver
+  pushForce: 15
 --- !u!4 &7581752068766563705 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2997508850667230418, guid: 1a7fede769550bb47894263ddd83b537, type: 3}

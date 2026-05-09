@@ -11,9 +11,6 @@ public class AutoLockWeapon : Weapon
     [Range(0f, 1f)]
     [SerializeField] private float aimAssistStrength = 0.4f;
 
-    [Header("Effects")]
-    //[SerializeField] private StatusEffect[] onHitEffects;
-
     [Header("Laser")]
     [SerializeField] private GameObject laserPrefab;
 
@@ -24,7 +21,7 @@ public class AutoLockWeapon : Weapon
         Vector3 forward = firePoint.forward;
         Vector3 finalDirection = forward;
 
-        Transform targetEnemy = FindNearestEnemy(firePoint, layerMask);
+        Transform targetEnemy = FindNearestValidTarget(firePoint, layerMask);
 
         Debug.Log($"Has Target: {targetEnemy != null}");
 
@@ -52,23 +49,15 @@ public class AutoLockWeapon : Weapon
         {
             endPoint = hit.point;
 
+            // 1. Damage (Only applies if it has health)
             var damageable = hit.collider.GetComponent<IDamageable>();
-
             if (damageable != null)
             {
                 damageable.TakeDamage(damagePerHit);
-
-
-                var runner = hit.collider.GetComponentInParent<StatusEffectRunner>();
-                Debug.Log("Effects count: " + effects.Length);
-                if (runner != null && effects != null)
-                {
-                    foreach (var effect in effects)
-                    {
-                        effect.Apply(hit.collider.gameObject, firePoint.forward);
-                    }
-                }
             }
+
+            // 2. Status Effects (Safely applies to enemies OR puzzles via the base helper)
+            ApplyEffects(hit.collider.gameObject, finalDirection);
         }
 
         if (laserPrefab != null)
@@ -82,20 +71,23 @@ public class AutoLockWeapon : Weapon
             }
         }
     }
-    private Transform FindNearestEnemy(Transform firePoint, int layerMask)
+
+    private Transform FindNearestValidTarget(Transform firePoint, int layerMask)
     {
-        Collider[] enemies = Physics.OverlapSphere(firePoint.position, lockOnRange, layerMask);
+        Collider[] potentialTargets = Physics.OverlapSphere(firePoint.position, lockOnRange, layerMask);
 
         Transform nearest = null;
         float nearestDistance = float.MaxValue;
 
-        foreach (Collider col in enemies)
+        foreach (Collider col in potentialTargets)
         {
-            if (!col.CompareTag("Enemy"))
+            // Surgical Fix: Lock onto anything that can take damage or be burned, ignoring tags.
+            bool isValidTarget = col.GetComponent<IDamageable>() != null || col.GetComponent<IBurnable>() != null;
+            if (!isValidTarget)
                 continue;
 
-            Vector3 toEnemy = (col.transform.position - firePoint.position).normalized;
-            float angle = Vector3.Angle(firePoint.forward, toEnemy);
+            Vector3 toTarget = (col.transform.position - firePoint.position).normalized;
+            float angle = Vector3.Angle(firePoint.forward, toTarget);
 
             if (angle > lockOnConeAngle)
                 continue;
