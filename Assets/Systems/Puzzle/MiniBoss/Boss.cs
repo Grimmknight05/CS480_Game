@@ -1,94 +1,104 @@
-using UnityEngine;
-using UnityEngine.Events;
-using System.Collections.Generic;
-using System.Collections;
 using System;
-
-
+using System.Collections.Generic;
+using UnityEngine;
 
 public abstract class Boss : MonoBehaviour
 {
-    [SerializeField] protected int activeCores = 3;
-    protected int coresDestroyed;
-    protected BossPhase currentPhase;
-    protected BossState currentState;
-    protected Dictionary<BossStateType, BossState> stateMap;
+    [Header("Phases")]
+    [SerializeField] protected PhaseConfig[] phaseConfigs;   // assign in inspector
 
-    public event Action<int> OnPhaseTransition;
+    protected List<BossPhase> phases = new List<BossPhase>();
+    protected int currentPhaseIndex = 0;
+    protected BossPhase currentPhase;
+
+    protected int health;
     public event Action OnBossDefeated;
 
-    protected virtual void Awake()
-    {
-        InitializeStates();
-    }
+    // Enemy tracking (simplified)
+    protected List<GameObject> activeEnemies = new List<GameObject>();
 
     protected virtual void Start()
     {
-        TransitionToState(BossStateType.Idle);
-        InitializePhases(); // Derived classes must set phases array and call this.
-        if (phases != null && phases.Length > 0)
+        health = phaseConfigs.Length;
+        CreatePhases();
+        StartNextPhase();
+    }
+
+    private void CreatePhases()
+    {
+        foreach (var config in phaseConfigs)
         {
-            currentPhase = phases[0];
-            currentPhase.Initialize();
+            BossPhase phase = null;
+            switch (config.phaseType)
+            {
+                case PhaseType.WaveSpawn:
+                    phase = new WaveSpawnPhase(config, this);
+                    break;
+                case PhaseType.DoorLock:
+                    phase = new DoorLockPhase(config, this);
+                    break;
+                default:
+                    Debug.LogWarning($"Unknown phase type {config.phaseType}");
+                    continue;
+            }
+            phase.OnPhaseComplete += OnPhaseCompleted;
+            phases.Add(phase);
         }
+    }
+
+    private void StartNextPhase()
+    {
+        if (currentPhaseIndex >= phases.Count)
+        {
+            DefeatBoss();
+            return;
+        }
+
+        currentPhase = phases[currentPhaseIndex];
+        currentPhase.Initialize();
+    }
+
+    private void OnPhaseCompleted()
+    {
+        currentPhase.Cleanup();
+        currentPhaseIndex++;
+        health--;   // reduce health after phase completion
+        // Optionally: trigger visual effect etc.
+        StartNextPhase();
     }
 
     protected virtual void Update()
     {
-        currentState?.Update();
         currentPhase?.Update();
     }
 
-    // Derived must implement
-    protected abstract void InitializeStates();
-    protected abstract void InitializePhases();
-    protected abstract Bounds GetLevelBounds();
-
-    protected virtual void HandlePhaseComplete()
+    // Helper methods for phases
+    public void SpawnEnemyAt(Vector3 position)
     {
-        coresDestroyed++;
-        OnPhaseTransition?.Invoke(coresDestroyed);
-        if (coresDestroyed >= activeCores)
-            DefeatBoss();
-        else
-            AdvancePhase();
+        // Replace with your actual enemy spawning logic (object pool, instantiate...)
+        GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.identity);
+        activeEnemies.Add(enemy);
     }
 
-    protected virtual void AdvancePhase()
+    public int GetEnemiesAliveCount()
     {
-        int nextIndex = System.Array.IndexOf(phases, currentPhase) + 1;
-        if (nextIndex < phases.Length)
-        {
-            currentPhase?.Cleanup();
-            currentPhase = phases[nextIndex];
-            currentPhase.Initialize();
-            TransitionToState(BossStateType.Active);
-        }
+        // Remove any destroyed enemies from the list
+        activeEnemies.RemoveAll(e => e == null);
+        return activeEnemies.Count;
+    }
+
+    public void OnEnemyKilled(GameObject enemy)
+    {
+        if (activeEnemies.Contains(enemy))
+            activeEnemies.Remove(enemy);
+        // Propagate to current phase if needed (for WaveSpawnPhase)
+        if (currentPhase is WaveSpawnPhase wavePhase)
+            wavePhase.OnEnemyDied();
     }
 
     protected virtual void DefeatBoss()
     {
-        TransitionToState(BossStateType.Defeated);
         OnBossDefeated?.Invoke();
-        Cleanup();
+        // Additional logic: open exit door, play animation, etc.
     }
-
-    public void TransitionToState(BossStateType newState)
-    {
-        currentState?.OnExit();
-        currentState = stateMap[newState];
-        currentState.OnEnter();
-    }
-
-    // Possession Interface
-    public abstract void PossessObject(IPossessable target);
-    public abstract void ReleasePossession(IPossessable target);
-
-    protected virtual void Cleanup()
-    {
-        currentPhase?.Cleanup();
-        foreach (var phase in phases) phase?.Cleanup();
-    }
-
-    protected BossPhase[] phases; // Set by derived class in InitializePhases()
 }

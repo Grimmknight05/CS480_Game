@@ -2,37 +2,33 @@ using System;
 
 public abstract class BossPhase
 {
+    protected PhaseConfig config;
     protected Boss boss;
-    protected ObjectPool<EnemyControllerTest> enemyPool;
-    protected int objectivesRequired;
-    protected int objectivesCompleted;
     protected bool isActive;
 
     public event Action OnPhaseComplete;
 
-    protected BossPhase(Boss boss, ObjectPool<EnemyControllerTest> pool, int required)
+    public BossPhase(PhaseConfig config, Boss boss)
     {
+        this.config = config;
         this.boss = boss;
-        this.enemyPool = pool;
-        this.objectivesRequired = required;
     }
 
-    public virtual void Initialize(Boss boss)
+    public void Initialize()
     {
-        this.boss = boss;
         isActive = true;
-        objectivesCompleted = 0;
+        config.onPhaseStart?.Invoke();
+        OnPhaseStart();
     }
 
     protected abstract void OnPhaseStart();
     public abstract void Update();
-    protected abstract void UpdateChallenges();
-    protected abstract void UpdateAttacks();
 
-    protected virtual void PhaseComplete()
+    protected void CompletePhase()
     {
         if (!isActive) return;
         isActive = false;
+        config.onPhaseComplete?.Invoke();
         OnPhaseComplete?.Invoke();
     }
 

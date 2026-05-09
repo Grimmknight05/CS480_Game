@@ -12317,17 +12317,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6897501463697714147, guid: 2561f99ef13d58f4b9d739049521f0c9, type: 3}
   m_PrefabInstance: {fileID: 1266394060}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1266394062 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7852422438178288402, guid: 2561f99ef13d58f4b9d739049521f0c9, type: 3}
-  m_PrefabInstance: {fileID: 1266394060}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e84e10f8ca75d438fbf41df442af118d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DoorLerp
 --- !u!1001 &1270251428
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14840,17 +14829,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 288928609643491937, guid: 8d3a24fe4d041614fa400be6b281d161, type: 3}
   m_PrefabInstance: {fileID: 1462359281}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1462359283 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9041326506122016239, guid: 8d3a24fe4d041614fa400be6b281d161, type: 3}
-  m_PrefabInstance: {fileID: 1462359281}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2203d090af2d9df4e84ddc2fcda9b07c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BossPillar
 --- !u!4 &1472916185 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4498913128055081279, guid: ac53597cfd5d6ad49913b0fec544d9e2, type: 3}
@@ -15741,23 +15719,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1558756500}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b990305522a64446bcf4cdf2147a2f7, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e3065b62a4aaa649804d093c10109c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FactoryManagerBoss
-  activeCores: 3
-  entranceDoor: {fileID: 1266394062}
-  exitDoor: {fileID: 1266394062}
+  health: 3
+  entranceDoor: {fileID: 0}
+  exitDoor: {fileID: 0}
   pillars:
-  - {fileID: 5193426417673422810}
-  - {fileID: 1462359283}
-  - {fileID: 8328807043227644954}
-  phaseDataArray:
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  enemyPrefab: {fileID: 0}
-  poolSize: 20
-  stateChannel: {fileID: 11400000, guid: 7e45909d0e56544439bbf6f81a226562, type: 2}
+  phaseList:
+  - phaseName: 
+    duration: 0
 --- !u!4 &1559145203 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
@@ -24996,17 +24968,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2451317838525552003, guid: e2fffec703ebf60438fb06210b782fa5, type: 3}
   m_PrefabInstance: {fileID: 480260646}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8328807043227644954 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6593147885525815821, guid: e2fffec703ebf60438fb06210b782fa5, type: 3}
-  m_PrefabInstance: {fileID: 480260646}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2203d090af2d9df4e84ddc2fcda9b07c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BossPillar
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
