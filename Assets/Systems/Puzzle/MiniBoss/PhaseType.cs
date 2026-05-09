@@ -1,6 +1,8 @@
+using UnityEngine;
+using UnityEngine.Events;
+
 public enum PhaseType
 {
     WaveSpawn,
-    DoorLock,
-    TimedWait   // optional extra
+    DoorLock
 }

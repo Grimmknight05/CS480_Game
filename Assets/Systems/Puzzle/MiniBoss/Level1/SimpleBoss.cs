@@ -2,23 +2,17 @@ using UnityEngine;
 
 public class SimpleBoss : Boss
 {
-    [Header("Arena Doors")]
+    [Header("Arena")]
     [SerializeField] private DoorLerp entranceDoor;
     [SerializeField] private DoorLerp exitDoor;
-
-    [Header("Pillars")]
     [SerializeField] private BossPillar[] pillars;
-
-    [Header("Phase List (assign in inspector)")]
-    [SerializeField] private SimplePhase[] phaseList;   // create SimplePhase asset or use inspector array
+    private GameObject enemySpawnPrefab;
 
     private bool encounterStarted = false;
 
     protected override void Start()
     {
-        // Assign phases array from the list
-        phases = phaseList;
-        SetupPhases();
+        base.enemyPrefab = enemySpawnPrefab; // assign to base field
         base.Start();
     }
 
@@ -34,14 +28,13 @@ public class SimpleBoss : Boss
     {
         encounterStarted = true;
         entranceDoor?.Close();
-        foreach (var pillar in pillars)
-            pillar.MaxHight();
-        // Boss is already active; phases will run automatically
+        foreach (var p in pillars) p.MaxHight();
     }
 
     protected override void DefeatBoss()
     {
         exitDoor?.Open();
+        foreach (var p in pillars) p.Reset();
         base.DefeatBoss();
     }
 }

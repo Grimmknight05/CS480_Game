@@ -5,17 +5,20 @@ using UnityEngine;
 public abstract class Boss : MonoBehaviour
 {
     [Header("Phases")]
-    [SerializeField] protected PhaseConfig[] phaseConfigs;   // assign in inspector
+    [SerializeField] protected PhaseConfig[] phaseConfigs;   // assign in Inspector
 
     protected List<BossPhase> phases = new List<BossPhase>();
     protected int currentPhaseIndex = 0;
     protected BossPhase currentPhase;
-
     protected int health;
-    public event Action OnBossDefeated;
 
-    // Enemy tracking (simplified)
+    // Enemy tracking
     protected List<GameObject> activeEnemies = new List<GameObject>();
+
+    // Prefab (set in concrete boss)
+    protected GameObject enemyPrefab;
+
+    public event Action OnBossDefeated;
 
     protected virtual void Start()
     {
@@ -34,11 +37,11 @@ public abstract class Boss : MonoBehaviour
                 case PhaseType.WaveSpawn:
                     phase = new WaveSpawnPhase(config, this);
                     break;
-                case PhaseType.DoorLock:
-                    phase = new DoorLockPhase(config, this);
-                    break;
+                //case PhaseType.DoorLock:
+                //    phase = new DoorLockPhase(config, this);
+                //    break;
                 default:
-                    Debug.LogWarning($"Unknown phase type {config.phaseType}");
+                    Debug.LogWarning($"Unknown phase type: {config.phaseType}");
                     continue;
             }
             phase.OnPhaseComplete += OnPhaseCompleted;
@@ -62,8 +65,7 @@ public abstract class Boss : MonoBehaviour
     {
         currentPhase.Cleanup();
         currentPhaseIndex++;
-        health--;   // reduce health after phase completion
-        // Optionally: trigger visual effect etc.
+        health--;
         StartNextPhase();
     }
 
@@ -73,32 +75,25 @@ public abstract class Boss : MonoBehaviour
     }
 
     // Helper methods for phases
-    public void SpawnEnemyAt(Vector3 position)
+    public virtual void SpawnEnemyAt(Vector3 position)
     {
-        // Replace with your actual enemy spawning logic (object pool, instantiate...)
+        if (enemyPrefab == null)
+        {
+            Debug.LogError("Enemy prefab not set in concrete boss!");
+            return;
+        }
         GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.identity);
         activeEnemies.Add(enemy);
     }
 
     public int GetEnemiesAliveCount()
     {
-        // Remove any destroyed enemies from the list
         activeEnemies.RemoveAll(e => e == null);
         return activeEnemies.Count;
-    }
-
-    public void OnEnemyKilled(GameObject enemy)
-    {
-        if (activeEnemies.Contains(enemy))
-            activeEnemies.Remove(enemy);
-        // Propagate to current phase if needed (for WaveSpawnPhase)
-        if (currentPhase is WaveSpawnPhase wavePhase)
-            wavePhase.OnEnemyDied();
     }
 
     protected virtual void DefeatBoss()
     {
         OnBossDefeated?.Invoke();
-        // Additional logic: open exit door, play animation, etc.
     }
 }

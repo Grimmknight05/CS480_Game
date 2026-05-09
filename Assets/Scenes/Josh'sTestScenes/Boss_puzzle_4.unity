@@ -3691,6 +3691,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2fffec703ebf60438fb06210b782fa5, type: 3}
+--- !u!114 &480260647 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6593147885525815821, guid: e2fffec703ebf60438fb06210b782fa5, type: 3}
+  m_PrefabInstance: {fileID: 480260646}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2203d090af2d9df4e84ddc2fcda9b07c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossPillar
 --- !u!1001 &490970607
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12317,6 +12328,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6897501463697714147, guid: 2561f99ef13d58f4b9d739049521f0c9, type: 3}
   m_PrefabInstance: {fileID: 1266394060}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1266394062 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7852422438178288402, guid: 2561f99ef13d58f4b9d739049521f0c9, type: 3}
+  m_PrefabInstance: {fileID: 1266394060}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e84e10f8ca75d438fbf41df442af118d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoorLerp
 --- !u!1001 &1270251428
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15722,14 +15744,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e3065b62a4aaa649804d093c10109c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FactoryManagerBoss
-  health: 3
-  entranceDoor: {fileID: 0}
-  exitDoor: {fileID: 0}
+  phaseConfigs:
+  - {fileID: 11400000, guid: b7d7136b645fdec4e9044dc229c2d1f0, type: 2}
+  - {fileID: 11400000, guid: b7d7136b645fdec4e9044dc229c2d1f0, type: 2}
+  entranceDoor: {fileID: 1266394062}
+  exitDoor: {fileID: 1266394062}
   pillars:
-  - {fileID: 0}
-  phaseList:
-  - phaseName: 
-    duration: 0
+  - {fileID: 5193426417673422810}
+  - {fileID: 480260647}
 --- !u!4 &1559145203 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
