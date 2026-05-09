@@ -17,9 +17,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/David'sTestScenes/DavidCopy.unity
     guid: e182899dc228f4d1bbb00ed26da4eadf
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Josh'sTestScenes/J'sLevel1_ALPHA2.unity
     guid: 06b9018383d34ca46b08a9c0b790e1fb
+  - enabled: 1
+    path: Assets/Scenes/Josh'sTestScenes/J'sLevel1_ALPHA3.unity
+    guid: e2e56dc958318214bb85fdacd45e438f
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
