@@ -35,6 +35,7 @@ public class WaveSpawnPhase : BossPhase
             {
                 pillar.PercentHeight(0.333f);
                 pillarLowered = true;
+                entry.onPillarLowered?.Invoke();
             }
 
             if (requiredPuzzle != null)

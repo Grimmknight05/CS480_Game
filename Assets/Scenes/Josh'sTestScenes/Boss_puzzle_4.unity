@@ -17773,6 +17773,17 @@ Transform:
   - {fileID: 132118984}
   m_Father: {fileID: 1591146836}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &1360941801 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4200740343290106853, guid: 8d3a24fe4d041614fa400be6b281d161, type: 3}
+  m_PrefabInstance: {fileID: 1462359281}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a80ae07b0d20ef9438c2354872ca6dbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!4 &1366002161 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
@@ -19569,6 +19580,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 592168938858813320, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
   m_PrefabInstance: {fileID: 1442763985}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1456306061 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2038627091740505095, guid: e2fffec703ebf60438fb06210b782fa5, type: 3}
+  m_PrefabInstance: {fileID: 480260646}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a80ae07b0d20ef9438c2354872ca6dbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &1456724560
 GameObject:
   m_ObjectHideFlags: 0
@@ -20658,31 +20680,112 @@ MonoBehaviour:
     stateChannel: {fileID: 11400000, guid: 7e45909d0e56544439bbf6f81a226562, type: 2}
     onPhaseStart:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 1732611510}
+          m_TargetAssemblyTypeName: TurnableStone, Assembly-CSharp
+          m_MethodName: SetInputLock
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
     onPhaseComplete:
       m_PersistentCalls:
         m_Calls: []
     puzzleRequirement: {fileID: 11400000, guid: 4deb0667bbbcaf440bd0a1eaf3fcc2d0, type: 2}
+    onPillarLowered:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1732611510}
+          m_TargetAssemblyTypeName: TurnableStone, Assembly-CSharp
+          m_MethodName: SetInputLock
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - config: {fileID: 11400000, guid: c2b5733233f49f64892a902e0b4f3e91, type: 2}
     pillar: {fileID: 480260647}
     stateChannel: {fileID: 11400000, guid: 7e45909d0e56544439bbf6f81a226562, type: 2}
     onPhaseStart:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 1456306061}
+          m_TargetAssemblyTypeName: TurnableStone, Assembly-CSharp
+          m_MethodName: SetInputLock
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
     onPhaseComplete:
       m_PersistentCalls:
         m_Calls: []
     puzzleRequirement: {fileID: 11400000, guid: eca8937c5e6400b4e9a91b296cf40a95, type: 2}
+    onPillarLowered:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1456306061}
+          m_TargetAssemblyTypeName: TurnableStone, Assembly-CSharp
+          m_MethodName: SetInputLock
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - config: {fileID: 11400000, guid: 661e8ee04b5389446b455f3aac5b12f7, type: 2}
     pillar: {fileID: 1462359283}
     stateChannel: {fileID: 11400000, guid: 7e45909d0e56544439bbf6f81a226562, type: 2}
     onPhaseStart:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 1360941801}
+          m_TargetAssemblyTypeName: TurnableStone, Assembly-CSharp
+          m_MethodName: SetInputLock
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
     onPhaseComplete:
       m_PersistentCalls:
         m_Calls: []
     puzzleRequirement: {fileID: 11400000, guid: 1f743fda398f92948ab7cec392d181bd, type: 2}
+    onPillarLowered:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1360941801}
+          m_TargetAssemblyTypeName: TurnableStone, Assembly-CSharp
+          m_MethodName: SetInputLock
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   OnBossStartEvent:
     m_PersistentCalls:
       m_Calls:
@@ -25894,6 +25997,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2561f99ef13d58f4b9d739049521f0c9, type: 3}
+--- !u!114 &1732611510 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1643442849035746568, guid: 5bb1d2fecb92c9b499e5aef00479bde0, type: 3}
+  m_PrefabInstance: {fileID: 1501042654658733072}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a80ae07b0d20ef9438c2354872ca6dbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!1 &1733186416
 GameObject:
   m_ObjectHideFlags: 0

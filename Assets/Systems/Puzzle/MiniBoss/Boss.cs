@@ -14,6 +14,7 @@ public abstract class Boss : MonoBehaviour
         public UnityEvent onPhaseStart;      // Inspector events that can reference scene objects
         public UnityEvent onPhaseComplete;
         public ActivatorConfiguration puzzleRequirement;
+        public UnityEvent onPillarLowered;
     }
 
     [Header("Phases")]
