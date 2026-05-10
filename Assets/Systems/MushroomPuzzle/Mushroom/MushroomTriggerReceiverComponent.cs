@@ -19,6 +19,7 @@ public class MushroomTriggerReceiverComponent : MonoBehaviour
     {
         if (mushroom == null) return;
         if (!other.CompareTag(playerTag)) return;
+        if (mushroom.IsInteractionLocked) return;
         mushroom.QueueCommand(new InteractCommand());
     }
 }

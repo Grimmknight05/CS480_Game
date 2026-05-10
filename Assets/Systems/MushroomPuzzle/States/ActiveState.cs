@@ -1,23 +1,14 @@
 using UnityEngine;
 
 // Author: David Haddad - CS480 design-patterns mushroom puzzle (May 2026)
-// Mushroom is glowing, playing its note, broadcasting to listeners. Holds for
-// mushroom.activeDuration via the timer component, then flips back to Dormant.
+// Mushroom is glowing, playing its note, broadcasting to listeners. Optionally
+// returns to Dormant after activeDuration when Mushroom.ReturnToDormantAfterDuration is on.
 
 public class ActiveState : MushroomState
 {
     private System.Action expiryHandler;
 
     public override void Enter(Mushroom mushroom)
-    {
-        ApplyActivation(mushroom);
-    }
-
-    /// <summary>
-    /// Same meaning as entering ActiveState, but without swapping state — used when the player
-    /// hits the same mushroom again before it goes dormant (melodies like green → yellow → green).
-    /// </summary>
-    public void Retrigger(Mushroom mushroom)
     {
         ApplyActivation(mushroom);
     }
@@ -38,7 +29,9 @@ public class ActiveState : MushroomState
         if (mushroom.MushroomChannel != null) mushroom.MushroomChannel.Raise(data);
         if (mushroom.PuzzleChannel != null) mushroom.PuzzleChannel.RaiseEvent(mushroom.MushroomID, mushroom.AssignedColor);
 
-        if (mushroom.TimerComp != null)
+        if (mushroom.ReturnToDormantAfterDuration &&
+            mushroom.TimerComp != null &&
+            mushroom.ActiveDuration > 0f)
         {
             if (expiryHandler != null)
             {

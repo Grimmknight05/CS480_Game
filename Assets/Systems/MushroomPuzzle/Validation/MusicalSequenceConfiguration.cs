@@ -71,6 +71,12 @@ public class MusicalSequenceConfiguration : ActivatorConfiguration
 
     [SerializeField] private SequenceRequirement requirement;
 
+    /// <summary>Same ID raised by <see cref="MushroomSequenceTracker"/> — pair tracker + validator with this asset so it stays in one place.</summary>
+    public string SequenceId => requirement != null ? requirement.sequenceID : string.Empty;
+
+    /// <summary>Same melody array used by PuzzleValidator — also drives wrong-note reset on the tracker when linked.</summary>
+    public MushroomColor[] ExpectedSequence => requirement != null ? requirement.expectedSequence : null;
+
     public override IActivatorRequirement[] GetRequirements()
     {
         return new IActivatorRequirement[] { requirement };

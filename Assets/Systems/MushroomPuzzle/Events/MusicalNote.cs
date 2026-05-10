@@ -18,7 +18,9 @@ public enum MushroomColor
     Orange,
     Yellow,
     Green,
+    LightBlue,
     Blue,
     Purple,
+    Pink,
     White
 }

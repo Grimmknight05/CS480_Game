@@ -35,6 +35,12 @@ public class PuzzleCommandHistory : MonoBehaviour
         last.Command.Undo(last.Receiver);
     }
 
+    /// <summary>Removes all recorded commands without calling Undo on mushrooms.</summary>
+    public void ClearAll()
+    {
+        entries.Clear();
+    }
+
     public readonly struct Entry
     {
         public readonly IPuzzleCommand Command;

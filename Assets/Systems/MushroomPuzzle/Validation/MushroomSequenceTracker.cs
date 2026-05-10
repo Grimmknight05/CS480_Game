@@ -10,9 +10,12 @@ using UnityEngine;
 
 public class MushroomSequenceTracker : MonoBehaviour
 {
+    [Header("Melody (single source of truth)")]
+    [Tooltip("Same asset as PuzzleValidator trigger Config — defines Sequence ID + Expected Sequence once.")]
+    [SerializeField] private MusicalSequenceConfiguration melodyConfiguration;
+
     [SerializeField] private MushroomEventChannelSO mushroomChannel;
     [SerializeField] private ActivatorStateChannel puzzleChannel;
-    [SerializeField] private string sequenceID = "MushroomSequence";
     [SerializeField] private int maxHistory = 20;
     [SerializeField] private bool logHistoryChannelToConsole = true;
 
@@ -20,21 +23,33 @@ public class MushroomSequenceTracker : MonoBehaviour
     [Tooltip("Played when this tracker clears progress (Clear(), or wrong note if auto-reset is on).")]
     [SerializeField] private AudioClip progressResetClip;
     [SerializeField] [Range(0f, 1f)] private float resetSoundVolume = 1f;
-    [Tooltip("Copy the melody order from your Musical Sequence Configuration. When enabled, a tap that cannot extend any prefix of this sequence clears progress.")]
-    [SerializeField] private MushroomColor[] expectedSequenceForAutoReset;
+    [Tooltip("Uses Expected Sequence from Melody Configuration. Resets only on a wrong tap — partial progress never resets.")]
     [SerializeField] private bool resetWhenSequenceBreaksExpectedPrefix;
     [Header("Solved behavior")]
     [SerializeField] private bool lockMushroomsGlowingWhenSolved = true;
+    [Tooltip("All mushrooms in this puzzle — used for solve lock, wrong-note reset (force dormant), and optional unsolve reset.")]
     [SerializeField] private Mushroom[] mushroomsToLockOnSolved;
     [SerializeField] private AudioClip solvedClip;
     [SerializeField] [Range(0f, 1f)] private float solvedClipVolume = 0.8f;
+    [Tooltip("Walks to Rest Point Under Mushroom, stays calm, tag becomes non-Enemy so the player is not hurt.")]
+    [SerializeField] private CritterController[] crittersToPacifyOnSolve;
+
+    [Header("Unsolve reset (optional)")]
+    [Tooltip("Off by default. Wrong-note reset uses only 'Reset When Sequence Breaks Expected Prefix' above. Enable this only if you need full reset when PuzzleValidator fires On Unsolved (e.g. was solved, then state invalidates).")]
+    [SerializeField] private bool applyResetOnPuzzleUnsolve;
+    [Tooltip("Shared command log — cleared only when Apply Reset On Puzzle Unsolve is enabled.")]
+    [SerializeField] private PuzzleCommandHistory puzzleCommandHistory;
 
     private readonly List<MushroomColor> history = new List<MushroomColor>();
 
     private void Awake()
     {
+        if (melodyConfiguration == null)
+            Debug.LogWarning("[MushroomSequenceTracker] Assign the same Musical Sequence Configuration asset used by PuzzleValidator (sequence ID + melody in one place).");
         if (mushroomsToLockOnSolved == null || mushroomsToLockOnSolved.Length == 0)
             mushroomsToLockOnSolved = GetComponentsInChildren<Mushroom>(true);
+        if (puzzleCommandHistory == null)
+            puzzleCommandHistory = GetComponentInChildren<PuzzleCommandHistory>(true);
     }
 
     private void OnEnable()
@@ -52,10 +67,13 @@ public class MushroomSequenceTracker : MonoBehaviour
         history.Add(data.Color);
         if (history.Count > maxHistory) history.RemoveAt(0);
 
+        MushroomColor[] expected = melodyConfiguration != null ? melodyConfiguration.ExpectedSequence : null;
+
+        // Wrong-note reset only: partial progress (correct prefix, fewer notes than goal) stays valid.
         if (resetWhenSequenceBreaksExpectedPrefix &&
-            expectedSequenceForAutoReset != null &&
-            expectedSequenceForAutoReset.Length > 0 &&
-            !TailMatchesSomePrefixOfExpected(history, expectedSequenceForAutoReset))
+            expected != null &&
+            expected.Length > 0 &&
+            !IsValidPartialOrCompletePrefix(history, expected))
         {
             ResetProgressInternal(playSound: true);
             return;
@@ -74,19 +92,39 @@ public class MushroomSequenceTracker : MonoBehaviour
     {
         bool hadEntries = history.Count > 0;
         history.Clear();
+        ForceAllPuzzleMushroomsDormant();
+        if (puzzleCommandHistory != null)
+            puzzleCommandHistory.ClearAll();
         RaiseSnapshotToChannel(System.Array.Empty<MushroomColor>());
         if (playSound && hadEntries)
             PlayProgressResetSound();
+    }
+
+    private void ForceAllPuzzleMushroomsDormant()
+    {
+        if (mushroomsToLockOnSolved == null) return;
+        for (int i = 0; i < mushroomsToLockOnSolved.Length; i++)
+        {
+            if (mushroomsToLockOnSolved[i] == null) continue;
+            mushroomsToLockOnSolved[i].ForceDormant();
+        }
     }
 
     private void RaiseSnapshotToChannel(MushroomColor[] snapshot)
     {
         if (puzzleChannel == null) return;
 
-        puzzleChannel.RaiseEvent(sequenceID, snapshot);
+        string id = melodyConfiguration != null ? melodyConfiguration.SequenceId : string.Empty;
+        if (string.IsNullOrEmpty(id))
+        {
+            Debug.LogWarning("[MushroomSequenceTracker] Assign Melody Configuration (same asset as PuzzleValidator) so Sequence ID is set.");
+            return;
+        }
+
+        puzzleChannel.RaiseEvent(id, snapshot);
         if (logHistoryChannelToConsole)
         {
-            Debug.Log($"[MushroomSequenceTracker] puzzle channel '{sequenceID}' history ({snapshot.Length}): {string.Join(", ", snapshot)}");
+            Debug.Log($"[MushroomSequenceTracker] puzzle channel '{id}' history ({snapshot.Length}): {string.Join(", ", snapshot)}");
         }
     }
 
@@ -97,34 +135,44 @@ public class MushroomSequenceTracker : MonoBehaviour
     }
 
     /// <summary>
-    /// True when the tail of <paramref name="hist"/> matches expected[0..k-1] for some k (progress toward the target melody).
+    /// While the melody is incomplete (fewer taps than the goal), only a strict prefix must match — never reset for "not enough notes yet."
+    /// After the list is longer than the goal, use the same suffix window as <see cref="MusicalSequenceConfiguration"/>.
     /// </summary>
-    private static bool TailMatchesSomePrefixOfExpected(List<MushroomColor> hist, MushroomColor[] expected)
+    private static bool IsValidPartialOrCompletePrefix(List<MushroomColor> hist, MushroomColor[] expected)
     {
         int n = hist.Count;
+        int L = expected.Length;
         if (n == 0) return true;
 
-        int maxK = Mathf.Min(n, expected.Length);
-        for (int k = maxK; k >= 1; k--)
+        if (n <= L)
         {
-            bool ok = true;
-            for (int i = 0; i < k; i++)
+            for (int i = 0; i < n; i++)
             {
-                if (hist[n - k + i] != expected[i])
-                {
-                    ok = false;
-                    break;
-                }
+                if (hist[i] != expected[i])
+                    return false;
             }
-            if (ok) return true;
+            return true;
         }
-        return false;
+
+        int offset = n - L;
+        for (int i = 0; i < L; i++)
+        {
+            if (hist[offset + i] != expected[i])
+                return false;
+        }
+        return true;
     }
 
     public void OnPuzzleSolved()
     {
         if (solvedClip != null)
             AudioSource.PlayClipAtPoint(solvedClip, transform.position, solvedClipVolume);
+
+        if (crittersToPacifyOnSolve != null)
+        {
+            for (int i = 0; i < crittersToPacifyOnSolve.Length; i++)
+                crittersToPacifyOnSolve[i]?.PacifyAfterPuzzleSolve();
+        }
 
         if (!lockMushroomsGlowingWhenSolved || mushroomsToLockOnSolved == null) return;
         for (int i = 0; i < mushroomsToLockOnSolved.Length; i++)
@@ -136,11 +184,21 @@ public class MushroomSequenceTracker : MonoBehaviour
 
     public void OnPuzzleUnsolved()
     {
-        if (mushroomsToLockOnSolved == null) return;
-        for (int i = 0; i < mushroomsToLockOnSolved.Length; i++)
+        if (!applyResetOnPuzzleUnsolve)
+            return;
+
+        if (mushroomsToLockOnSolved != null)
         {
-            if (mushroomsToLockOnSolved[i] == null) continue;
-            mushroomsToLockOnSolved[i].UnlockSolvedGlow();
+            for (int i = 0; i < mushroomsToLockOnSolved.Length; i++)
+            {
+                if (mushroomsToLockOnSolved[i] == null) continue;
+                mushroomsToLockOnSolved[i].ForceDormant();
+            }
         }
+
+        if (puzzleCommandHistory != null)
+            puzzleCommandHistory.ClearAll();
+
+        ResetProgressInternal(playSound: false);
     }
 }
