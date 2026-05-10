@@ -18,6 +18,10 @@ public class Pusher : MonoBehaviour, ILock
     [SerializeField] private PushDirections pushDirection;
     [SerializeField] private float pushDistance = 5f;
     [SerializeField] private float pushSpeed = 2f;
+    [SerializeField] private LevelResetChannelSO resetChannel;
+    [Tooltip("Optional. If null, captures transform.position at Start.")]
+    [SerializeField] private Transform spawnPoint;
+    private bool resetLocked;
 
     private bool pushing = false;
     private Vector3 pushVector = Vector3.forward;
@@ -38,9 +42,30 @@ public class Pusher : MonoBehaviour, ILock
 
     void Start()
     {
-        startPos = transform.position;
+        startPos = spawnPoint != null ? spawnPoint.position : transform.position;
         rb = GetComponent<Rigidbody>();
     }
+
+    void OnEnable()
+    {
+        if (resetChannel != null)
+            resetChannel.OnRaised += HandleLevelReset;
+    }
+
+    void OnDisable()
+    {
+        if (resetChannel != null)
+            resetChannel.OnRaised -= HandleLevelReset;
+    }
+
+    private void HandleLevelReset()
+    {
+        if (resetLocked) return;
+        Reset();
+    }
+
+    public void LockReset() => resetLocked = true;
+    public void UnlockReset() => resetLocked = false;
 
  void FixedUpdate()
     {

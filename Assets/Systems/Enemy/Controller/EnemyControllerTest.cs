@@ -43,7 +43,28 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
     // Animation
     //private Animator animator;
 
+    [Header("Reset")]
+    [SerializeField] private LevelResetChannelSO resetChannel;
+    private Vector3 startPos;
+    private Quaternion startRot;
 
+    void Awake()
+    {
+        startPos = transform.position;
+        startRot = transform.rotation;
+    }
+
+    void OnEnable()
+    {
+        if (resetChannel != null)
+            resetChannel.OnRaised += ResetEnemy;
+    }
+
+    void OnDisable()
+    {
+        if (resetChannel != null)
+            resetChannel.OnRaised -= ResetEnemy;
+    }
 
     void Start()
     {
@@ -215,9 +236,45 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
         if (deathSFX != null)
             audioSource.PlayOneShot(deathSFX);
 
-        GetComponent<Collider>().enabled = false;
+        Collider col = GetComponent<Collider>();
+        if (col != null) col.enabled = false;
 
-        Destroy(gameObject, 2f);
+        // Hide visuals after a delay so the death is readable, but keep the
+        // GameObject alive so a level reset can revive this enemy.
+        Invoke(nameof(HideOnDeath), 2f);
+    }
+
+    private void HideOnDeath()
+    {
+        foreach (var r in GetComponentsInChildren<Renderer>()) r.enabled = false;
+    }
+
+    public void ResetEnemy()
+    {
+        CancelInvoke(nameof(HideOnDeath));
+
+        IsDead = false;
+
+        Collider col = GetComponent<Collider>();
+        if (col != null) col.enabled = true;
+        foreach (var r in GetComponentsInChildren<Renderer>()) r.enabled = true;
+
+        EnemyHealth eh = GetComponent<EnemyHealth>();
+        if (eh != null) eh.RestoreFull();
+
+        if (navMeshAgent != null)
+        {
+            navMeshAgent.Warp(startPos);
+            navMeshAgent.isStopped = false;
+            if (patrolPoints != null && patrolPoints.Length > 0)
+            {
+                currentPatrolIndex = 0;
+                navMeshAgent.SetDestination(patrolPoints[0].position);
+            }
+        }
+        transform.rotation = startRot;
+        currentState = EnemyState.Patrol;
+        lastAttackTime = 0f;
     }
 
     private void HandleSound()

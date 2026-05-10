@@ -36,6 +36,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable
         Debug.Log($"Enemy healed for {amount}. HP: {currentHealth}");
     }
 
+    public void RestoreFull()
+    {
+        currentHealth = maxHealth;
+    }
+
     private void Die()
     {
         controller.Die(); // delegate to AI
