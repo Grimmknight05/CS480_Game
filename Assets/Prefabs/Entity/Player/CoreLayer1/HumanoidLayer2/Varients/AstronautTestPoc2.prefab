@@ -1617,6 +1617,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4311117212020250035}
+    - targetCorrespondingSourceObject: {fileID: 187121161169687230, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 580963244582414297}
   m_SourcePrefab: {fileID: 100100000, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
 --- !u!1 &101740259894602514 stripped
 GameObject:
@@ -1776,6 +1779,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 598ee404a4990ea4ab808caba237270b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ToolSystem
+  aimSource: {fileID: 0}
+  visualFirePoint: {fileID: 0}
   tools:
   - {fileID: 11400000, guid: 288c373eb5edeca4abba930e279b997c, type: 2}
   - {fileID: 11400000, guid: 9a13afbf87774244fb4885b7f58370de, type: 2}
@@ -1832,6 +1837,7 @@ MonoBehaviour:
   audioSource: {fileID: 6448667773203093288}
   damageSFX: {fileID: 0}
   deathSFX: {fileID: 0}
+  deathChannel: {fileID: 0}
 --- !u!120 &334587658497001000
 LineRenderer:
   serializedVersion: 3
@@ -1976,6 +1982,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &580963244582414297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6199216321286383420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 206d1f6866af544f88ec84529dc06a7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSpawnPositioner
+  sessionData: {fileID: 11400000, guid: 993da1493da4b4972ac31d4842ffec31, type: 2}
+  resetChannel: {fileID: 11400000, guid: 7b03292574597408a8eb335901f5c93c, type: 2}
 --- !u!82 &6448667773203093288 stripped
 AudioSource:
   m_CorrespondingSourceObject: {fileID: 1003888192449536682, guid: e75d3b404a4a20740ae07c9d586b7e4c, type: 3}
