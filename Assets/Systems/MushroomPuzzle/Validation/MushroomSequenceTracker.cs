@@ -6,6 +6,7 @@ using UnityEngine;
 // to MushroomEventChannelSO, accumulates a bounded list of recent colors, and
 // re-raises the running sequence on ActivatorStateChannel so PuzzleValidator can
 // match a MusicalSequenceConfiguration with the same sequenceID.
+// Edited by Sarah Using Cursor
 
 public class MushroomSequenceTracker : MonoBehaviour
 {
@@ -22,8 +23,19 @@ public class MushroomSequenceTracker : MonoBehaviour
     [Tooltip("Copy the melody order from your Musical Sequence Configuration. When enabled, a tap that cannot extend any prefix of this sequence clears progress.")]
     [SerializeField] private MushroomColor[] expectedSequenceForAutoReset;
     [SerializeField] private bool resetWhenSequenceBreaksExpectedPrefix;
+    [Header("Solved behavior")]
+    [SerializeField] private bool lockMushroomsGlowingWhenSolved = true;
+    [SerializeField] private Mushroom[] mushroomsToLockOnSolved;
+    [SerializeField] private AudioClip solvedClip;
+    [SerializeField] [Range(0f, 1f)] private float solvedClipVolume = 0.8f;
 
     private readonly List<MushroomColor> history = new List<MushroomColor>();
+
+    private void Awake()
+    {
+        if (mushroomsToLockOnSolved == null || mushroomsToLockOnSolved.Length == 0)
+            mushroomsToLockOnSolved = GetComponentsInChildren<Mushroom>(true);
+    }
 
     private void OnEnable()
     {
@@ -107,5 +119,28 @@ public class MushroomSequenceTracker : MonoBehaviour
             if (ok) return true;
         }
         return false;
+    }
+
+    public void OnPuzzleSolved()
+    {
+        if (solvedClip != null)
+            AudioSource.PlayClipAtPoint(solvedClip, transform.position, solvedClipVolume);
+
+        if (!lockMushroomsGlowingWhenSolved || mushroomsToLockOnSolved == null) return;
+        for (int i = 0; i < mushroomsToLockOnSolved.Length; i++)
+        {
+            if (mushroomsToLockOnSolved[i] == null) continue;
+            mushroomsToLockOnSolved[i].LockSolvedGlow();
+        }
+    }
+
+    public void OnPuzzleUnsolved()
+    {
+        if (mushroomsToLockOnSolved == null) return;
+        for (int i = 0; i < mushroomsToLockOnSolved.Length; i++)
+        {
+            if (mushroomsToLockOnSolved[i] == null) continue;
+            mushroomsToLockOnSolved[i].UnlockSolvedGlow();
+        }
     }
 }

@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: MusicalSequenceConfig
   m_EditorClassIdentifier: Assembly-CSharp::MusicalSequenceConfiguration
   requirement:
-    sequenceID: 1
+    sequenceID: Puzzle1
     expectedSequence: 030000000200000003000000
+    logComparisonChecks: 1

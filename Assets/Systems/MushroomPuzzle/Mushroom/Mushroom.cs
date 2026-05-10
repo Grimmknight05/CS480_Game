@@ -36,6 +36,7 @@ public class Mushroom : MonoBehaviour
 
     private MushroomState currentState;
     private readonly Queue<IPuzzleCommand> queue = new Queue<IPuzzleCommand>();
+    private bool solvedLocked;
 
     public string MushroomID => mushroomID;
     public MushroomColor AssignedColor => assignedColor;
@@ -53,6 +54,7 @@ public class Mushroom : MonoBehaviour
     public float DefaultCommandLifetime => defaultCommandLifetime;
     public bool IsActive => currentState is ActiveState;
     public bool AllowRepeatActivationWhileActive => allowRepeatActivationWhileActive;
+    public bool IsSolvedLocked => solvedLocked;
 
     private void Awake()
     {
@@ -75,6 +77,8 @@ public class Mushroom : MonoBehaviour
 
     public void Activate()
     {
+        if (solvedLocked) return;
+
         if (currentState is ActiveState active)
         {
             if (!allowRepeatActivationWhileActive) return;
@@ -88,6 +92,18 @@ public class Mushroom : MonoBehaviour
     {
         if (command == null) return;
         queue.Enqueue(command);
+    }
+
+    public void LockSolvedGlow()
+    {
+        solvedLocked = true;
+        SetState(new SolvedState());
+    }
+
+    public void UnlockSolvedGlow()
+    {
+        solvedLocked = false;
+        SetState(new DormantState());
     }
 
     private void Update()

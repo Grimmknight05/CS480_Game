@@ -20,6 +20,7 @@ public class InteractCommand : IPuzzleCommand
     public bool CanExecute(Mushroom mushroom)
     {
         if (mushroom == null) return false;
+        if (mushroom.IsSolvedLocked) return false;
         if (!mushroom.IsActive) return true;
         return mushroom.AllowRepeatActivationWhileActive;
     }
