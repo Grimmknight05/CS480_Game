@@ -20,9 +20,12 @@ public class GameLoopManager : MonoBehaviour
 
     void HandlePlayerDeath()
     {
-        // Soft reset: fan out to all subscribers (pushables, enemies, puzzles, spawn positioner)
-        // instead of reloading the scene, so that permanently-solved puzzles can opt out.
-        resetChannel?.Raise();
+        // The Game Over UI gates the soft reset now — see RequestContinue.
+    }
+
+    public void RequestContinue()
+    {
         playerHealth?.RestoreFull();
+        resetChannel?.Raise();
     }
 }

@@ -18,7 +18,6 @@ public class PlayerControllerRefactored : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI winUI;
-    [SerializeField] private TextMeshProUGUI deathUI;
     [SerializeField] private GameObject HUD;
 
     [Header("Score")]
@@ -447,7 +446,6 @@ public class PlayerControllerRefactored : MonoBehaviour
                 playerHealth.TakeDamage(10);
             else
             {
-                ShowDeathScreen();
                 OnPlayerDeath?.Invoke();
             }
         }
@@ -483,12 +481,10 @@ public class PlayerControllerRefactored : MonoBehaviour
     // Health & UI
     private void OnHealthDeath()
     {
-        ShowDeathScreen();
         OnPlayerDeath?.Invoke();
     }
 
     public void ShowWinScreen() => winUI.gameObject.SetActive(true);
-    public void ShowDeathScreen() => deathUI.gameObject.SetActive(true);
 
     // Unity lifecycle
     void FixedUpdate()
