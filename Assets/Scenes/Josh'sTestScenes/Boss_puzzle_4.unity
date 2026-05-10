@@ -350,63 +350,63 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1863980588}
     m_Modifications:
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 3240365865500183931, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
+      propertyPath: m_Name
+      value: RobotTech (32)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3240365865500183931, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalScale.z
       value: 9.292908
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 60.940002
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.y
       value: 2.1599998
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.z
       value: -123.42996
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.6746022
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.y
       value: -0.73818153
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: -95.153
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Name
-      value: RobotTech (19)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
 --- !u!1001 &59592477
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -752,74 +752,74 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1863980588}
     m_Modifications:
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 3240365865500183931, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
+      propertyPath: m_Name
+      value: RobotTech (35)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3240365865500183931, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalScale.x
       value: 10.892102
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalScale.y
       value: 34.976257
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalScale.z
       value: 9.093419
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 85.66
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.y
       value: -7.4
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.z
       value: -165.06
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.y
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Name
-      value: RobotTech (27)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
 --- !u!4 &108259350 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
   m_PrefabInstance: {fileID: 108259349}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &110571955
@@ -905,70 +905,70 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1863980588}
     m_Modifications:
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 3240365865500183931, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
+      propertyPath: m_Name
+      value: RobotTech (38)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3240365865500183931, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalScale.x
       value: 8.193863
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalScale.z
       value: 7.034983
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 62.68
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.y
       value: 2.39
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.z
       value: -154.16
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.y
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Name
-      value: RobotTech (24)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
 --- !u!4 &127359149 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
   m_PrefabInstance: {fileID: 127359148}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &132118984 stripped
@@ -1698,74 +1698,74 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1863980588}
     m_Modifications:
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 3240365865500183931, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
+      propertyPath: m_Name
+      value: RobotTech (34)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3240365865500183931, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalScale.x
       value: 10.892102
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalScale.y
       value: 34.976257
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalScale.z
       value: 9.093419
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 83.19
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.y
       value: 2.39
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.z
       value: -167.16
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.y
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Name
-      value: RobotTech (26)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
 --- !u!4 &260515632 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
   m_PrefabInstance: {fileID: 260515631}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &271535368
@@ -8956,67 +8956,67 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1863980588}
     m_Modifications:
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 3240365865500183931, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
+      propertyPath: m_Name
+      value: RobotTech (37)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3240365865500183931, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalScale.x
       value: 8.193863
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalScale.z
       value: 7.034983
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 56.19
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.y
       value: 9.56
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.z
       value: -170.5
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.y
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Name
-      value: RobotTech (29)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
 --- !u!1001 &514991969
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9115,62 +9115,62 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1863980588}
     m_Modifications:
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 3240365865500183931, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
+      propertyPath: m_Name
+      value: RobotTech (39)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3240365865500183931, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 57
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.12
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.z
       value: -150.16
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.y
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Name
-      value: RobotTech (23)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
 --- !u!4 &525898399 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
   m_PrefabInstance: {fileID: 525898398}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &535773120 stripped
@@ -10640,7 +10640,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &602912887 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
   m_PrefabInstance: {fileID: 512246347}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &605329721 stripped
@@ -11989,7 +11989,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 59cdd1c877e38904fa0dfde72f4efab8, type: 3}
 --- !u!4 &754246756 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
   m_PrefabInstance: {fileID: 53886188}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &768003982 stripped
@@ -13866,74 +13866,74 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1863980588}
     m_Modifications:
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 3240365865500183931, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
+      propertyPath: m_Name
+      value: RobotTech (36)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3240365865500183931, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalScale.x
       value: 10.892102
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalScale.y
       value: 34.976257
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalScale.z
       value: 9.093419
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 80.3
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.y
       value: -9.1
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.z
       value: -167
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.y
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Name
-      value: RobotTech (28)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
 --- !u!4 &950579013 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
   m_PrefabInstance: {fileID: 950579012}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &952092433
@@ -14061,59 +14061,59 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1863980588}
     m_Modifications:
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 3240365865500183931, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
+      propertyPath: m_Name
+      value: RobotTech (33)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3240365865500183931, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 56.410004
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.y
       value: 2.8000002
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.z
       value: -124.14996
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.y
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Name
-      value: RobotTech (17)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
 --- !u!1001 &963480100
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15685,62 +15685,62 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1863980588}
     m_Modifications:
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 3240365865500183931, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
+      propertyPath: m_Name
+      value: RobotTech (40)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3240365865500183931, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 52.28
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.y
       value: 3.33
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.z
       value: -152.35
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.y
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Name
-      value: RobotTech (22)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
 --- !u!4 &1091817875 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
   m_PrefabInstance: {fileID: 1091817874}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1109113484
@@ -16255,7 +16255,7 @@ MeshFilter:
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &1161750564 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
   m_PrefabInstance: {fileID: 961133940}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1182918194
@@ -17591,7 +17591,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MaterialController
 --- !u!4 &1342749661 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
   m_PrefabInstance: {fileID: 2138707744}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1355107030
@@ -17653,8 +17653,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Robot
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 410da9c7ff86342bb9e14ca2bf8b7b62, type: 2}
-  m_sharedMaterial: {fileID: 6530371688875241533, guid: 410da9c7ff86342bb9e14ca2bf8b7b62, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -26881,8 +26881,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Body...
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 410da9c7ff86342bb9e14ca2bf8b7b62, type: 2}
-  m_sharedMaterial: {fileID: 6530371688875241533, guid: 410da9c7ff86342bb9e14ca2bf8b7b62, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -29107,63 +29107,55 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1863980588}
     m_Modifications:
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 5.2080746
+    - target: {fileID: 3240365865500183931, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
+      propertyPath: m_Name
+      value: RobotTech (31)
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 66.64
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.y
       value: 2.8000002
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalPosition.z
       value: -122.629974
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.w
       value: 0.74158496
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.y
       value: -0.67085904
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: -84.267
       objectReference: {fileID: 0}
-    - target: {fileID: 1828407543568115100, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+    - target: {fileID: 4673535787252277842, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Name
-      value: RobotTech (18)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3222612913941133895, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
-      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: eed191d6de19a93468df9cc1c36eb343, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 5d8515dd8cde0474294da75eb06ebde2, type: 3}
 --- !u!1001 &2139735704
 PrefabInstance:
   m_ObjectHideFlags: 0
