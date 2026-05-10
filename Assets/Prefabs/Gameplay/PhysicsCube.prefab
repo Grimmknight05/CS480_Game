@@ -13,7 +13,10 @@ GameObject:
   - component: {fileID: 2788319262889299452}
   - component: {fileID: 5455164817715645367}
   - component: {fileID: 679756648834583918}
+<<<<<<< HEAD
   - component: {fileID: 1516069716515989210}
+=======
+>>>>>>> KatieAlphaBranch-VisualOverhaul
   m_Layer: 3
   m_Name: PhysicsCube
   m_TagString: Pushable
@@ -141,6 +144,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+<<<<<<< HEAD
 --- !u!114 &1516069716515989210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,3 +158,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RigidbodyBlastReceiver
   pushForce: 15
+=======
+>>>>>>> KatieAlphaBranch-VisualOverhaul
