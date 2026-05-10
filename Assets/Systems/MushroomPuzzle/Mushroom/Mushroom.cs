@@ -14,6 +14,8 @@ public class Mushroom : MonoBehaviour
     [SerializeField] private MusicalNote assignedNote = MusicalNote.C;
 
     [Header("Activation")]
+    [Tooltip("When on, a new trigger press while this mushroom is still glowing counts again for the melody (e.g. green → yellow → green).")]
+    [SerializeField] private bool allowRepeatActivationWhileActive = true;
     [SerializeField] private float activeDuration = 10f;
     [SerializeField] private float calmRadius = 15f;
     [SerializeField] private Color glowColor = Color.green;
@@ -50,6 +52,7 @@ public class Mushroom : MonoBehaviour
     public MushroomState CurrentState => currentState;
     public float DefaultCommandLifetime => defaultCommandLifetime;
     public bool IsActive => currentState is ActiveState;
+    public bool AllowRepeatActivationWhileActive => allowRepeatActivationWhileActive;
 
     private void Awake()
     {
@@ -72,7 +75,12 @@ public class Mushroom : MonoBehaviour
 
     public void Activate()
     {
-        if (currentState is ActiveState) return;
+        if (currentState is ActiveState active)
+        {
+            if (!allowRepeatActivationWhileActive) return;
+            active.Retrigger(this);
+            return;
+        }
         SetState(new ActiveState());
     }
 
