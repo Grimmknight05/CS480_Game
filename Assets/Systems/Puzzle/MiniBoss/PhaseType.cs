@@ -4,5 +4,5 @@ using UnityEngine.Events;
 public enum PhaseType
 {
     WaveSpawn,
-    DoorLock
+    Platformer
 }

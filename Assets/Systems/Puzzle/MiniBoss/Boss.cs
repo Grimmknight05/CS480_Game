@@ -1,67 +1,87 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class Boss : MonoBehaviour
 {
+    [System.Serializable]
+    public class PhaseEntry
+    {
+        public PhaseConfig config;           // can be WavePhaseConfig, DoorLockConfig, etc.
+        public BossPillar pillar;            // direct scene reference
+        public ActivatorStateChannel stateChannel;
+        public UnityEvent onPhaseStart;      // Inspector events that can reference scene objects
+        public UnityEvent onPhaseComplete;
+        public ActivatorConfiguration puzzleRequirement;
+    }
+
     [Header("Phases")]
-    [SerializeField] protected PhaseConfig[] phaseConfigs;   // assign in Inspector
+    [SerializeField] protected List<PhaseEntry> phaseEntries;
 
     protected List<BossPhase> phases = new List<BossPhase>();
     protected int currentPhaseIndex = 0;
     protected BossPhase currentPhase;
     protected int health;
+    protected bool isFightActive = false;
 
-    // Enemy tracking
     protected List<GameObject> activeEnemies = new List<GameObject>();
-
-    // Prefab (set in concrete boss)
     protected GameObject enemyPrefab;
-
+    public UnityEvent OnBossStartEvent;
+    public event Action OnBossStart;
+    public UnityEvent OnBossDefeatedEvent;
     public event Action OnBossDefeated;
 
     protected virtual void Start()
     {
-        health = phaseConfigs.Length;
+        health = phaseEntries.Count;
         CreatePhases();
-        StartNextPhase();
     }
 
     private void CreatePhases()
     {
-        foreach (var config in phaseConfigs)
+        foreach (var entry in phaseEntries)
         {
             BossPhase phase = null;
-            switch (config.phaseType)
+            switch (entry.config.phaseType)
             {
                 case PhaseType.WaveSpawn:
-                    phase = new WaveSpawnPhase(config, this);
+                    // entry.config is PhaseConfig, but we need WavePhaseConfig – cast safely
+                    if (entry.config is WavePhaseConfig waveConfig)
+                        phase = new WaveSpawnPhase(entry, waveConfig, this);
+                    else
+                        Debug.LogError($"Phase {entry.config.phaseName} is marked WaveSpawn but config is not WavePhaseConfig!");
                     break;
-                //case PhaseType.DoorLock:
-                //    phase = new DoorLockPhase(config, this);
-                //    break;
-                default:
-                    Debug.LogWarning($"Unknown phase type: {config.phaseType}");
-                    continue;
+                // other phase types
             }
-            phase.OnPhaseComplete += OnPhaseCompleted;
-            phases.Add(phase);
+            if (phase != null)
+            {
+                phase.OnPhaseComplete += OnPhaseCompleted;
+                phases.Add(phase);
+            }
         }
     }
 
-    private void StartNextPhase()
+    public void BeginFight()
+    {
+        if (isFightActive) return;
+        isFightActive = true;
+        OnBossStartEvent?.Invoke();
+        StartNextPhase();
+    }
+
+    protected virtual void StartNextPhase()
     {
         if (currentPhaseIndex >= phases.Count)
         {
             DefeatBoss();
             return;
         }
-
         currentPhase = phases[currentPhaseIndex];
         currentPhase.Initialize();
     }
 
-    private void OnPhaseCompleted()
+    protected virtual void OnPhaseCompleted()
     {
         currentPhase.Cleanup();
         currentPhaseIndex++;
@@ -69,20 +89,12 @@ public abstract class Boss : MonoBehaviour
         StartNextPhase();
     }
 
-    protected virtual void Update()
-    {
-        currentPhase?.Update();
-    }
+    protected virtual void Update() => currentPhase?.Update();
 
-    // Helper methods for phases
     public virtual void SpawnEnemyAt(Vector3 position)
     {
-        if (enemyPrefab == null)
-        {
-            Debug.LogError("Enemy prefab not set in concrete boss!");
-            return;
-        }
-        GameObject enemy = Instantiate(enemyPrefab, position, Quaternion.identity);
+        if (enemyPrefab == null) return;
+        var enemy = Instantiate(enemyPrefab, position, Quaternion.identity);
         activeEnemies.Add(enemy);
     }
 
@@ -95,5 +107,6 @@ public abstract class Boss : MonoBehaviour
     protected virtual void DefeatBoss()
     {
         OnBossDefeated?.Invoke();
-    }
+        OnBossDefeatedEvent?.Invoke();
+    } 
 }

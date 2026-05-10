@@ -9,23 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 446b8780c58f87b4ea160d1fb8743fea, type: 3}
-  m_Name: Phase1_Level1
-  m_EditorClassIdentifier: Assembly-CSharp::PhaseData
+  m_Script: {fileID: 11500000, guid: 8def5aa894a0cbe4f89b3a5f0c51bf7e, type: 3}
+  m_Name: Wave3
+  m_EditorClassIdentifier: Assembly-CSharp::WavePhaseConfig
   phaseType: 0
-  phaseName: 
-  spawnPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  wavesToSpawn: 2
-  enemiesPerWave: 3
-  spawnInterval: 3
-  doorsToLock: []
+  phaseName: Phase 3
   onPhaseStart:
     m_PersistentCalls:
       m_Calls: []
   onPhaseComplete:
     m_PersistentCalls:
       m_Calls: []
+  spawnGroupName: Level1_Boss_Arena
+  wavesToSpawn: 1
+  enemiesPerWave: 1
+  spawnInterval: 1
