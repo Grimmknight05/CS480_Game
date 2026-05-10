@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d22886ec6f30e462084334254b52e724, type: 3}
-  m_Name: PlayerSessionData
+  m_Name: CurrentPlayerSession
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSessionData
   lastCheckpoint: {x: 0, y: 0, z: 0}
   hasCheckpoint: 0
