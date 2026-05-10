@@ -13,6 +13,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip damageSFX;
     [SerializeField] private AudioClip deathSFX;
+    [SerializeField] private PlayerDeathChannelSO deathChannel;
     void Awake()
     {
         currentHealth = maxHealth;
@@ -56,7 +57,14 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         }
 
         OnPlayerDeath?.Invoke();
+        deathChannel?.Raise();
         Debug.Log("Player has died!");
+    }
+
+    public void RestoreFull()
+    {
+        currentHealth = maxHealth;
+        OnHealthChanged?.Invoke();
     }
 
     // Getters

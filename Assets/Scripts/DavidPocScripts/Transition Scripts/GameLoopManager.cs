@@ -1,9 +1,10 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameLoopManager : MonoBehaviour
 {
     [SerializeField] private PlayerDeathChannelSO deathChannel;
+    [SerializeField] private LevelResetChannelSO resetChannel;
+    [SerializeField] private PlayerHealth playerHealth;
 
     void OnEnable()
     {
@@ -19,6 +20,9 @@ public class GameLoopManager : MonoBehaviour
 
     void HandlePlayerDeath()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // Soft reset: fan out to all subscribers (pushables, enemies, puzzles, spawn positioner)
+        // instead of reloading the scene, so that permanently-solved puzzles can opt out.
+        resetChannel?.Raise();
+        playerHealth?.RestoreFull();
     }
 }

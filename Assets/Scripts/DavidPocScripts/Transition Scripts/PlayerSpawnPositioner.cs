@@ -3,6 +3,19 @@ using UnityEngine;
 public class PlayerSpawnPositioner : MonoBehaviour
 {
     [SerializeField] private PlayerSessionData sessionData;
+    [SerializeField] private LevelResetChannelSO resetChannel;
+
+    void OnEnable()
+    {
+        if (resetChannel != null)
+            resetChannel.OnRaised += RespawnAtCheckpoint;
+    }
+
+    void OnDisable()
+    {
+        if (resetChannel != null)
+            resetChannel.OnRaised -= RespawnAtCheckpoint;
+    }
 
     void Start()
     {
@@ -19,6 +32,15 @@ public class PlayerSpawnPositioner : MonoBehaviour
         else
         {
             sessionData.SetCheckpoint(transform.position);
+        }
+    }
+
+    public void RespawnAtCheckpoint()
+    {
+        if (sessionData == null) return;
+        if (sessionData.TryGetCheckpoint(out Vector3 pos))
+        {
+            SafeTeleport(pos);
         }
     }
 
