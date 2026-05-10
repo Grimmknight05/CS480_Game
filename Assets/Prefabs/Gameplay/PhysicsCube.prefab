@@ -214,5 +214,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6188ae5f92924eeba2066ec70473642, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Respawnable
-  resetChannel: {fileID: 0}
-  spawnPoint: {fileID: 0}
+  resetChannel: {fileID: 11400000, guid: 7b03292574597408a8eb335901f5c93c, type: 2}
+  spawnPoint: {fileID: 2099136674894748161}
