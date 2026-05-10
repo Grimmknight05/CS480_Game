@@ -6,9 +6,21 @@ using UnityEngine.Rendering;
 
 // Manages tool usage and switching for the player.
 // Attach to player
-
-public class ToolSystem : MonoBehaviour
+// Adding IAimContext allows tools to know where to aim (the camera) vs where to fire from (the usePoint).
+public class ToolSystem : MonoBehaviour, IAimContext
 {
+
+    [Header("Aiming Setup")]
+    [Tooltip("The camera determining what we are logically aiming at.")]
+    [SerializeField] private Transform aimSource;
+    
+    [Tooltip("The physical barrel of the gun on the character model.")]
+    [SerializeField] private Transform visualFirePoint;
+
+    // 2. Fulfill the interface contract so weapons can read these variables
+    public Transform AimSource => aimSource != null ? aimSource : transform;
+    public Transform VisualFirePoint => visualFirePoint != null ? visualFirePoint : transform;
+    
     [SerializeField] private Tool[] tools;
     [SerializeField] private Transform usePoint;
     [SerializeField] private AudioSource audioSource;

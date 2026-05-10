@@ -9,31 +9,28 @@ public class AreaEffectTool : Tool
 
     public override void Use(Transform usePoint, AudioSource audioSource, LayerMask layerMask)
     {
-
         PlayUseSound(audioSource);
 
-        // Find all enemies in explosion radius
-        Collider[] enemiesInRange = Physics.OverlapSphere(usePoint.position, effectRadius, layerMask);
+        // Find all colliders in explosion radius within the target layer(s)
+        Collider[] hits = Physics.OverlapSphere(usePoint.position, effectRadius, layerMask);
         
-        Debug.Log($"[AreaEffectTool] Explosion at {usePoint.position}! Hit {enemiesInRange.Length} targets!");
+        Debug.Log($"[AreaEffectTool] Explosion at {usePoint.position}! Hit {hits.Length} targets!");
 
-        foreach (Collider collider in enemiesInRange)
+        foreach (Collider hitCollider in hits)
         {
-            if (!collider.CompareTag("Enemy"))
-                continue;
+            // Calculate direction from the blast center to the target
+            Vector3 dir = (hitCollider.transform.position - usePoint.position).normalized;
 
-            Vector3 dir = (collider.transform.position - usePoint.position).normalized;
-
-            // damage (your existing system)
-            IDamageable enemy = collider.GetComponent<IDamageable>();
-            if (enemy != null)
-                enemy.TakeDamage(damagePerHit);
-
-            // status effects (NEW SYSTEM)
-            foreach (StatusEffect effect in effects)
+            // 1. Apply Damage (Only works if the object has health, like an enemy)
+            IDamageable damageable = hitCollider.GetComponent<IDamageable>();
+            if (damageable != null)
             {
-                effect.Apply(collider.gameObject, dir);
+                damageable.TakeDamage(damagePerHit);
             }
+
+            // 2. Apply Status Effects using the shared helper in the base Tool class
+            // This safely hits BOTH enemies and puzzle objects (the BurnEffect will figure out how to handle it).
+            ApplyEffects(hitCollider.gameObject, dir);
         }
     }
 }
