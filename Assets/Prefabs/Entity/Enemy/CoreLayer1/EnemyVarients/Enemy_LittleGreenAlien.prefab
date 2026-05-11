@@ -258,11 +258,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4112908063208124420, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
       propertyPath: fieldOfViewAngle
-<<<<<<< HEAD
-      value: 180
-=======
       value: 60
->>>>>>> KatieAlphaBranch-VisualOverhaul
       objectReference: {fileID: 0}
     - target: {fileID: -4112908063208124420, guid: 1a7fede769550bb47894263ddd83b537, type: 3}
       propertyPath: enemySFX.Array.size

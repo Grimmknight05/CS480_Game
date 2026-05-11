@@ -1545,67 +1545,6 @@ Transform:
   - {fileID: 1399284912}
   m_Father: {fileID: 1661523039}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &168700145
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5912932561342223490, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6407250024142772085, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_Name
-      value: BigGreenMushroom (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -58.72
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 11.24
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 428.22
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
 --- !u!1 &175747800
 GameObject:
   m_ObjectHideFlags: 0
@@ -4470,9 +4409,9 @@ MonoBehaviour:
   walkSpeed: 2.5
   arriveRadius: 1
   secondsToReachCap: 2.95
-  restPointUnderMushroom: {fileID: 1080718955}
+  restPointUnderMushroom: {fileID: 0}
   pacifiedTag: Untagged
-  pacifiedLayerName: PacifiedEnemy
+  pacifiedLayerName: 
 --- !u!1001 &514991969
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5903,63 +5842,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6151856376921987852, guid: 17fc1b86e4f37404c909b46bfc98d5b5, type: 3}
   m_PrefabInstance: {fileID: 636389785}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &590163792
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6407250024142772085, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_Name
-      value: BigGreenMushroom (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -29.521664
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 11.27
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 430.18045
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6560407713213575752, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4a41375c944fa8b45bea52e20d3a0e84, type: 3}
 --- !u!1001 &593778454
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25714,7 +25596,7 @@ MonoBehaviour:
   rotationSpeed: 10
   rb: {fileID: 0}
   winUI: {fileID: 4135482561888630496}
-  deathUI: {fileID: 3545839321350095183}
+  deathUI: {fileID: 0}
   HUD: {fileID: 5392602578805439113}
   audioSource: {fileID: 1351482786452965043}
   jumpSFX:
@@ -30435,8 +30317,6 @@ SceneRoots:
   - {fileID: 613701451}
   - {fileID: 183411034}
   - {fileID: 1631313654}
-  - {fileID: 168700145}
-  - {fileID: 590163792}
   - {fileID: 478995208}
   - {fileID: 1282286736}
   - {fileID: 7581752068788210033}
