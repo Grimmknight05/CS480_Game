@@ -27,9 +27,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7494677752407295217}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.40348363, z: -0, w: 0.91498685}
+  m_LocalRotation: {x: 0, y: 0.40348145, z: 0, w: 0.91498786}
   m_LocalPosition: {x: -81.37, y: 5.76, z: 20.6}
-  m_LocalScale: {x: 1, y: 3.7924, z: 1}
+  m_LocalScale: {x: 1.1945, y: 6.285405, z: 1.1945}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7015036866970854918}
@@ -179,7 +179,8 @@ PrefabInstance:
       value: red_tree 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 65702495048144492, guid: 6de587ffc5ad74774a431e9f439ab0be, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6de587ffc5ad74774a431e9f439ab0be, type: 3}
