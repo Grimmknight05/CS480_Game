@@ -32,13 +32,28 @@ public abstract class Boss : MonoBehaviour
     public event Action OnBossStart;
     public UnityEvent OnBossDefeatedEvent;
     public event Action OnBossDefeated;
-
+    [SerializeField] private EnemyDeathChannel deathChannel;
     protected virtual void Start()
     {
         health = phaseEntries.Count;
         CreatePhases();
     }
+    protected virtual void OnEnable()
+    {
+        if (deathChannel != null)
+            deathChannel.OnEnemyDied += HandleEnemyDied;
+    }
 
+    protected virtual void OnDisable()
+    {
+        if (deathChannel != null)
+            deathChannel.OnEnemyDied -= HandleEnemyDied;
+    }
+
+    private void HandleEnemyDied(GameObject deadEnemy)
+    {
+        activeEnemies.Remove(deadEnemy);
+    }
     private void CreatePhases()
     {
         foreach (var entry in phaseEntries)
