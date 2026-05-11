@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Audio;
+using System.Collections.Generic;
 
 public enum EnemyState
 {
@@ -18,6 +19,8 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
     [SerializeField] private float fieldOfViewAngle = 90f; // The angle of the enemy's field of view
 
     [SerializeField] private AttackData attackData;
+    /// <summary>Per-instance combat numbers cloned from <see cref="attackData"/> so pacify/reset never edits the shared asset.</summary>
+    private AttackData attackRuntime;
     private float lastAttackTime;
     private NavMeshAgent navMeshAgent;
     private EnemyState currentState = EnemyState.Patrol;
@@ -48,10 +51,78 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
     private Vector3 startPos;
     private Quaternion startRot;
 
+    /// <summary>Transforms that start with Enemy tag — cleared on pacify so player contact damage (trigger + tag) stops.</summary>
+    private readonly List<Transform> enemyTaggedParts = new List<Transform>();
+    private readonly List<string> enemyTaggedOriginalTags = new List<string>();
+
     void Awake()
     {
         startPos = transform.position;
         startRot = transform.rotation;
+        CacheEnemyContactTaggedParts();
+        RebuildAttackRuntime();
+    }
+
+    private void CacheEnemyContactTaggedParts()
+    {
+        enemyTaggedParts.Clear();
+        enemyTaggedOriginalTags.Clear();
+        foreach (Transform t in GetComponentsInChildren<Transform>(true))
+        {
+            GameObject go = t.gameObject;
+            if (!go.CompareTag("Enemy")) continue;
+            enemyTaggedParts.Add(t);
+            enemyTaggedOriginalTags.Add(go.tag);
+        }
+    }
+
+    /// <summary>Rebuilds runtime attack stats from the assigned ScriptableObject (used on spawn and after level reset).</summary>
+    private void RebuildAttackRuntime()
+    {
+        if (attackRuntime != null)
+        {
+            Destroy(attackRuntime);
+            attackRuntime = null;
+        }
+        if (attackData != null)
+            attackRuntime = Instantiate(attackData);
+    }
+
+    /// <summary>
+    /// Zeros melee attack stats and strips Enemy tags on this hierarchy so player scripts that hurt on touch
+    /// (<c>CompareTag("Enemy")</c>) stop applying damage. Tags are restored by <see cref="ResetEnemy"/> on level reset.
+    /// </summary>
+    public void SetPacifiedCombat()
+    {
+        if (attackRuntime == null && attackData != null)
+            RebuildAttackRuntime();
+        if (attackRuntime != null)
+        {
+            attackRuntime.attackDamage = 0;
+            attackRuntime.effects = System.Array.Empty<StatusEffect>();
+        }
+        ClearEnemyContactTagsForPacify();
+    }
+
+    private void ClearEnemyContactTagsForPacify()
+    {
+        for (int i = 0; i < enemyTaggedParts.Count; i++)
+        {
+            Transform t = enemyTaggedParts[i];
+            if (t == null) continue;
+            t.gameObject.tag = "Untagged";
+        }
+    }
+
+    private void RestoreEnemyContactTagsAfterReset()
+    {
+        for (int i = 0; i < enemyTaggedParts.Count; i++)
+        {
+            Transform t = enemyTaggedParts[i];
+            if (t == null) continue;
+            string orig = i < enemyTaggedOriginalTags.Count ? enemyTaggedOriginalTags[i] : "Enemy";
+            t.gameObject.tag = string.IsNullOrEmpty(orig) ? "Enemy" : orig;
+        }
     }
 
     void OnEnable()
@@ -110,14 +181,14 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
                 {
                     ChangeState(EnemyState.Patrol);
                 }
-                else if (Vector3.Distance(transform.position, player.position) <= attackData.attackRange)
+                else if (attackRuntime != null && Vector3.Distance(transform.position, player.position) <= attackRuntime.attackRange)
                 {
                     ChangeState(EnemyState.Attack);
                 }
                 break;
             case EnemyState.Attack:
                 Attack();
-                if (Vector3.Distance(transform.position, player.position) > attackData.attackRange)
+                if (attackRuntime == null || Vector3.Distance(transform.position, player.position) > attackRuntime.attackRange)
                 {
                     ChangeState(EnemyState.Chase);
                 }
@@ -147,10 +218,10 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
     {
         navMeshAgent.isStopped = true;
 
-        if (player == null)
+        if (player == null || attackRuntime == null)
             return;
 
-        if (Time.time - lastAttackTime < attackData.attackCooldown)
+        if (Time.time - lastAttackTime < attackRuntime.attackCooldown)
             return;
 
         lastAttackTime = Time.time;
@@ -158,16 +229,16 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
         if (attackSFX != null)
             audioSource.PlayOneShot(attackSFX);
 
-        if (playerDamageable != null)
+        if (playerDamageable != null && attackRuntime.attackDamage > 0)
         {
-            playerDamageable.TakeDamage(attackData.attackDamage);
+            playerDamageable.TakeDamage(attackRuntime.attackDamage);
         }
 
         var runner = player.GetComponent<StatusEffectRunner>();
 
-        if (runner != null && attackData != null)
+        if (runner != null && attackRuntime.effects != null)
         {
-            foreach (var effect in attackData.effects)
+            foreach (var effect in attackRuntime.effects)
             {
                 effect.Apply(player.gameObject, transform.forward);
             }
@@ -262,6 +333,9 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
         EnemyHealth eh = GetComponent<EnemyHealth>();
         if (eh != null) eh.RestoreFull();
 
+        RebuildAttackRuntime();
+        RestoreEnemyContactTagsAfterReset();
+
         if (navMeshAgent != null)
         {
             navMeshAgent.Warp(startPos);
@@ -304,7 +378,9 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
 
         // Attack range
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackData.attackRange);
+        var ar = Application.isPlaying ? attackRuntime : attackData;
+        if (ar != null)
+            Gizmos.DrawWireSphere(transform.position, ar.attackRange);
 
         // Patrol waypoints
         if (patrolPoints != null && patrolPoints.Length > 0)
