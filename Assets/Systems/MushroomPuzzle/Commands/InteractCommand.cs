@@ -19,7 +19,9 @@ public class InteractCommand : IPuzzleCommand
 
     public bool CanExecute(Mushroom mushroom)
     {
-        return mushroom != null && !mushroom.IsActive;
+        if (mushroom == null) return false;
+        if (mushroom.IsInteractionLocked) return false;
+        return !mushroom.IsActive;
     }
 
     public void Execute(Mushroom mushroom)

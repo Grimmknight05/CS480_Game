@@ -9,6 +9,7 @@ using UnityEngine;
 public class PuzzleCommandHistory : MonoBehaviour
 {
     [SerializeField] private int capacity = 64;
+    [SerializeField] private bool logEntriesToConsole = true;
 
     private readonly List<Entry> entries = new List<Entry>();
 
@@ -20,6 +21,10 @@ public class PuzzleCommandHistory : MonoBehaviour
         if (command == null || receiver == null) return;
         entries.Add(new Entry(command, receiver, Time.time));
         if (entries.Count > capacity) entries.RemoveAt(0);
+        if (logEntriesToConsole)
+        {
+            Debug.Log($"[PuzzleCommandHistory] count={entries.Count} latest={command.GetType().Name} → mushroom '{receiver.MushroomID}' ({receiver.name})");
+        }
     }
 
     public void UndoLast()
@@ -28,6 +33,12 @@ public class PuzzleCommandHistory : MonoBehaviour
         var last = entries[entries.Count - 1];
         entries.RemoveAt(entries.Count - 1);
         last.Command.Undo(last.Receiver);
+    }
+
+    /// <summary>Removes all recorded commands without calling Undo on mushrooms.</summary>
+    public void ClearAll()
+    {
+        entries.Clear();
     }
 
     public readonly struct Entry
