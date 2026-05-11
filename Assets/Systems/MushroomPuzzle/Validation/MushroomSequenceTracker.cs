@@ -23,8 +23,10 @@ public class MushroomSequenceTracker : MonoBehaviour
     [Tooltip("Played when this tracker clears progress (Clear(), or wrong note if auto-reset is on).")]
     [SerializeField] private AudioClip progressResetClip;
     [SerializeField] [Range(0f, 1f)] private float resetSoundVolume = 1f;
-    [Tooltip("Uses Expected Sequence from Melody Configuration. Resets only on a wrong tap — partial progress never resets.")]
-    [SerializeField] private bool resetWhenSequenceBreaksExpectedPrefix;
+    [Tooltip("Uses Expected Sequence from Melody Configuration. Resets only on a wrong tap — partial progress never resets. On by default so wrong notes clear the run.")]
+    [SerializeField] private bool resetWhenSequenceBreaksExpectedPrefix = true;
+    [Tooltip("Logs when a wrong tap triggers a reset (and one-time warnings if setup is incomplete).")]
+    [SerializeField] private bool logWrongNoteResetDiagnostics;
     [Header("Solved behavior")]
     [SerializeField] private bool lockMushroomsGlowingWhenSolved = true;
     [Tooltip("All mushrooms in this puzzle — used for solve lock, wrong-note reset (force dormant), and optional unsolve reset.")]
@@ -33,6 +35,8 @@ public class MushroomSequenceTracker : MonoBehaviour
     [SerializeField] [Range(0f, 1f)] private float solvedClipVolume = 0.8f;
     [Tooltip("Walks to Rest Point Under Mushroom, stays calm, tag becomes non-Enemy so the player is not hurt.")]
     [SerializeField] private CritterController[] crittersToPacifyOnSolve;
+    [Tooltip("Non-critter enemies — same as critter pacify: zero AttackData damage and strip Enemy tags from touch damage.")]
+    [SerializeField] private EnemyControllerTest[] enemiesToPacifyOnSolve;
 
     [Header("Unsolve reset (optional)")]
     [Tooltip("Off by default. Wrong-note reset uses only 'Reset When Sequence Breaks Expected Prefix' above. Enable this only if you need full reset when PuzzleValidator fires On Unsolved (e.g. was solved, then state invalidates).")]
@@ -50,6 +54,24 @@ public class MushroomSequenceTracker : MonoBehaviour
             mushroomsToLockOnSolved = GetComponentsInChildren<Mushroom>(true);
         if (puzzleCommandHistory == null)
             puzzleCommandHistory = GetComponentInChildren<PuzzleCommandHistory>(true);
+
+        ValidateWrongNoteResetSetup();
+    }
+
+    private void ValidateWrongNoteResetSetup()
+    {
+        if (!resetWhenSequenceBreaksExpectedPrefix)
+            return;
+        if (melodyConfiguration == null)
+        {
+            Debug.LogWarning($"[MushroomSequenceTracker] {name}: Wrong-note reset is ON but Melody Configuration is not assigned.");
+            return;
+        }
+        var exp = melodyConfiguration.ExpectedSequence;
+        if (exp == null || exp.Length == 0)
+        {
+            Debug.LogWarning($"[MushroomSequenceTracker] {name}: Wrong-note reset is ON but '{melodyConfiguration.name}' has no Expected Sequence (open the asset → requirement → expected Sequence).");
+        }
     }
 
     private void OnEnable()
@@ -75,6 +97,8 @@ public class MushroomSequenceTracker : MonoBehaviour
             expected.Length > 0 &&
             !IsValidPartialOrCompletePrefix(history, expected))
         {
+            if (logWrongNoteResetDiagnostics)
+                Debug.Log($"[MushroomSequenceTracker] Wrong tap — resetting. History was: [{string.Join(", ", history)}], goal: [{string.Join(", ", expected)}]");
             ResetProgressInternal(playSound: true);
             return;
         }
@@ -172,6 +196,12 @@ public class MushroomSequenceTracker : MonoBehaviour
         {
             for (int i = 0; i < crittersToPacifyOnSolve.Length; i++)
                 crittersToPacifyOnSolve[i]?.PacifyAfterPuzzleSolve();
+        }
+
+        if (enemiesToPacifyOnSolve != null)
+        {
+            for (int i = 0; i < enemiesToPacifyOnSolve.Length; i++)
+                enemiesToPacifyOnSolve[i]?.SetPacifiedCombat();
         }
 
         if (!lockMushroomsGlowingWhenSolved || mushroomsToLockOnSolved == null) return;

@@ -26,10 +26,8 @@ public class CritterController : MonoBehaviour
     [Header("After mushroom puzzle solved")]
     [Tooltip("Place an empty transform slightly under the mushroom cap — critter walks here and stays.")]
     [SerializeField] private Transform restPointUnderMushroom;
-    [Tooltip("Player damage scripts use CompareTag(\"Enemy\"). Change tag when pacified so contact is safe.")]
+    [Tooltip("Player damage scripts often use CompareTag(\"Enemy\"). Cleared when pacified.")]
     [SerializeField] private string pacifiedTag = "Untagged";
-    [Tooltip("If set, assigns this layer (by name) on this object and all children — pair with Physics collision matrix so player doesn't treat hits as damage.")]
-    [SerializeField] private string pacifiedLayerName = "";
 
     private Rigidbody body;
     private CritterState currentState;
@@ -80,8 +78,8 @@ public class CritterController : MonoBehaviour
     }
 
     /// <summary>
-    /// Call from <see cref="MushroomSequenceTracker.OnPuzzleSolved"/> or PuzzleValidator. Walks to the rest point,
-    /// stays under the cap forever, removes Enemy damage (via tag/layer), and stops reacting to mushroom activations.
+    /// Walks to the rest point and stays calm. Removes Enemy-tag contact damage routing and zeros
+    /// <see cref="EnemyControllerTest"/> combat if present (runtime attack clone — shared AttackData asset untouched).
     /// </summary>
     public void PacifyAfterPuzzleSolve()
     {
@@ -92,7 +90,7 @@ public class CritterController : MonoBehaviour
             return;
         }
 
-        Debug.Log($"[{nameof(CritterController)}] {name}: Pacify — move to rest point '{restPointUnderMushroom.name}' at {restPointUnderMushroom.position}, tag='{pacifiedTag}', layer='{pacifiedLayerName}'");
+        Debug.Log($"[{nameof(CritterController)}] {name}: Pacify — rest '{restPointUnderMushroom.name}' at {restPointUnderMushroom.position}, tag='{pacifiedTag}', combat cleared via EnemyController if any.");
 
         pacified = true;
         if (mushroomChannel != null)
@@ -100,14 +98,9 @@ public class CritterController : MonoBehaviour
 
         gameObject.tag = pacifiedTag;
 
-        if (!string.IsNullOrEmpty(pacifiedLayerName))
-        {
-            int layer = LayerMask.NameToLayer(pacifiedLayerName);
-            if (layer < 0)
-                Debug.LogWarning($"[{nameof(CritterController)}] Layer '{pacifiedLayerName}' not found. Add it in Edit → Project Settings → Tags and Layers.");
-            else
-                SetLayerRecursively(transform, layer);
-        }
+        var enemy = GetComponent<EnemyControllerTest>();
+        if (enemy == null) enemy = GetComponentInChildren<EnemyControllerTest>();
+        enemy?.SetPacifiedCombat();
 
         if (body != null)
             body.isKinematic = true;
@@ -130,12 +123,5 @@ public class CritterController : MonoBehaviour
         if (currentState is CalmUnderCapState) return;
 
         SetState(new MovingState(data.Position, arriveRadius, secondsToReachCap, data.Duration));
-    }
-
-    private static void SetLayerRecursively(Transform root, int layer)
-    {
-        root.gameObject.layer = layer;
-        for (int i = 0; i < root.childCount; i++)
-            SetLayerRecursively(root.GetChild(i), layer);
     }
 }
