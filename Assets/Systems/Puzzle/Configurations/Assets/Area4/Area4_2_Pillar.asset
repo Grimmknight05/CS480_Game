@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46f5732c8d7734241b11473b2808b794, type: 3}
-  m_Name: Area4RotateOnTurn
+  m_Name: Area4_2_Pillar
   m_EditorClassIdentifier: Assembly-CSharp::StoneConfiguration
   requiredStones:
-  - stoneID: Area4_4
+  - stoneID: Area4_2
     requireSpecificRotation: 1
-    activationRotation: 90
-    rotationTolerance: 0
+    activationRotation: 270
+    rotationTolerance: 2

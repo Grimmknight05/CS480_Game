@@ -44,6 +44,7 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
     //private Animator animator;
 
     [Header("Reset")]
+    [SerializeField] private EnemyDeathChannel deathChannel;
     [SerializeField] private LevelResetChannelSO resetChannel;
     private Vector3 startPos;
     private Quaternion startRot;
@@ -229,6 +230,8 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
         if (IsDead) return;
 
         IsDead = true;
+        deathChannel?.RaiseEvent(gameObject);
+        Debug.Log("Raised Death on" + gameObject);
         ChangeState(EnemyState.Dead);
 
         if (deathSFX != null && audioSource != null)
@@ -244,10 +247,11 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
 
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
-
+        
         // Hide visuals after a delay so the death is readable, but keep the
         // GameObject alive so a level reset can revive this enemy.
         Invoke(nameof(HideOnDeath), 2f);
+        
     }
 
     private void HideOnDeath()

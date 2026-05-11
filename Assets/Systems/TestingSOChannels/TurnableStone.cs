@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 // Author: Joshua Henrikson
 // Modified by: GitHub Copilot / Architecture Refactor (April 2026)
@@ -24,7 +25,8 @@ public class TurnableStone : MonoBehaviour
     [SerializeField] private bool Playerlock = false;//Lock for player Channel
     [SerializeField] private GameObject InputlockVisual;
     [SerializeField] private GameObject PlayerlockVisual;
-
+    [Header("Interaction Events")]
+    public UnityEvent onInteract;   
     [Header("Stone Reference")]
     [SerializeField] private string stoneID;
     
@@ -57,6 +59,7 @@ public class TurnableStone : MonoBehaviour
     public void Interact()
     {
         if (Inputlock || Playerlock) return; // If either lock dont let player rotate
+        onInteract?.Invoke();
         setTargetRot();
     }
     public void InteractBypassPlayerLock()
