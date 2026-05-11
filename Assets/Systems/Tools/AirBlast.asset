@@ -15,8 +15,8 @@ MonoBehaviour:
   toolName: Tool
   toolDescription: A generic tool
   cooldown: 0.5
-  useSFX: {fileID: 0}
-  toolIcon: {fileID: 0}
+  useSFX: {fileID: 8300000, guid: bc18fe1a807ecc04fab7d60e3e616add, type: 3}
+  toolIcon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   targetLayer:
     serializedVersion: 2
     m_Bits: 1791

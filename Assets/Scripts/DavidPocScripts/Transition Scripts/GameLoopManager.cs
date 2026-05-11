@@ -1,9 +1,10 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameLoopManager : MonoBehaviour
 {
     [SerializeField] private PlayerDeathChannelSO deathChannel;
+    [SerializeField] private LevelResetChannelSO resetChannel;
+    [SerializeField] private PlayerHealth playerHealth;
 
     void OnEnable()
     {
@@ -19,6 +20,12 @@ public class GameLoopManager : MonoBehaviour
 
     void HandlePlayerDeath()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // The Game Over UI gates the soft reset now — see RequestContinue.
+    }
+
+    public void RequestContinue()
+    {
+        playerHealth?.RestoreFull();
+        resetChannel?.Raise();
     }
 }

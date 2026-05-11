@@ -22,6 +22,8 @@ public class PuzzleValidator : MonoBehaviour
     [Header("Event Channels")]
     [Tooltip("The channel to listen to for stone/lever updates.")]
     [SerializeField] private ActivatorStateChannel stateChannel;
+    [Tooltip("The channel to listen to for level resets (e.g. on player death).")]
+    [SerializeField] private LevelResetChannelSO resetChannel;
 
     [Header("Puzzle Configuration")]
     [SerializeField] private List<PuzzleTrigger> triggers;
@@ -35,6 +37,10 @@ public class PuzzleValidator : MonoBehaviour
         {
             stateChannel.OnStateChanged += HandleActivatorStateChanged;
         }
+        if (resetChannel != null)
+        {
+            resetChannel.OnRaised += HandleLevelReset;
+        }
     }
 
     private void OnDisable()
@@ -43,6 +49,35 @@ public class PuzzleValidator : MonoBehaviour
         if (stateChannel != null)
         {
             stateChannel.OnStateChanged -= HandleActivatorStateChanged;
+        }
+        if (resetChannel != null)
+        {
+            resetChannel.OnRaised -= HandleLevelReset;
+        }
+    }
+
+    private void HandleLevelReset()
+    {
+        foreach (var trigger in triggers)
+        {
+            // Permanently-solved puzzles opt out of the reset so progress
+            // (opened doors, removed gates) survives the player's death.
+            if (trigger.hasFired && !trigger.reTriggerable) continue;
+
+            if (trigger.isCurrentlySolved || trigger.hasFired)
+            {
+                trigger.onUnsolved?.Invoke();
+            }
+            trigger.isCurrentlySolved = false;
+            trigger.hasFired = false;
+
+            if (trigger.config != null)
+            {
+                foreach (var requirement in trigger.config.GetRequirements())
+                {
+                    activatorStates.Remove(requirement.ActivatorID);
+                }
+            }
         }
     }
 
