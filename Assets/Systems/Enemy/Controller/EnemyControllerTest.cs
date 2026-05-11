@@ -48,6 +48,13 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
     private Vector3 startPos;
     private Quaternion startRot;
 
+    [Header("NavMesh fallback")]
+    [Tooltip("If there is no baked NavMesh or this agent never lands on it, AI stops and the tag is set so player contact does not count as Enemy.")]
+    [SerializeField] private string harmlessTagWhenNoNavMesh = "Untagged";
+
+    private string originalTag;
+    private bool navAiEnabled = true;
+
     void Awake()
     {
         startPos = transform.position;
@@ -69,19 +76,23 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        originalTag = gameObject.tag;
+
+        EvaluateNavMeshSupport(logOnce: true);
+
         //animator = GetComponent<Animator>();
         playRandomSFX(enemySFX);
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        // Get and cache player's health component
-        if (player != null)
+        var playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
         {
+            player = playerObj.transform;
             playerDamageable = player.GetComponent<IDamageable>();
         }
-        if (patrolPoints.Length > 0)
-        {
-            navMeshAgent.SetDestination(patrolPoints[0].position);
-        }
 
+        if (navAiEnabled && navMeshAgent != null && patrolPoints != null && patrolPoints.Length > 0)
+        {
+            TrySetDestination(patrolPoints[0].position);
+        }
     }
 
     // Update is called once per frame
@@ -89,8 +100,64 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
     {
         if (currentState == EnemyState.Dead) return;
 
+        if (!navAiEnabled)
+            return;
+
         UpdateState();
         HandleSound();
+    }
+
+    private void EvaluateNavMeshSupport(bool logOnce = false)
+    {
+        navAiEnabled = true;
+
+        if (navMeshAgent == null)
+        {
+            PacifyNoNavMesh($"[{name}] No NavMeshAgent — pacifying enemy.", logOnce);
+            return;
+        }
+
+        navMeshAgent.enabled = true;
+
+        var triangulation = NavMesh.CalculateTriangulation();
+        if (triangulation.indices == null || triangulation.indices.Length == 0)
+        {
+            PacifyNoNavMesh($"[{name}] No NavMesh triangles in scene — pacifying enemy.", logOnce);
+            return;
+        }
+
+        if (!navMeshAgent.isOnNavMesh &&
+            NavMesh.SamplePosition(transform.position, out NavMeshHit hit, 4f, NavMesh.AllAreas))
+        {
+            navMeshAgent.Warp(hit.position);
+        }
+
+        if (!navMeshAgent.isOnNavMesh)
+        {
+            PacifyNoNavMesh($"[{name}] NavMesh exists but agent is not on mesh — pacifying enemy.", logOnce);
+        }
+    }
+
+    private void PacifyNoNavMesh(string message, bool log)
+    {
+        navAiEnabled = false;
+        if (log)
+            Debug.LogWarning(message);
+
+        if (navMeshAgent != null)
+            navMeshAgent.enabled = false;
+
+        if (!string.IsNullOrEmpty(harmlessTagWhenNoNavMesh))
+            gameObject.tag = harmlessTagWhenNoNavMesh;
+    }
+
+    private bool TrySetDestination(Vector3 destination)
+    {
+        if (!navAiEnabled || navMeshAgent == null || !navMeshAgent.enabled || !navMeshAgent.isOnNavMesh)
+            return false;
+
+        navMeshAgent.SetDestination(destination);
+        return true;
     }
 
     private void UpdateState()
@@ -106,6 +173,8 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
                 break;
             case EnemyState.Chase:
                 Chase();
+                if (player == null || attackData == null)
+                    break;
                 if (!CanSeePlayer())
                 {
                     ChangeState(EnemyState.Patrol);
@@ -117,6 +186,8 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
                 break;
             case EnemyState.Attack:
                 Attack();
+                if (player == null || attackData == null)
+                    break;
                 if (Vector3.Distance(transform.position, player.position) > attackData.attackRange)
                 {
                     ChangeState(EnemyState.Chase);
@@ -127,27 +198,34 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
 
     private void Patrol()
     {
+        if (!navAiEnabled || navMeshAgent == null || patrolPoints == null || patrolPoints.Length == 0)
+            return;
+
         navMeshAgent.speed = patrolSpeed;
-        if (patrolPoints.Length == 0) return;
 
         if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.5f)
         {
             currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
-            navMeshAgent.SetDestination(patrolPoints[currentPatrolIndex].position);
+            TrySetDestination(patrolPoints[currentPatrolIndex].position);
         }
     }
 
     private void Chase()
     {
+        if (player == null)
+            return;
         navMeshAgent.speed = chaseSpeed;
-        navMeshAgent.SetDestination(player.position);
+        TrySetDestination(player.position);
     }
 
     private void Attack()
     {
+        if (!navAiEnabled || navMeshAgent == null || !navMeshAgent.enabled)
+            return;
+
         navMeshAgent.isStopped = true;
 
-        if (player == null)
+        if (player == null || attackData == null)
             return;
 
         if (Time.time - lastAttackTime < attackData.attackCooldown)
@@ -199,7 +277,8 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
         if (currentState == newState) return;
 
         currentState = newState;
-        navMeshAgent.isStopped = false;
+        if (navMeshAgent != null && navMeshAgent.enabled)
+            navMeshAgent.isStopped = false;
 
         /*// Animation triggers
         if (animator != null)
@@ -231,7 +310,8 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
         IsDead = true;
         ChangeState(EnemyState.Dead);
 
-        navMeshAgent.isStopped = true;
+        if (navMeshAgent != null && navMeshAgent.enabled)
+            navMeshAgent.isStopped = true;
 
         if (deathSFX != null)
             audioSource.PlayOneShot(deathSFX);
@@ -262,17 +342,22 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
         EnemyHealth eh = GetComponent<EnemyHealth>();
         if (eh != null) eh.RestoreFull();
 
-        if (navMeshAgent != null)
-        {
-            navMeshAgent.Warp(startPos);
-            navMeshAgent.isStopped = false;
-            if (patrolPoints != null && patrolPoints.Length > 0)
-            {
-                currentPatrolIndex = 0;
-                navMeshAgent.SetDestination(patrolPoints[0].position);
-            }
-        }
+        transform.position = startPos;
         transform.rotation = startRot;
+
+        gameObject.tag = originalTag;
+        EvaluateNavMeshSupport(logOnce: false);
+
+        if (navAiEnabled && navMeshAgent != null && navMeshAgent.enabled && navMeshAgent.isOnNavMesh)
+            navMeshAgent.Warp(startPos);
+
+        if (navAiEnabled && navMeshAgent != null && navMeshAgent.enabled && patrolPoints != null &&
+            patrolPoints.Length > 0)
+        {
+            currentPatrolIndex = 0;
+            TrySetDestination(patrolPoints[0].position);
+        }
+
         currentState = EnemyState.Patrol;
         lastAttackTime = 0f;
     }
@@ -290,7 +375,7 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
 
     private void playRandomSFX(AudioClip[] soundList)
     {
-        if (soundList.Length == 0) return;
+        if (soundList == null || soundList.Length == 0) return;
         int randomIndex = Random.Range(0, soundList.Length);
         audioSource.PlayOneShot(soundList[randomIndex]);
     }
@@ -304,7 +389,7 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
 
         // Attack range
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackData.attackRange);
+        Gizmos.DrawWireSphere(transform.position, attackData != null ? attackData.attackRange : 0f);
 
         // Patrol waypoints
         if (patrolPoints != null && patrolPoints.Length > 0)

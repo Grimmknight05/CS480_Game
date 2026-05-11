@@ -11686,7 +11686,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 2534964839176971238, guid: a3e2223f32e8b496daff3668844143fd, type: 3}
+  m_Mesh: {fileID: 2534964839176971238, guid: 8467c8f19314243d888556cb967aafee, type: 3}
 --- !u!4 &1255127566 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7060759569015407617, guid: 849a2953bd45e6641b5949533b662758, type: 3}
@@ -12120,7 +12120,7 @@ Transform:
   m_GameObject: {fileID: 1282286735}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -60, y: 14.47, z: 444}
+  m_LocalPosition: {x: -60, y: 10.55, z: 444}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -23867,6 +23867,7 @@ MonoBehaviour:
   enemySoundMinInterval: 3
   enemySoundMaxInterval: 5
   resetChannel: {fileID: 0}
+  harmlessTagWhenNoNavMesh: Untagged
 --- !u!224 &479032738743858202
 RectTransform:
   m_ObjectHideFlags: 0
@@ -29803,7 +29804,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6428301952035708780}
-  m_Mesh: {fileID: 2534964839176971238, guid: a3e2223f32e8b496daff3668844143fd, type: 3}
+  m_Mesh: {fileID: 2534964839176971238, guid: 8467c8f19314243d888556cb967aafee, type: 3}
 --- !u!33 &7987883695766857336
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -30831,7 +30832,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 2534964839176971238, guid: dad966f6b83e24cd7892f72ad1bab419, type: 3}
+  m_Mesh: {fileID: 2534964839176971238, guid: 2457ef83b7d6848cca910fd40b1918c2, type: 3}
 --- !u!114 &9191586242884677050
 MonoBehaviour:
   m_ObjectHideFlags: 0
