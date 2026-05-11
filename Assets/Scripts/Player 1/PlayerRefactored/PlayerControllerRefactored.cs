@@ -62,6 +62,12 @@ public class PlayerControllerRefactored : MonoBehaviour
     [SerializeField] private Transform cameraPivot;
     private Vector3 cachedMoveDirection;
 
+    [Header("Dialogue")]
+    [SerializeField] private DialogueEventChannelSO dialogueStartChannel;
+    [SerializeField] private DialogueEndedChannelSO dialogueEndedChannel;
+    public bool InputEnabled { get; private set; } = true;
+    private MovementMode previousModeBeforeDialogue = MovementMode.AccelerationBased;
+
     private PlayerInput playerInput;
     public Animator animator;
 
@@ -87,15 +93,41 @@ public class PlayerControllerRefactored : MonoBehaviour
         jumpAction = inputActions.FindAction("Jump");
         jumpAction.started += OnJumpStarted;   // button down
         jumpAction.canceled += OnJumpCanceled; // button up
+
+        if (dialogueStartChannel != null) dialogueStartChannel.OnRaised += HandleDialogueStart;
+        if (dialogueEndedChannel != null) dialogueEndedChannel.OnRaised += HandleDialogueEnded;
     }
 
     void OnDisable()
     {
         jumpAction.started -= OnJumpStarted;
         jumpAction.canceled -= OnJumpCanceled;
+
+        if (dialogueStartChannel != null) dialogueStartChannel.OnRaised -= HandleDialogueStart;
+        if (dialogueEndedChannel != null) dialogueEndedChannel.OnRaised -= HandleDialogueEnded;
     }
+
+    private void HandleDialogueStart(DialogueSO _)
+    {
+        previousModeBeforeDialogue = (currentState is ZeroGMovementState)
+            ? MovementMode.ZeroGrav
+            : MovementMode.AccelerationBased;
+        InputEnabled = false;
+        moveX = 0f;
+        moveY = 0f;
+        moveZ = 0f;
+        SetMovementState(new DialogueMovementState());
+    }
+
+    private void HandleDialogueEnded()
+    {
+        InputEnabled = true;
+        SetMovementMode(previousModeBeforeDialogue);
+    }
+
     private void OnJumpStarted(InputAction.CallbackContext ctx)
     {
+        if (!InputEnabled) return;
         QueueCommand(new JumpCommand());
     }
 
@@ -153,6 +185,7 @@ public class PlayerControllerRefactored : MonoBehaviour
     // Input callbacks
     void OnMove(InputValue value)
     {
+        if (!InputEnabled) { moveX = 0f; moveY = 0f; return; }
         Vector2 v = value.Get<Vector2>();
         moveX = v.x;
         moveY = v.y;
@@ -166,6 +199,7 @@ public class PlayerControllerRefactored : MonoBehaviour
 
     public void OnInteract(InputValue value)
     {
+        if (!InputEnabled) return;
         Debug.Log($"[PlayerController] OnInteract called, isPressed: {value.isPressed}");
     }
     void checkGround()
