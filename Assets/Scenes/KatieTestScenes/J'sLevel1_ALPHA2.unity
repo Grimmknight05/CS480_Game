@@ -878,7 +878,6 @@ Transform:
   - {fileID: 554863618}
   - {fileID: 1028626812}
   - {fileID: 1074413329}
-  - {fileID: 840791095}
   - {fileID: 559518223}
   m_Father: {fileID: 1537836314}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2549,7 +2548,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 89683030}
+    m_TransformParent: {fileID: 1196144990}
     m_Modifications:
     - target: {fileID: 6495411679928409253, guid: 3f7581cbd2092e346913e7ce498e9aa3, type: 3}
       propertyPath: m_Height
@@ -2569,15 +2568,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8438612211718903345, guid: 3f7581cbd2092e346913e7ce498e9aa3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 72.22
+      value: 50.272236
       objectReference: {fileID: 0}
     - target: {fileID: 8438612211718903345, guid: 3f7581cbd2092e346913e7ce498e9aa3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.62
+      value: -6.24619
       objectReference: {fileID: 0}
     - target: {fileID: 8438612211718903345, guid: 3f7581cbd2092e346913e7ce498e9aa3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 385.81
+      value: -83.961426
       objectReference: {fileID: 0}
     - target: {fileID: 8438612211718903345, guid: 3f7581cbd2092e346913e7ce498e9aa3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2613,7 +2612,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9101820701437267083, guid: 3f7581cbd2092e346913e7ce498e9aa3, type: 3}
       propertyPath: m_Name
-      value: Robot
+      value: Area_1 Robot
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13350,7 +13349,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9101820701437267083, guid: 3f7581cbd2092e346913e7ce498e9aa3, type: 3}
       propertyPath: m_Name
-      value: Robot
+      value: Area_2 Robot (sm)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16260,7 +16259,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9101820701437267083, guid: 3f7581cbd2092e346913e7ce498e9aa3, type: 3}
       propertyPath: m_Name
-      value: Robot (1)
+      value: Area_2 Robot (lg)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -20086,6 +20085,7 @@ Transform:
   m_Children:
   - {fileID: 697560625}
   - {fileID: 936381464}
+  - {fileID: 840791095}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1202728230
