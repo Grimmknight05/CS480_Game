@@ -231,10 +231,16 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
         IsDead = true;
         ChangeState(EnemyState.Dead);
 
-        navMeshAgent.isStopped = true;
-
-        if (deathSFX != null)
+        if (deathSFX != null && audioSource != null)
             audioSource.PlayOneShot(deathSFX);
+
+        if (navMeshAgent != null)
+        {
+            navMeshAgent.isStopped = true;
+            navMeshAgent.velocity = Vector3.zero;
+            navMeshAgent.ResetPath();
+            navMeshAgent.enabled = false;
+        }
 
         Collider col = GetComponent<Collider>();
         if (col != null) col.enabled = false;
@@ -264,6 +270,7 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
 
         if (navMeshAgent != null)
         {
+            navMeshAgent.enabled = true;
             navMeshAgent.Warp(startPos);
             navMeshAgent.isStopped = false;
             if (patrolPoints != null && patrolPoints.Length > 0)

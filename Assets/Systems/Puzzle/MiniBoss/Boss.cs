@@ -102,7 +102,13 @@ public abstract class Boss : MonoBehaviour
     public int GetEnemiesAliveCount()
     {
         activeEnemies.RemoveAll(e => e == null);
-        return activeEnemies.Count;
+        int alive = 0;
+        foreach (var e in activeEnemies)
+        {
+            var ctrl = e.GetComponent<EnemyControllerTest>();
+            if (ctrl == null || !ctrl.IsDead) alive++;
+        }
+        return alive;
     }
 
     protected virtual void DefeatBoss()
