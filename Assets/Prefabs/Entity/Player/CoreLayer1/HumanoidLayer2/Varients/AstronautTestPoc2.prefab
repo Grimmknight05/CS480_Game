@@ -1715,6 +1715,8 @@ MonoBehaviour:
   airJumpForce: 400
   canJump: 1
   cameraPivot: {fileID: 0}
+  dialogueStartChannel: {fileID: 11400000, guid: 63eb2f358c2644f718e1bbb1b8dc25fa, type: 2}
+  dialogueEndedChannel: {fileID: 11400000, guid: b5e30c45ee0c145d48f736706cdf110f, type: 2}
   animator: {fileID: 4311117212020250035}
 --- !u!114 &722806112739342378
 MonoBehaviour:
@@ -1785,6 +1787,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9a13afbf87774244fb4885b7f58370de, type: 2}
   usePoint: {fileID: 4461043086043796411}
   audioSource: {fileID: 6448667773203093288}
+  dialogueStartChannel: {fileID: 11400000, guid: 63eb2f358c2644f718e1bbb1b8dc25fa, type: 2}
+  dialogueEndedChannel: {fileID: 11400000, guid: b5e30c45ee0c145d48f736706cdf110f, type: 2}
 --- !u!114 &3335591913204491812
 MonoBehaviour:
   m_ObjectHideFlags: 0
