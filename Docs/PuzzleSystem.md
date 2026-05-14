@@ -1,130 +1,181 @@
 # Puzzle System Overview
 
-The Puzzle System validates whether a set of in-world **activators** (levers, pressure plates, turnable stones, …) match the rules defined by a **configuration** asset, and fires `UnityEvent`s when they do or stop matching. It is the project's general-purpose "is this puzzle solved?" checker.
+The Puzzle System validates whether a set of in-world **activators** (levers, pressure plates, turnable stones, mushrooms, …) match the rules defined by a **configuration** asset, and fires `UnityEvent`s when they do or stop matching. It is the project's general-purpose "is this puzzle solved?" checker.
 
 The architecture is decoupled in three layers:
 
-1. **Activators** (MonoBehaviours) — broadcast their state when something happens to them.
-2. **`ActivatorStateChannel`** (ScriptableObject) — a shared bus every activator publishes on and the validator subscribes to.
-3. **`PuzzleValidator`** (MonoBehaviour) — listens to the channel, checks each configured puzzle's `IActivatorRequirement[]`, fires `onSolved` / `onUnsolved` when state changes the answer.
+1. **Activators** (MonoBehaviours) — detect input or world state and broadcast typed events through a ScriptableObject channel.
+2. **Typed `ActivatorStateChannel<T>`** (ScriptableObject) — a strongly-typed shared bus every activator publishes on and the validator subscribes to.
+3. **`PuzzleValidator`** (MonoBehaviour, implements `IPuzzleStateProvider`) — listens to one or more channels, stores typed state snapshots, and calls `config.IsSolved(this)` on each trigger whenever state changes.
 
-> **This document supersedes** the older `Assets/Systems/Puzzle/README.md`, `CREATING_NEW_ACTIVATOR.md`, and `QUICK_REFERENCE.md`. Those files describe a `GameEvents`-based event path that **no longer drives `PuzzleValidator`** — see [Known Wiring Discrepancy](#known-wiring-discrepancy-leveractivator-is-orphaned) below.
+> **This document supersedes** `Assets/Systems/Puzzle/README.md`, `CREATING_NEW_ACTIVATOR.md`, and `QUICK_REFERENCE.md`. Those files describe the legacy `GameEvents`-static and untyped-`object` paths that have been removed.
+
+---
 
 ## Core Components
 
 ### Framework (the contract)
 
-- **[`IActivatorRequirement`](../Assets/Systems/Puzzle/Framework/IActivatorRequirement.cs)** — interface every requirement implements. Two members:
-  - `string ActivatorID { get; }` — the ID this requirement is asking about.
-  - `bool IsSatisfied(object activatorState)` — given the current state for that ID, return whether this requirement is met. State comes in as `object`; the implementation pattern-matches with `is` (e.g., `if (activatorState is float rotation)`).
-- **[`ActivatorState`](../Assets/Systems/Puzzle/Framework/ActivatorState.cs)** — small value struct: `{ ActivatorID, State, Time }`. Used by the legacy `GameEvents` path; the active path passes `(string, object)` directly.
+All types live under `Assets/Systems/Puzzle/Framework/`.
+
+- **[`ActivatorID`](../Assets/Systems/Puzzle/Framework/ActivatorID.cs)** — ScriptableObject used as a typo-proof puzzle identifier. Replaces magic strings entirely. Both the activator component in the scene and the configuration asset hold a reference to the **same** `ActivatorID` asset — the Editor enforces the join instead of relying on exact string matches.
+  - *Create via*: right-click → **Create → Puzzle → Activator ID**.
+
+- **[`IActivatorRequirement<T>`](../Assets/Systems/Puzzle/Framework/IActivatorRequirement.cs)** — generic interface every requirement implements:
+  - `ActivatorID ActivatorID { get; }` — which activator this requirement is asking about.
+  - `bool IsSatisfied(T state)` — given the strongly-typed current state for that ID, return whether this requirement is met.
+
+- **[`IPuzzleStateProvider`](../Assets/Systems/Puzzle/Framework/IPuzzleStateProvider.cs)** — interface that decouples `ActivatorConfiguration` from the concrete validator. Any class that holds typed state can implement it and pass itself to `IsSolved`. Current methods:
+  ```csharp
+  bool TryGetBool(ActivatorID id, out bool value);
+  bool TryGetFloat(ActivatorID id, out float value);
+  bool TryGetMushroomColor(ActivatorID id, out MushroomColor value);
+  bool TryGetMushroomColorArray(ActivatorID id, out MushroomColor[] value);
+  ```
+
+- **[`ActivatorStateChannel<T>`](../Assets/Systems/Puzzle/Framework/ActivatorStateChannel.cs)** — abstract generic SO base:
+  - `event Action<ActivatorID, T> OnStateChanged`
+  - `RaiseEvent(ActivatorID id, T state)` — null-guards the ID and invokes subscribers.
+  - `OnDisable()` — nulls `OnStateChanged` to prevent ghost listeners across domain reloads.
+
+### Typed Channels (concrete SO assets)
+
+| Class | Menu path | Payload | Use |
+|---|---|---|---|
+| `BoolActivatorChannel` | Events → Bool Activator Channel | `bool` | Levers, pressure plates |
+| `FloatActivatorChannel` | Events → Float Activator Channel | `float` | Turnable stones, boss pillars |
+| `MushroomColorChannel` | Events → Mushroom Color Channel | `MushroomColor` | Single-mushroom color events |
+| `MushroomColorArrayChannel` | Events → Mushroom Color Array Channel | `MushroomColor[]` | Musical sequence tracker → validator |
+
+Create one asset per puzzle that needs that type. A single channel asset can be shared across multiple puzzles in the same scene — `ActivatorID` disambiguates which activator sent the event.
 
 ### Configuration (the rules — `ScriptableObject`)
 
-- **[`ActivatorConfiguration`](../Assets/Systems/Puzzle/Configurations/ActivatorConfiguration.cs)** — abstract base. Single member: `abstract IActivatorRequirement[] GetRequirements()`. Each concrete subclass declares its own nested `Requirement` class implementing `IActivatorRequirement`, and an array field of those.
-- **[`StoneConfiguration`](../Assets/Systems/Puzzle/Configurations/StoneConfiguration.cs)** — `StoneRequirement { stoneID, activationRotation, rotationTolerance }`. State expected: `float` rotation in degrees. Match: `Mathf.Abs(Mathf.DeltaAngle(rotation, activationRotation)) <= rotationTolerance`.
-- **[`PressurePlateConfiguration`](../Assets/Systems/Puzzle/Configurations/PressurePlateConfiguration.cs)** — `PressurePlateRequirement { plateID, mustBePressed }`. State expected: `bool`.
-- **[`LeverConfiguration`](../Assets/Systems/Puzzle/Configurations/LeverConfiguration.cs)** — `LeverRequirement { leverID, mustBeEngaged }`. State expected: `bool`.
+All configuration types live under `Assets/Systems/Puzzle/Configurations/`.
 
-### Event Channel (the bus — `ScriptableObject`)
+- **[`ActivatorConfiguration`](../Assets/Systems/Puzzle/Configurations/ActivatorConfiguration.cs)** — abstract base. Single abstract member:
+  ```csharp
+  public abstract bool IsSolved(IPuzzleStateProvider state);
+  ```
+  Concrete subclasses query the provider via `TryGetBool` / `TryGetFloat` / etc. and iterate their own requirements internally. There is no public `GetRequirements()` — the validator never inspects requirements directly.
 
-- **[`ActivatorStateChannel`](../Assets/Systems/TestingSOChannels/ActivatorStateChannel.cs)** — a SO with `event Action<string, object> OnStateChanged` and a `RaiseEvent(string activatorID, object state)` method. Logs a warning if raised with no subscribers. This is **separate** from `VoidEventChannelSO` (covered in [`EventChannels.md`](EventChannels.md)) because activator events carry a payload (the state) — the void channel can't.
-- **Created via**: right-click → **Create → Events → Activator State Channel** (default file name `NewActivatorStateChannel.asset`).
+- **[`StoneConfiguration`](../Assets/Systems/Puzzle/Configurations/StoneConfiguration.cs)** — `StoneRequirement : IActivatorRequirement<float>`. Fields: `stoneID (ActivatorID)`, `activationRotation`, `rotationTolerance`, `requireSpecificRotation`. State queried via `TryGetFloat`. Match: `Mathf.Abs(Mathf.DeltaAngle(rotation, activationRotation)) <= rotationTolerance`.
+
+- **[`PressurePlateConfiguration`](../Assets/Systems/Puzzle/Configurations/PressurePlateConfiguration.cs)** — `PressurePlateRequirement : IActivatorRequirement<bool>`. Fields: `plateID (ActivatorID)`, `mustBePressed`. State queried via `TryGetBool`.
+
+- **[`LeverConfiguration`](../Assets/Systems/Puzzle/Configurations/LeverConfiguration.cs)** — `LeverRequirement : IActivatorRequirement<bool>`. Fields: `leverID (ActivatorID)`, `mustBeEngaged`. State queried via `TryGetBool`.
+
+- **[`MushroomConfiguration`](../Assets/Systems/Puzzle/Configurations/MushroomConfiguration.cs)** — `MushroomRequirement : IActivatorRequirement<MushroomColor>`. Fields: `mushroomID (ActivatorID)`, `requireSpecificColor`, `expectedColor`. State queried via `TryGetMushroomColor`.
+
+- **[`MusicalSequenceConfiguration`](../Assets/Systems/MushroomPuzzle/Validation/MusicalSequenceConfiguration.cs)** — `SequenceRequirement : IActivatorRequirement<MushroomColor[]>`. Fields: `sequenceID (ActivatorID)`, `expectedSequence[]`, `logComparisonChecks`. State queried via `TryGetMushroomColorArray`. Matches a sliding-window suffix of the live history against the expected sequence. Also exposes `ExpectedSequence` for the `MushroomSequenceTracker` to drive wrong-note detection.
 
 ### Validator (the consumer)
 
-- **[`PuzzleValidator`](../Assets/Systems/TestingSOChannels/PuzzleValidator.cs)** — MonoBehaviour. Holds:
-  - `ActivatorStateChannel stateChannel` — the bus it subscribes to in `OnEnable`.
-  - `List<PuzzleTrigger> triggers` — each entry pairs an `ActivatorConfiguration` with `UnityEvent onSolved` / `UnityEvent onUnsolved` and a `bool reTriggerable`.
-  - Internal `Dictionary<string, object> activatorStates` — the running snapshot of every `(activatorID, state)` it has seen.
-- On every state change it calls `CheckAllPuzzles()`, which iterates each trigger's requirements and asks `IsSatisfied`.
+- **[`PuzzleValidator`](../Assets/Systems/TestingSOChannels/PuzzleValidator.cs)** — MonoBehaviour implementing `IPuzzleStateProvider`. Holds:
+  - Up to four typed channel slots: `boolChannel`, `floatChannel`, `mushroomChannel`, `mushroomArrayChannel` — assign only the ones used by your puzzles.
+  - `List<PuzzleTrigger> triggers` — each entry pairs an `ActivatorConfiguration` with `UnityEvent onSolved` / `onUnsolved` and `bool reTriggerable`.
+  - Four internal typed dictionaries (`Dictionary<ActivatorID, bool/float/MushroomColor/MushroomColor[]>`) — the running state snapshot.
+  - Subscribes to all assigned channels in `OnEnable`, unsubscribes in `OnDisable` (ghost-listener safe).
+  - On every state change, calls `trigger.config.IsSolved(this)` for each trigger, passing itself as the `IPuzzleStateProvider`.
 
 ### Active Activators
 
-- **[`PressurePlateIntegrated`](../Assets/Systems/Puzzle/Activators/PressurePlateIntegrated.cs)** — bool publisher. Tracks colliders entering its trigger volume; on first occupant calls `stateChannel.RaiseEvent(plateID, true)`, on last leaving calls `stateChannel.RaiseEvent(plateID, false)`. Supports a `visual` Transform that drops `pressedDrop` on press for visual feedback. Filters by `acceptedTags`.
-- **[`TurnableStone`](../Assets/Systems/TestingSOChannels/TurnableStone.cs)** — float publisher. Calls `stateChannel.RaiseEvent(stoneID, normalizedRotation)` on rotation change. Lives outside the `Puzzle/Activators/` folder but is logically a puzzle activator.
-- **[`LeverActivator`](../Assets/Systems/Puzzle/Activators/LeverActivator.cs)** — bool publisher, **but currently calls the legacy `GameEvents` path** which no validator listens to. See below.
-- **[`EnemyZoneActivator`](../Assets/Systems/Puzzle/Activators/EnemyZoneActivator.cs)** — empty stub.
+- **[`LeverActivator`](../Assets/Systems/Puzzle/Activators/LeverActivator.cs)** — bool publisher. Fields: `stateChannel (BoolActivatorChannel)`, `leverID (ActivatorID)`. Broadcasts initial state in `Start()` so the validator is seeded before the player touches anything. Calls `stateChannel.RaiseEvent(leverID, isEngaged)` on `SetEngaged(bool)`.
 
-### Legacy (still compiles, no subscribers)
+- **[`PressurePlateIntegrated`](../Assets/Systems/Puzzle/Activators/PressurePlateIntegrated.cs)** — bool publisher. Fields: `stateChannel (BoolActivatorChannel)`, `plateID (ActivatorID)`. Tracks colliders by tag in a `HashSet<Collider>`; raises `true` on first entry, `false` when empty. Supports a `visual` Transform that drops `pressedDrop` units on press.
 
-- **[`GameEvents`](../Assets/Systems/Puzzle/Framework/Event/GameEvents.cs)** — static class with `OnActivatorStateChanged` and `OnStoneRotationChanged` events plus matching `Raise…` methods. **Nothing in the codebase subscribes to either event.** Retained for a transition that didn't fully migrate (see Known Issues).
+- **[`TurnableStone`](../Assets/Systems/TestingSOChannels/TurnableStone.cs)** — float publisher. Fields: `stateChannel (FloatActivatorChannel)`, `stoneID (ActivatorID)`. Raises `stateChannel.RaiseEvent(stoneID, rotation)` on rotation change.
+
+- **[`Mushroom`](../Assets/Systems/MushroomPuzzle/Mushroom/Mushroom.cs)** — single-color publisher (via state machine). Fields: `puzzleChannel (MushroomColorChannel)`, `puzzleActivatorID (ActivatorID)`. `ActiveState.Enter` raises `puzzleChannel.RaiseEvent(puzzleActivatorID, assignedColor)`. The `mushroomChannel (MushroomEventChannelSO)` is a separate, richer broadcast used by critters and audio — not the puzzle channel.
+
+- **[`MushroomSequenceTracker`](../Assets/Systems/MushroomPuzzle/Validation/MushroomSequenceTracker.cs)** — sequence publisher. Fields: `puzzleChannel (MushroomColorArrayChannel)`, `melodyConfiguration (MusicalSequenceConfiguration)`. Accumulates a bounded `List<MushroomColor>` of activations, applies wrong-note prefix detection, and re-raises the running snapshot via `puzzleChannel.RaiseEvent(melodyConfiguration.SequenceActivatorID, snapshot)`. The sequence ID SO comes from the config asset — same asset wired into both tracker and validator is the single source of truth.
+
+---
 
 ## The Event Flow
 
-The current, working path through the system, end to end:
+End-to-end for a float puzzle (turnable stones):
 
-1. **Activator publishes.** A `PressurePlateIntegrated` or `TurnableStone` calls `stateChannel.RaiseEvent(activatorID, state)` — `(string, bool)` for plates, `(string, float)` for stones.
-2. **Channel broadcasts.** `ActivatorStateChannel.RaiseEvent` invokes `OnStateChanged?.Invoke(activatorID, state)`. If no subscribers, logs a warning.
-3. **Validator records and re-checks.** `PuzzleValidator.HandleActivatorStateChanged` writes `activatorStates[activatorID] = state`, then calls `CheckAllPuzzles()`.
-4. **For each `PuzzleTrigger`:**
-   1. Get its `IActivatorRequirement[]` via `config.GetRequirements()`.
-   2. For each requirement, look up `activatorStates[requirement.ActivatorID]`. If absent, the puzzle is not solved.
-   3. If present, call `requirement.IsSatisfied(state)`. If any return false, the puzzle is not solved.
-   4. If all return true, the puzzle is solved.
-5. **Edge-triggered fire.** `PuzzleTrigger` tracks `isCurrentlySolved` and `hasFired`. On the transition unsolved → solved, `onSolved.Invoke()` runs; on solved → unsolved, `onUnsolved.Invoke()` runs. If `reTriggerable` is false, `onSolved` only ever fires once (`hasFired` blocks repeats).
+1. **Activator publishes.** `TurnableStone` calls `stateChannel.RaiseEvent(stoneID, rotation)` — `(ActivatorID, float)`.
+2. **Channel broadcasts.** `FloatActivatorChannel.RaiseEvent` invokes `OnStateChanged?.Invoke(id, state)`.
+3. **Validator records.** `PuzzleValidator.HandleFloatChanged` writes `floatStates[id] = value`, then calls `CheckAllPuzzles()`.
+4. **For each `PuzzleTrigger`:** calls `config.IsSolved(this)` — the config queries the validator (as `IPuzzleStateProvider`) via `TryGetFloat(requirement.ActivatorID, out float value)` for each of its requirements.
+5. **Edge-triggered fire.** `PuzzleTrigger` tracks `isCurrentlySolved` (`[NonSerialized]` — resets cleanly on domain reload). On unsolved → solved: `onSolved.Invoke()`. On solved → unsolved: `onUnsolved.Invoke()`. If `reTriggerable` is `false`, `onSolved` only fires once.
 
-### Known Wiring Discrepancy: `LeverActivator` is Orphaned
+The flow is identical for bool puzzles (levers/plates) via `BoolActivatorChannel` + `TryGetBool`, and for mushroom puzzles via the respective mushroom channels.
 
-`LeverActivator.SetEngaged(bool)` calls `GameEvents.RaiseActivatorStateChanged(leverID, isEngaged)`. `PuzzleValidator` does **not** subscribe to `GameEvents.OnActivatorStateChanged` — it only listens to `ActivatorStateChannel.OnStateChanged`. **No other subscriber to `GameEvents.OnActivatorStateChanged` exists in the project** (verified by grep).
-
-Practical effect: a `LeverConfiguration`-based puzzle today cannot be solved because the lever's state never reaches the validator. To fix this, `LeverActivator` should be migrated to use `ActivatorStateChannel` — see the [Migration template](#template-migrating-an-activator-from-gameevents-to-activatorstatechannel) below. Until then, treat `LeverConfiguration` as wired but inert.
+---
 
 ## Editor Setup & Wiring
 
-### One-time per-project setup
+### One-time per-project assets
 
-1. Create the shared event channel asset. In the **Project** window, right-click → **Create → Events → Activator State Channel**. Name it something like `PuzzleStateChannel.asset`. Place under `Assets/Systems/Events/` (an existing `StonePuzzleChannel.asset` lives there — you can reuse it or add a new one).
+Create these shared assets once; reuse them across scenes.
 
-A single channel asset can be reused across many puzzles in many scenes. Each puzzle is identified by which **configuration asset** is plugged into the validator, not by which channel it uses.
+1. **Typed channel assets.** Right-click in `Assets/Systems/Events/` → **Create → Events → [Bool / Float / Mushroom Color / Mushroom Color Array] Activator Channel**. Name clearly, e.g., `BoolPuzzleChannel.asset`, `FloatPuzzleChannel.asset`.
+
+2. **`ActivatorID` assets.** Right-click in a logical folder (e.g., `Assets/Systems/Puzzle/IDs/Area1/`) → **Create → Puzzle → Activator ID**. Create one per physical activator in the world. Name it to match the object, e.g., `Stone_Area1_Left.asset`. These are the shared references that tie a scene component to a config asset.
 
 ### Per-puzzle setup
 
-2. **Create the configuration asset.** Right-click in `Assets/Systems/Puzzle/Configurations/Assets/` (or a subfolder per area):
-   - **Create → Puzzle → Stone Configuration** for stone puzzles.
-   - **Create → Puzzle → Pressure Plate Configuration** for plate puzzles.
-   - **Create → Puzzle → Lever Configuration** for lever puzzles. *(see the LeverActivator caveat above)*
-3. **Fill in the requirements.** Each configuration exposes an array (`requiredStones`, `requiredPlates`, `requiredLevers`). For each entry, set the activator's ID and its target state:
-   - `StoneRequirement`: `stoneID`, `activationRotation` (degrees), `rotationTolerance` (degrees of leniency).
-   - `PressurePlateRequirement`: `plateID`, `mustBePressed`.
-   - `LeverRequirement`: `leverID`, `mustBeEngaged`.
+3. **Create the configuration asset.** Right-click in `Assets/Systems/Puzzle/Configurations/Assets/[AreaN]/`:
+   - **Create → Puzzle → Stone Configuration** — for stone rotation puzzles.
+   - **Create → Puzzle → Pressure Plate Configuration** — for plate puzzles.
+   - **Create → Puzzle → Lever Configuration** — for lever puzzles.
+   - **Create → Puzzle → Mushroom Configuration** — for single-color mushroom checks.
+   - **Create → Puzzle → Musical Sequence Configuration** — for sequence melody puzzles.
+
+4. **Fill in the requirements.** Each configuration exposes a requirements array. For each entry:
+   - Drag the relevant **`ActivatorID` SO** into the ID slot (not a string — the field is now typed).
+   - Set the target state: `activationRotation` + `rotationTolerance` for stones, `mustBePressed` for plates, `mustBeEngaged` for levers, `expectedColor` for mushrooms, `expectedSequence[]` for sequences.
 
 ### Per-scene wiring
 
-4. **Validator GameObject.** Place an empty GameObject (e.g., `_PuzzleValidator`) in the scene. Attach `PuzzleValidator`.
-   - Drag the channel asset into **State Channel**.
-   - Add an entry to **Triggers** for each puzzle this validator should check:
-     - `triggerName` — for your own readability in the Inspector.
+5. **Validator GameObject.** Place an empty GameObject (e.g., `_PuzzleValidator`) in the scene. Attach `PuzzleValidator`.
+   - Drag the appropriate typed channel assets into the relevant channel slots (**Bool Channel**, **Float Channel**, etc.). Only assign slots that your puzzles actually use.
+   - Add a **Trigger** entry for each puzzle:
+     - `triggerName` — for Inspector readability.
      - `config` — drag the configuration asset.
-     - `onSolved` — wire up `UnityEvent` actions (open door, play sound, raise another channel, etc.).
-     - `onUnsolved` — actions to run if the puzzle becomes unsolved (closes door, etc.). Leave empty if not needed.
-     - `reTriggerable` — leave **off** for one-shot rewards; turn **on** for puzzles that should re-fire whenever they re-solve.
+     - `onSolved` / `onUnsolved` — wire `UnityEvent` actions.
+     - `reTriggerable` — off for one-shot rewards; on for reset-able puzzles.
 
-A single `PuzzleValidator` can host any number of triggers; many puzzles in one scene can share one validator and one channel.
+6. **Activator GameObjects.** For each activator, assign the **same `ActivatorID` SO** that the configuration uses, and assign the **same typed channel** that the validator listens to:
 
-5. **Activator GameObjects.** Place each activator and set its ID to match the requirements:
-   - **Pressure plate**: add a trigger collider, attach `PressurePlateIntegrated`, drag the same channel into **State Channel**, set **Plate ID** to match the configuration's `plateID`. Optionally assign a child Transform to **Visual** for the press animation. Add tags to **Accepted Tags** that should be able to press the plate (default `"Pushable"`).
-   - **Turnable stone**: attach `TurnableStone` to the rotatable mesh, drag the channel into **State Channel**, set **Stone ID** to match the configuration's `stoneID`.
-   - **Lever** *(currently inert — see Known Issues)*: attach `LeverActivator`, set **Lever ID**.
+   | Activator | Channel field type | ID field type |
+   |---|---|---|
+   | `LeverActivator` | `BoolActivatorChannel` | `ActivatorID` |
+   | `PressurePlateIntegrated` | `BoolActivatorChannel` | `ActivatorID` |
+   | `TurnableStone` | `FloatActivatorChannel` | `ActivatorID` |
+   | `Mushroom` | `MushroomColorChannel` | `ActivatorID` (puzzleActivatorID) |
+   | `MushroomSequenceTracker` | `MushroomColorArrayChannel` | *(comes from MusicalSequenceConfiguration)* |
 
 ### Inspector field summary
 
 | Component | Field | Purpose |
 |---|---|---|
-| `PuzzleValidator` | `stateChannel` | Channel it subscribes to. Must match the channel activators publish on. |
-| `PuzzleValidator` | `triggers` | One entry per puzzle. |
-| `PuzzleValidator.PuzzleTrigger` | `triggerName`, `config`, `onSolved`, `onUnsolved`, `reTriggerable` | Per-puzzle wiring. |
-| `PressurePlateIntegrated` | `stateChannel`, `plateID`, `acceptedTags`, `visual`, `pressedDrop` | What it publishes on, what tags trigger it, optional visual feedback. |
-| `TurnableStone` | `stateChannel`, `stoneID` | Same channel as plates is fine — IDs disambiguate. |
-| `StoneConfiguration` | `requiredStones[]` (each: `stoneID`, `activationRotation`, `rotationTolerance`) | The rules. |
-| `PressurePlateConfiguration` | `requiredPlates[]` (each: `plateID`, `mustBePressed`) | The rules. |
-| `LeverConfiguration` | `requiredLevers[]` (each: `leverID`, `mustBeEngaged`) | The rules. |
+| `PuzzleValidator` | `boolChannel` | Subscribe to bool activator events (levers, plates). |
+| `PuzzleValidator` | `floatChannel` | Subscribe to float activator events (stones). |
+| `PuzzleValidator` | `mushroomChannel` | Subscribe to single-color mushroom events. |
+| `PuzzleValidator` | `mushroomArrayChannel` | Subscribe to sequence snapshot events. |
+| `PuzzleValidator` | `triggers` | One entry per puzzle this validator checks. |
+| `LeverActivator` | `stateChannel (BoolActivatorChannel)`, `leverID (ActivatorID)` | Channel + ID. |
+| `PressurePlateIntegrated` | `stateChannel (BoolActivatorChannel)`, `plateID (ActivatorID)`, `acceptedTags`, `visual`, `pressedDrop` | Channel + ID + optional visual feedback. |
+| `TurnableStone` | `stateChannel (FloatActivatorChannel)`, `stoneID (ActivatorID)` | Channel + ID. |
+| `Mushroom` | `puzzleChannel (MushroomColorChannel)`, `puzzleActivatorID (ActivatorID)` | Channel + ID for puzzle events. |
+| `MushroomSequenceTracker` | `puzzleChannel (MushroomColorArrayChannel)`, `melodyConfiguration` | Channel + config (config provides the ActivatorID). |
+| `StoneConfiguration` | `requiredStones[]` — each: `stoneID (ActivatorID)`, `activationRotation`, `rotationTolerance` | The rules. |
+| `PressurePlateConfiguration` | `requiredPlates[]` — each: `plateID (ActivatorID)`, `mustBePressed` | The rules. |
+| `LeverConfiguration` | `requiredLevers[]` — each: `leverID (ActivatorID)`, `mustBeEngaged` | The rules. |
+| `MushroomConfiguration` | `required[]` — each: `mushroomID (ActivatorID)`, `requireSpecificColor`, `expectedColor` | The rules. |
+| `MusicalSequenceConfiguration` | `requirement` — `sequenceID (ActivatorID)`, `expectedSequence[]` | The rules + shared sequence ID. |
+
+---
 
 ## Code Examples / Templates
 
 ### Template: a new configuration type
 
-Mirror the existing three. The shape is always: outer `ActivatorConfiguration` subclass + nested `Requirement` class implementing `IActivatorRequirement`.
+Extend `ActivatorConfiguration`. The nested `Requirement` class implements `IActivatorRequirement<T>` for whatever state type your activator publishes. `IsSolved` queries the provider and iterates requirements.
 
 ```csharp
 using UnityEngine;
@@ -133,126 +184,167 @@ using UnityEngine;
 public class TimedSwitchConfiguration : ActivatorConfiguration
 {
     [System.Serializable]
-    public class TimedSwitchRequirement : IActivatorRequirement
+    public class TimedSwitchRequirement : IActivatorRequirement<float>
     {
-        public string switchID;
-        public float minHeldSeconds = 1.5f;
+        [SerializeField] private ActivatorID switchID;
+        [SerializeField] private float minHeldSeconds = 1.5f;
 
-        public string ActivatorID => switchID;
-
-        public bool IsSatisfied(object activatorState)
-        {
-            return activatorState is float heldSeconds && heldSeconds >= minHeldSeconds;
-        }
+        public ActivatorID ActivatorID => switchID;
+        public bool IsSatisfied(float heldSeconds) => heldSeconds >= minHeldSeconds;
     }
 
-    [SerializeField] public TimedSwitchRequirement[] requiredSwitches;
+    [SerializeField] private TimedSwitchRequirement[] requiredSwitches;
 
-    public override IActivatorRequirement[] GetRequirements() => requiredSwitches;
+    public override bool IsSolved(IPuzzleStateProvider state)
+    {
+        if (requiredSwitches == null || requiredSwitches.Length == 0) return false;
+        foreach (var r in requiredSwitches)
+        {
+            if (r.ActivatorID == null) return false;
+            if (!state.TryGetFloat(r.ActivatorID, out float value)) return false;
+            if (!r.IsSatisfied(value)) return false;
+        }
+        return true;
+    }
 }
 ```
 
-`IsSatisfied` runs against `object`, so always pattern-match (`is float`, `is bool`, `is int`) before reading the state. The validator passes whatever the activator published.
+If your state type is not `bool`, `float`, `MushroomColor`, or `MushroomColor[]`, you must also:
+1. Create a new `ActivatorStateChannel<YourType>` concrete subclass.
+2. Add `bool TryGetYourType(ActivatorID id, out YourType value)` to `IPuzzleStateProvider`.
+3. Implement the new method in `PuzzleValidator` with a matching dictionary and channel.
 
-### Template: a new activator (the right way)
-
-Use `ActivatorStateChannel`. Don't use `GameEvents` — it's not wired up.
+### Template: a new activator
 
 ```csharp
 using UnityEngine;
 
 public class TimedSwitchActivator : MonoBehaviour
 {
-    [SerializeField] private ActivatorStateChannel stateChannel;
-    [SerializeField] private string switchID = "switch_1";
+    [SerializeField] private FloatActivatorChannel stateChannel; // match type to config
+    [SerializeField] private ActivatorID switchID;               // same SO as config requirement
 
     private float heldSeconds;
     private bool held;
 
+    private void Start()
+    {
+        // Seed the validator with initial state so it doesn't wait for first interaction.
+        Publish();
+    }
+
     void Update()
     {
-        if (held) heldSeconds += Time.deltaTime;
+        if (held) { heldSeconds += Time.deltaTime; Publish(); }
     }
 
-    public void OnPressStart()
-    {
-        held = true;
-        heldSeconds = 0f;
-    }
+    public void OnPressStart() { held = true; heldSeconds = 0f; }
+    public void OnPressEnd()   { held = false; Publish(); }
 
-    public void OnPressEnd()
+    private void Publish()
     {
-        held = false;
-        if (stateChannel != null) stateChannel.RaiseEvent(switchID, heldSeconds);
+        if (stateChannel == null || switchID == null) return;
+        stateChannel.RaiseEvent(switchID, heldSeconds);
     }
 }
 ```
 
-Notes: the type the activator publishes (`float` here) must match what the configuration's `IsSatisfied` pattern-matches on. There is no compile-time check tying the two together — keep them in sync deliberately.
+The channel type the activator uses **must match** the type `IPuzzleStateProvider` method the configuration queries. This is now enforced at the channel level — a `FloatActivatorChannel` cannot accidentally deliver a `bool`.
 
-### Template: migrating an activator from `GameEvents` to `ActivatorStateChannel`
+### Template: extending `IPuzzleStateProvider` for a new payload type
 
-This is exactly the change `LeverActivator` needs. Before:
+When adding a new state type, update these three files in order:
 
+**1. `IPuzzleStateProvider.cs`** — add the method:
 ```csharp
-public class LeverActivator : MonoBehaviour
-{
-    [SerializeField] private string leverID = "lever_1";
-    private bool isEngaged;
-
-    public void SetEngaged(bool engaged)
-    {
-        isEngaged = engaged;
-        GameEvents.RaiseActivatorStateChanged(leverID, isEngaged); // dead path
-    }
-}
+bool TryGetMyType(ActivatorID id, out MyType value);
 ```
 
-After:
-
+**2. `PuzzleValidator.cs`** — add a channel field, a dictionary, a handler, and implement the method:
 ```csharp
-public class LeverActivator : MonoBehaviour
-{
-    [SerializeField] private ActivatorStateChannel stateChannel;
-    [SerializeField] private string leverID = "lever_1";
-    private bool isEngaged;
+[SerializeField] private MyTypeChannel myTypeChannel;
+private readonly Dictionary<ActivatorID, MyType> myTypeStates = new();
 
-    public void SetEngaged(bool engaged)
-    {
-        isEngaged = engaged;
-        if (stateChannel != null) stateChannel.RaiseEvent(leverID, isEngaged);
-    }
-}
+// OnEnable: myTypeChannel.OnStateChanged += HandleMyTypeChanged;
+// OnDisable: myTypeChannel.OnStateChanged -= HandleMyTypeChanged;
+
+private void HandleMyTypeChanged(ActivatorID id, MyType value) { myTypeStates[id] = value; CheckAllPuzzles(); }
+public bool TryGetMyType(ActivatorID id, out MyType value) => myTypeStates.TryGetValue(id, out value);
 ```
 
-Then, on every existing `LeverActivator` in the scene, drag the same channel asset that the validator uses into the new **State Channel** slot.
+**3. Any other `IPuzzleStateProvider` implementors** (e.g., `WaveSpawnPhase`) — add a stub:
+```csharp
+public bool TryGetMyType(ActivatorID id, out MyType value) { value = default; return false; }
+```
+
+---
+
+## Scene Rewiring Guide (post-refactor)
+
+The `arch/puzzle-system-refinement` branch changed all activator ID fields from `string` to `ActivatorID` SO, and all channel fields to typed concrete channels. Existing scenes need the following work before puzzles function.
+
+### Step 1 — Create `ActivatorID` assets
+
+For every activator in the scene, create one `ActivatorID` SO and name it to match the old string value (e.g., old `stoneID = "stone_area1_1"` → new asset named `Stone_Area1_1`). Place them in a logical folder, e.g., `Assets/Systems/Puzzle/IDs/[AreaN]/`.
+
+### Step 2 — Create typed channel assets
+
+Create the channel SOs your scene needs (once per type, shared across puzzles):
+- `BoolPuzzleChannel.asset` → `BoolActivatorChannel`
+- `FloatPuzzleChannel.asset` → `FloatActivatorChannel`
+- *(Mushroom channels if applicable)*
+
+### Step 3 — Rewire configuration assets
+
+Open each `.asset` config in the Inspector. The old `string` ID fields are now `ActivatorID` object slots — drag the matching SO into each slot. The numeric values (`activationRotation`, `rotationTolerance`, `mustBePressed`, etc.) are preserved.
+
+### Step 4 — Rewire scene components
+
+For each activator component in the scene:
+- Drag the **same `ActivatorID` SO** used in the config into the component's ID field.
+- Drag the **typed channel asset** into the channel field.
+
+For each `PuzzleValidator`:
+- Assign the typed channel assets to the relevant channel slots.
+- Verify each trigger still has its config asset assigned (these references survive the refactor).
+
+### Step 5 — Mushroom puzzles
+
+For each `Mushroom` component: assign `puzzleChannel (MushroomColorChannel)` and `puzzleActivatorID (ActivatorID)`.
+
+For each `MushroomSequenceTracker`: assign `puzzleChannel (MushroomColorArrayChannel)`. The sequence `ActivatorID` is read from the linked `MusicalSequenceConfiguration` — make sure that config's `sequenceID` slot has an SO assigned, and the same SO is referenced by the `PuzzleValidator`'s `mushroomArrayChannel`-backed trigger.
+
+---
 
 ## Existing Configuration Assets
 
-For reference — these are the configuration `.asset` files that already exist in the project. New assets follow the same `Create → Puzzle → …` pattern.
+These assets exist in the project. Their string ID fields **need to be replaced** with `ActivatorID` SO references as part of the scene rewiring above.
 
 ```
 Assets/Systems/Puzzle/Configurations/
 ├── StoneConfigIntro.asset
 └── Assets/
     ├── LeverConfig.asset
-    ├── Area1/  StoneConfigArea1[_1.._3].asset
+    ├── Area1/  StoneConfigArea1.asset, StoneConfigArea1_1.asset, _2.asset, _3.asset
     ├── Area2/  Area 2 PressurePlates.asset
-    └── Area3/  Area3[_1.._4].asset, Area3_1/Stone3Lock.asset, Stone4Lock.asset
+    ├── Area3/  Area3.asset, Area3_2.asset, _3.asset, _4.asset
+    │           Area3_1/ Stone3Lock.asset, Stone4Lock.asset
+    └── Area4/  Area4RotateOnTurn.asset, Area4_1Lock.asset, _2Lock.asset, _3Lock.asset
+                Area4_1_Pillar.asset, _2_Pillar.asset, _3_Pillar.asset, _3_Second.asset
 
 Assets/Systems/Puzzle/Activators/PressurePlateConfig1.asset
-Assets/Scripts/Interaction/Puzzle1Config.asset
-Assets/Systems/Events/StonePuzzleChannel.asset
+Assets/Systems/Puzzle/Configurations/Assets/Boss/  BossWave1.asset, BossWave2.asset, BossWave3.asset
+Assets/Systems/MushroomPuzzle/Events/BasicMusicalSequence.asset
 ```
+
+---
 
 ## Notes / Caveats
 
-- **State is `object`-typed.** Each `IsSatisfied` implementation is responsible for type-checking with `is`. There is no type safety between an activator's published state and a configuration's expected type — a mismatch (e.g., publishing a `bool` for a `StoneConfiguration` that expects `float`) just silently fails the requirement.
-- **`activatorID` strings are the join key.** The same string in the activator and the requirement must match exactly (case-sensitive). Typos here are the most common reason a puzzle silently doesn't solve.
-- **`PuzzleValidator` only knows the *latest* state.** The internal dictionary is overwritten on every event. There's no history, no debounce, no time window. A `TimedSwitch`-style requirement has to publish the final summary value (e.g., total held seconds) and the activator has to compute it.
-- **One channel can serve many puzzles.** `activatorID` disambiguates them. Multiple channels are only useful if you want to scope events to a specific area or scene.
-- **`onSolved` does not auto-undo on unsolved.** If you open a door on `onSolved`, you must explicitly close it on `onUnsolved` (or leave the trigger non-`reTriggerable`).
-- **`reTriggerable = false` is per-`PuzzleValidator` lifetime.** `hasFired` is a runtime field on the `PuzzleTrigger`; it resets when the validator GameObject is recreated (e.g., on scene reload).
-- **`GameEvents` is dead code from a teammate's perspective.** Don't add new code that calls it — write to `ActivatorStateChannel` instead. Removing `GameEvents` and migrating `LeverActivator` is a follow-up cleanup candidate.
-- **`ActivatorState` struct is unused on the active path.** It exists for the legacy `GameEvents` overload. New code does not need it.
-- **The deleted `Assets/Systems/Puzzle/*.md` files** described the pre-`ActivatorStateChannel` architecture (the static `GameEvents` path). They are superseded by this document; their templates are no longer correct.
+- **`ActivatorID` is the join key.** Both the activator in the scene and the configuration requirement must reference the **same SO asset instance**. Two different SO assets with the same `description` text are not equal — Unity compares by reference.
+- **`PuzzleValidator` only knows the *latest* state per ID.** The dictionary is overwritten on every event. There is no history, debounce, or time window. Compute summary values in the activator before publishing.
+- **`onSolved` does not auto-undo.** If you open a door on `onSolved`, explicitly close it on `onUnsolved`, or set `reTriggerable = false` for one-shot triggers.
+- **`reTriggerable = false` is per-session.** `hasFired` and `isCurrentlySolved` are `[NonSerialized]` — they reset on domain reload / scene load, which is the correct behavior per the Editor Persistence Protocol (CLAUDE.md).
+- **One channel can serve many puzzles.** `ActivatorID` disambiguates events. Multiple channels are useful when you want to scope activation events (e.g., a separate channel for boss-phase stones vs. world stones).
+- **`WaveSpawnPhase` implements `IPuzzleStateProvider` directly.** It subscribes to `FloatActivatorChannel` (from `Boss.PhaseEntry.stateChannel`) and maintains its own float-state dictionary to check `StoneConfiguration`-based boss puzzles without going through the scene `PuzzleValidator`.
+- **Adding a new state type** requires updating `IPuzzleStateProvider`, `PuzzleValidator`, and any other `IPuzzleStateProvider` implementors (`WaveSpawnPhase`). See the template above.
