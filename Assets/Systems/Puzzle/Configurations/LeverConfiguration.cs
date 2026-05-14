@@ -1,31 +1,31 @@
+using System;
 using UnityEngine;
 
-// Author: Joshua Henrikson, GitHub Copilot (April 2026)
-[CreateAssetMenu(fileName = "LeverConfig", menuName = "Puzzle/Lever Configuration")]
+
+[CreateAssetMenu(fileName = "NewLeverConfig", menuName = "Puzzle/Lever Configuration")]
 public class LeverConfiguration : ActivatorConfiguration
 {
-    [System.Serializable]
-    public class LeverRequirement : IActivatorRequirement
+    [Serializable]
+    public class LeverRequirement : IActivatorRequirement<bool>
     {
-        public string leverID;
-        public bool mustBeEngaged = true;
+        [SerializeField] private ActivatorID leverID;
+        [SerializeField] private bool mustBeEngaged = true;
 
-        public string ActivatorID => leverID;
-
-        public bool IsSatisfied(object activatorState)
-        {
-            if (activatorState is bool isEngaged)
-            {
-                return isEngaged == mustBeEngaged;
-            }
-            return false;
-        }
+        public ActivatorID ActivatorID => leverID;
+        public bool IsSatisfied(bool state) => state == mustBeEngaged;
     }
 
-    [SerializeField] public LeverRequirement[] requiredLevers;
+    [SerializeField] private LeverRequirement[] requiredLevers;
 
-    public override IActivatorRequirement[] GetRequirements()
+    public override bool IsSolved(IPuzzleStateProvider state)
     {
-        return requiredLevers;
+        if (requiredLevers == null || requiredLevers.Length == 0) return false;
+        foreach (var r in requiredLevers)
+        {
+            if (r.ActivatorID == null) return false;
+            if (!state.TryGetBool(r.ActivatorID, out bool value)) return false;
+            if (!r.IsSatisfied(value)) return false;
+        }
+        return true;
     }
 }

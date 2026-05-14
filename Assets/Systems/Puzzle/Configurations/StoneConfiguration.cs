@@ -1,38 +1,38 @@
 using UnityEngine;
 
-// Author: Joshua Henrikson
-// Modified by: GitHub Copilot (refactored for generic activator system, April 2026)
 [CreateAssetMenu(fileName = "StoneConfig", menuName = "Puzzle/Stone Configuration")]
 public class StoneConfiguration : ActivatorConfiguration
 {
     [System.Serializable]
-    public class StoneRequirement : IActivatorRequirement
+    public class StoneRequirement : IActivatorRequirement<float>
     {
-        public string stoneID;
+        [SerializeField] private ActivatorID stoneID;
         [Header("Optional Rotation Check")]
-        public bool requireSpecificRotation = true;
-        public float activationRotation = 0.0f;
-        public float rotationTolerance = 0.0f;
-        
-        public string ActivatorID => stoneID;
+        [SerializeField] private bool requireSpecificRotation = true;
+        [SerializeField] private float activationRotation = 0.0f;
+        [SerializeField] private float rotationTolerance = 0.0f;
 
-        public bool IsSatisfied(object activatorState)
+        public ActivatorID ActivatorID => stoneID;
+
+        public bool IsSatisfied(float rotation)
         {
-            if (!requireSpecificRotation)//Requires rotation?
-                return activatorState is float;
-            if (activatorState is float rotation)
-            {
-                float diff = Mathf.Abs(Mathf.DeltaAngle(rotation, activationRotation));
-                return diff <= rotationTolerance;
-            }
-            return false;
+            if (!requireSpecificRotation) return true;
+            float diff = Mathf.Abs(Mathf.DeltaAngle(rotation, activationRotation));
+            return diff <= rotationTolerance;
         }
     }
-    
-    [SerializeField] public StoneRequirement[] requiredStones;
 
-    public override IActivatorRequirement[] GetRequirements()
+    [SerializeField] private StoneRequirement[] requiredStones;
+
+    public override bool IsSolved(IPuzzleStateProvider state)
     {
-        return requiredStones;
+        if (requiredStones == null || requiredStones.Length == 0) return false;
+        foreach (var r in requiredStones)
+        {
+            if (r.ActivatorID == null) return false;
+            if (!state.TryGetFloat(r.ActivatorID, out float value)) return false;
+            if (!r.IsSatisfied(value)) return false;
+        }
+        return true;
     }
 }

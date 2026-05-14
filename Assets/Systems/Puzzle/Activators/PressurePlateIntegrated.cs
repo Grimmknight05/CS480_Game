@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+
 public class PressurePlateIntegrated : MonoBehaviour
 {
     [Header("Puzzle System")]
-    [SerializeField] private ActivatorStateChannel stateChannel;
-    [SerializeField] private string plateID = "pressure_plate_1";   // must match configuration
+    [SerializeField] private BoolActivatorChannel stateChannel;
+    [SerializeField] private ActivatorID plateID;
     [SerializeField] private string[] acceptedTags = { "Pushable" };
     [SerializeField] private Transform visual;
     [SerializeField] private float pressedDrop = 0.08f;
@@ -15,7 +16,6 @@ public class PressurePlateIntegrated : MonoBehaviour
 
     private readonly HashSet<Collider> occupants = new HashSet<Collider>();
     private Vector3 visualUpLocalPos;
-    // ... existing code ...
 
     void OnPressed()
     {
@@ -24,8 +24,7 @@ public class PressurePlateIntegrated : MonoBehaviour
 
         PressedChanged?.Invoke(this, true);
 
-        // Broadcast to the puzzle system
-        if (stateChannel != null)
+        if (stateChannel != null && plateID != null)
             stateChannel.RaiseEvent(plateID, true);
     }
 
@@ -36,12 +35,9 @@ public class PressurePlateIntegrated : MonoBehaviour
 
         PressedChanged?.Invoke(this, false);
 
-        // Broadcast to the puzzle system
-        if (stateChannel != null)
+        if (stateChannel != null && plateID != null)
             stateChannel.RaiseEvent(plateID, false);
     }
-
-
 
     void Reset()
     {

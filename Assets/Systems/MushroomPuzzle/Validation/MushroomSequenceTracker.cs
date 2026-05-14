@@ -15,7 +15,7 @@ public class MushroomSequenceTracker : MonoBehaviour
     [SerializeField] private MusicalSequenceConfiguration melodyConfiguration;
 
     [SerializeField] private MushroomEventChannelSO mushroomChannel;
-    [SerializeField] private ActivatorStateChannel puzzleChannel;
+    [SerializeField] private MushroomColorArrayChannel puzzleChannel;
     [SerializeField] private int maxHistory = 20;
     [SerializeField] private bool logHistoryChannelToConsole = true;
 
@@ -138,17 +138,17 @@ public class MushroomSequenceTracker : MonoBehaviour
     {
         if (puzzleChannel == null) return;
 
-        string id = melodyConfiguration != null ? melodyConfiguration.SequenceId : string.Empty;
-        if (string.IsNullOrEmpty(id))
+        ActivatorID id = melodyConfiguration != null ? melodyConfiguration.SequenceActivatorID : null;
+        if (id == null)
         {
-            Debug.LogWarning("[MushroomSequenceTracker] Assign Melody Configuration (same asset as PuzzleValidator) so Sequence ID is set.");
+            Debug.LogWarning("[MushroomSequenceTracker] Assign Melody Configuration (same asset as PuzzleValidator) so Sequence Activator ID is set.");
             return;
         }
 
         puzzleChannel.RaiseEvent(id, snapshot);
         if (logHistoryChannelToConsole)
         {
-            Debug.Log($"[MushroomSequenceTracker] puzzle channel '{id}' history ({snapshot.Length}): {string.Join(", ", snapshot)}");
+            Debug.Log($"[MushroomSequenceTracker] puzzle channel '{id.name}' history ({snapshot.Length}): {string.Join(", ", snapshot)}");
         }
     }
 
