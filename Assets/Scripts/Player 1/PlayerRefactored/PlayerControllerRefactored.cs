@@ -305,9 +305,11 @@ public class PlayerControllerRefactored : MonoBehaviour
                     groundNormal = hit.normal;
                     groundHit = hit;
                     hasGroundHit = true;
+                    animator.SetBool("isJumping", false);
                 }
             }
         }
+        
     }
 
     void OnCollisionStay(Collision collision)
@@ -334,6 +336,7 @@ public class PlayerControllerRefactored : MonoBehaviour
             Vector3 slideDirection = Vector3.ProjectOnPlane(Vector3.down, groundNormal).normalized;
             rb.AddForce(slideDirection * 25f, ForceMode.Acceleration);
             rb.linearDamping = 0.5f;
+            animator.SetBool("isJumping", false);
             return;
         }
 
@@ -462,8 +465,13 @@ public class PlayerControllerRefactored : MonoBehaviour
 
     private void UpdateAnimations()
     {
-        animator.SetBool("onGround", onGround);
-        if (onGround) animator.SetBool("isJumping", false);
+        bool newOnGround = onGround;
+        animator.SetBool("onGround", newOnGround);
+        if (newOnGround)
+        {
+            animator.SetBool("isJumping", false);
+            Debug.Log($"Anim: onGround=true, isJumping set false");
+        }
 
         bool isWalking = cachedMoveDirection != Vector3.zero && !(currentState is ZeroGMovementState);
         animator.SetBool("isWalking", isWalking);
