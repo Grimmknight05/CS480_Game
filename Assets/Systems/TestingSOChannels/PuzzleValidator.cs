@@ -84,15 +84,19 @@ public class PuzzleValidator : MonoBehaviour, IPuzzleStateProvider
             bool nowSolved = config.IsSolved(state);
             if (nowSolved == isCurrentlySolved) return;
 
-            isCurrentlySolved = nowSolved;
             if (nowSolved)
             {
+                // Guard checked BEFORE committing state. If we can't fire, leave
+                // isCurrentlySolved=false so the next unsolved→solved transition
+                // is still detected correctly.
                 if (hasFired && !reTriggerable) return;
+                isCurrentlySolved = true;
                 hasFired = true;
                 onSolved?.Invoke();
             }
             else
             {
+                isCurrentlySolved = false;
                 onUnsolved?.Invoke();
             }
         }
