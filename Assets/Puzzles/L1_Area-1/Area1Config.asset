@@ -10,15 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46f5732c8d7734241b11473b2808b794, type: 3}
-  m_Name: StoneConfigArea1
+  m_Name: Area1Config
   m_EditorClassIdentifier: Assembly-CSharp::StoneConfiguration
   requiredStones:
-  - stoneID: Area1_3
-    activationRotation: 0
-    rotationTolerance: 5
-  - stoneID: Area1_2
+  - stoneID: {fileID: 11400000, guid: 3d917c44493cf4eb9add39c5768e82b9, type: 2}
+    requireSpecificRotation: 1
+    activationRotation: 90
+    rotationTolerance: 2
+  - stoneID: {fileID: 11400000, guid: 4bc6d628b243d46b2a653974186471bb, type: 2}
+    requireSpecificRotation: 1
     activationRotation: 180
-    rotationTolerance: 5
-  - stoneID: Area1_1
+    rotationTolerance: 2
+  - stoneID: {fileID: 11400000, guid: a21edf7c0f42546fdb3a539f471cf243, type: 2}
+    requireSpecificRotation: 1
     activationRotation: 270
-    rotationTolerance: 5
+    rotationTolerance: 2
