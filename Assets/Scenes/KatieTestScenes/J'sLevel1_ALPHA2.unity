@@ -18914,12 +18914,20 @@ PrefabInstance:
       value: Puzzle
       objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: floatChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: f76c59b6128c34d10b7fd841dfe0431f, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].config
       value: 
-      objectReference: {fileID: 11400000, guid: dfd76a37eb267594f8d8acf353700e38, type: 2}
+      objectReference: {fileID: 11400000, guid: 38dc9e51de1074d52b013eebff8941f4, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].triggerName
+      value: diamond-door
+      objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].reTriggerable
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].onSolved.m_PersistentCalls.m_Calls.Array.size
@@ -18978,6 +18986,10 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].onUnsolved.m_PersistentCalls.m_Calls.Array.data[4].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].onUnsolved.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1192008918}
@@ -18991,6 +19003,10 @@ PrefabInstance:
       objectReference: {fileID: 495659004}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].onUnsolved.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 1079878896}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].onUnsolved.m_PersistentCalls.m_Calls.Array.data[4].m_Target
       value: 
       objectReference: {fileID: 1079878896}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
@@ -19042,6 +19058,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].onUnsolved.m_PersistentCalls.m_Calls.Array.data[4].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].onUnsolved.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: Close
       objectReference: {fileID: 0}
@@ -19055,6 +19075,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].onUnsolved.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: SetAllMaterials
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].onUnsolved.m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
       value: SetAllMaterials
       objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
@@ -19098,6 +19122,10 @@ PrefabInstance:
       value: MaterialController, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].onUnsolved.m_PersistentCalls.m_Calls.Array.data[4].m_TargetAssemblyTypeName
+      value: MaterialController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].onSolved.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 11400000, guid: 7c519f4b404aeea4d9b1e2ec34fb5810, type: 2}
@@ -19108,6 +19136,14 @@ PrefabInstance:
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].onSolved.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgument
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].onUnsolved.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].onUnsolved.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_BoolArgument
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].onUnsolved.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
@@ -19143,6 +19179,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].onUnsolved.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].onUnsolved.m_PersistentCalls.m_Calls.Array.data[4].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -35282,8 +35322,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
+      propertyPath: activatorID
+      value: 
+      objectReference: {fileID: 11400000, guid: 3bcf20c137e3c4b65a687b15b742a81b, type: 2}
+    - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
+      propertyPath: stateChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: f76c59b6128c34d10b7fd841dfe0431f, type: 2}
+    - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
+      propertyPath: maxQueuedTurns
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
       propertyPath: targetRotation
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
+      propertyPath: rotationTolerance
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
       propertyPath: activationRotation
