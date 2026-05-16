@@ -10,6 +10,7 @@ public class PuzzleValidator : MonoBehaviour, IPuzzleStateProvider
     [SerializeField] private MushroomColorChannel mushroomChannel;
     [SerializeField] private MushroomColorArrayChannel mushroomArrayChannel;
     [SerializeField] private List<PuzzleTrigger> triggers = new();
+    [SerializeField] private bool debugMode;
 
     private readonly Dictionary<ActivatorID, bool> boolStates = new();
     private readonly Dictionary<ActivatorID, float> floatStates = new();
@@ -35,12 +36,14 @@ public class PuzzleValidator : MonoBehaviour, IPuzzleStateProvider
     private void HandleBoolChanged(ActivatorID id, bool value)
     {
         boolStates[id] = value;
+        if (debugMode) Debug.Log($"[PuzzleValidator] {name} received bool: {id?.name} = {value}", this);
         CheckAllPuzzles();
     }
 
     private void HandleFloatChanged(ActivatorID id, float value)
     {
         floatStates[id] = value;
+        if (debugMode) Debug.Log($"[PuzzleValidator] {name} received float: {id?.name} = {value}", this);
         CheckAllPuzzles();
     }
 
@@ -74,29 +77,40 @@ public class PuzzleValidator : MonoBehaviour, IPuzzleStateProvider
         public UnityEvent onSolved;
         public UnityEvent onUnsolved;
         public bool reTriggerable;
+        public bool debugMode;
 
         [NonSerialized] private bool isCurrentlySolved;
         [NonSerialized] private bool hasFired;
 
         public void Evaluate(IPuzzleStateProvider state)
         {
-            if (config == null) return;
+            if (config == null)
+            {
+                if (debugMode) Debug.LogWarning($"[PuzzleTrigger:{triggerName}] Config is null — assign an ActivatorConfiguration.");
+                return;
+            }
+
             bool nowSolved = config.IsSolved(state);
+            if (debugMode) Debug.Log($"[PuzzleTrigger:{triggerName}] IsSolved={nowSolved}  wasAlreadySolved={isCurrentlySolved}  hasFired={hasFired}  reTriggerable={reTriggerable}");
+
             if (nowSolved == isCurrentlySolved) return;
 
             if (nowSolved)
             {
-                // Guard checked BEFORE committing state. If we can't fire, leave
-                // isCurrentlySolved=false so the next unsolved→solved transition
-                // is still detected correctly.
-                if (hasFired && !reTriggerable) return;
+                if (hasFired && !reTriggerable)
+                {
+                    if (debugMode) Debug.LogWarning($"[PuzzleTrigger:{triggerName}] Blocked by hasFired+!reTriggerable — enable Re Triggerable to allow re-solve.");
+                    return;
+                }
                 isCurrentlySolved = true;
                 hasFired = true;
+                if (debugMode) Debug.Log($"[PuzzleTrigger:{triggerName}] → SOLVED. Invoking onSolved ({onSolved?.GetPersistentEventCount()} listeners).");
                 onSolved?.Invoke();
             }
             else
             {
                 isCurrentlySolved = false;
+                if (debugMode) Debug.Log($"[PuzzleTrigger:{triggerName}] → UNSOLVED. Invoking onUnsolved ({onUnsolved?.GetPersistentEventCount()} listeners).");
                 onUnsolved?.Invoke();
             }
         }

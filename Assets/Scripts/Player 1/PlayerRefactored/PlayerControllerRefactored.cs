@@ -470,7 +470,7 @@ public class PlayerControllerRefactored : MonoBehaviour
         if (newOnGround)
         {
             animator.SetBool("isJumping", false);
-            Debug.Log($"Anim: onGround=true, isJumping set false");
+            // Debug.Log($"Anim: onGround=true, isJumping set false");
         }
 
         bool isWalking = cachedMoveDirection != Vector3.zero && !(currentState is ZeroGMovementState);

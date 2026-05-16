@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d3b032f3bbc2a724497bae2c9baa4f3f, type: 3}
-  m_Name: Area 2 PressurePlates
+  m_Name: Area2PressurePlateConfig
   m_EditorClassIdentifier: Assembly-CSharp::PressurePlateConfiguration
   requiredPlates:
-  - plateID: Area2_pressure_plate_2
+  - plateID: {fileID: 11400000, guid: be06f8616c2a24993badebb519f762c5, type: 2}
     mustBePressed: 1
-  - plateID: Area2_pressure_plate_1
+  - plateID: {fileID: 11400000, guid: 06af560ea73f94b10a6fa87740e0b0be, type: 2}
     mustBePressed: 1

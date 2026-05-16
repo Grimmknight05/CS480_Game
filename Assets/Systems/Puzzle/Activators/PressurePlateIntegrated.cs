@@ -50,6 +50,18 @@ public class PressurePlateIntegrated : MonoBehaviour
         if (visual != null) visualUpLocalPos = visual.localPosition;
     }
 
+    void Start()
+    {
+        // Seed the validator's dictionary so TryGetBool never returns "not found"
+        // for a plate that simply hasn't been stepped on yet. Runs after all
+        // OnEnable calls (including the validator's channel subscription) but
+        // before the first physics frame that would generate OnTriggerEnter.
+        if (stateChannel != null && plateID != null)
+            stateChannel.RaiseEvent(plateID, IsPressed);
+        else
+            Debug.LogWarning($"[PressurePlate] {name}: stateChannel or plateID is null — not wired for validation.", this);
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (!IsAccepted(other)) return;
