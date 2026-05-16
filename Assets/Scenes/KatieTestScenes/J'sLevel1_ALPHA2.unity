@@ -445,9 +445,17 @@ PrefabInstance:
       value: Puzzle
       objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: boolChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 46ccee27e40e6416c8b069970ce4cc96, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].config
       value: 
       objectReference: {fileID: 11400000, guid: 8d1c05581a067c44892836b9b2cdea49, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].triggerName
+      value: Right Pressure Plate
+      objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].reTriggerable
       value: 1
@@ -1038,7 +1046,7 @@ GameObject:
   m_Component:
   - component: {fileID: 90362830}
   m_Layer: 0
-  m_Name: Area1PuzzleObjects
+  m_Name: Area 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3761,9 +3769,17 @@ PrefabInstance:
       value: Puzzle
       objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: boolChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 46ccee27e40e6416c8b069970ce4cc96, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].config
       value: 
       objectReference: {fileID: 11400000, guid: 0da504d83afa55448ac45087789a9ea2, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].triggerName
+      value: Middle Pressure Plate
+      objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].reTriggerable
       value: 1
@@ -4030,9 +4046,17 @@ PrefabInstance:
       propertyPath: Playerlock
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
+      propertyPath: activatorID
+      value: 
+      objectReference: {fileID: 11400000, guid: 07625edcaa1b44759a9373f2d3a8a1d9, type: 2}
+    - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
+      propertyPath: stateChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e289fdddf11d4f359051ab69a5b9dfb, type: 2}
     - target: {fileID: 5793265984128807537, guid: 849a2953bd45e6641b5949533b662758, type: 3}
       propertyPath: m_Name
-      value: Turn Trigger (1)
+      value: Right Pillar
       objectReference: {fileID: 0}
     - target: {fileID: 7060759569015407617, guid: 849a2953bd45e6641b5949533b662758, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4434,7 +4458,11 @@ PrefabInstance:
     - target: {fileID: 7492641151003978294, guid: 467eb40f05807f448a46d196f65ca890, type: 3}
       propertyPath: plateID
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 896a6fb65cb09477a8a7e488cc39b316, type: 2}
+    - target: {fileID: 7492641151003978294, guid: 467eb40f05807f448a46d196f65ca890, type: 3}
+      propertyPath: stateChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 46ccee27e40e6416c8b069970ce4cc96, type: 2}
     - target: {fileID: 7492641151003978294, guid: 467eb40f05807f448a46d196f65ca890, type: 3}
       propertyPath: acceptedTags.Array.size
       value: 2
@@ -8889,7 +8917,11 @@ PrefabInstance:
     - target: {fileID: 7492641151003978294, guid: 467eb40f05807f448a46d196f65ca890, type: 3}
       propertyPath: plateID
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: dce6083850000407eb7b1a2e450fcc7c, type: 2}
+    - target: {fileID: 7492641151003978294, guid: 467eb40f05807f448a46d196f65ca890, type: 3}
+      propertyPath: stateChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 46ccee27e40e6416c8b069970ce4cc96, type: 2}
     - target: {fileID: 7492641151003978294, guid: 467eb40f05807f448a46d196f65ca890, type: 3}
       propertyPath: acceptedTags.Array.size
       value: 2
@@ -10300,9 +10332,9 @@ Transform:
   - {fileID: 215955657}
   - {fileID: 1811804071}
   - {fileID: 998245927}
-  - {fileID: 518562705}
-  - {fileID: 1818831003}
   - {fileID: 1001827404}
+  - {fileID: 1818831003}
+  - {fileID: 518562705}
   - {fileID: 1244606875}
   - {fileID: 370806275}
   - {fileID: 480778420}
@@ -14505,9 +14537,17 @@ PrefabInstance:
       propertyPath: Playerlock
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
+      propertyPath: activatorID
+      value: 
+      objectReference: {fileID: 11400000, guid: 98953122d64ea48fa9242efa8939087f, type: 2}
+    - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
+      propertyPath: stateChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e289fdddf11d4f359051ab69a5b9dfb, type: 2}
     - target: {fileID: 5793265984128807537, guid: 849a2953bd45e6641b5949533b662758, type: 3}
       propertyPath: m_Name
-      value: Turn Trigger (3)
+      value: Left Pillar
       objectReference: {fileID: 0}
     - target: {fileID: 7060759569015407617, guid: 849a2953bd45e6641b5949533b662758, type: 3}
       propertyPath: m_LocalPosition.x
@@ -16513,7 +16553,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1132800617}
   m_Layer: 0
-  m_Name: Area 3 puzzle
+  m_Name: Area 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18547,7 +18587,11 @@ PrefabInstance:
     - target: {fileID: 7492641151003978294, guid: 467eb40f05807f448a46d196f65ca890, type: 3}
       propertyPath: plateID
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 8f4b0523228ce422db5f0f271821d5fc, type: 2}
+    - target: {fileID: 7492641151003978294, guid: 467eb40f05807f448a46d196f65ca890, type: 3}
+      propertyPath: stateChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 46ccee27e40e6416c8b069970ce4cc96, type: 2}
     - target: {fileID: 7492641151003978294, guid: 467eb40f05807f448a46d196f65ca890, type: 3}
       propertyPath: acceptedTags.Array.size
       value: 2
@@ -26997,6 +27041,14 @@ PrefabInstance:
       value: Area4_4
       objectReference: {fileID: 0}
     - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
+      propertyPath: activatorID
+      value: 
+      objectReference: {fileID: 11400000, guid: c8ccc2ac7cb8a4d1e8b893b7172d14b9, type: 2}
+    - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
+      propertyPath: stateChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e289fdddf11d4f359051ab69a5b9dfb, type: 2}
+    - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
       propertyPath: onInteract.m_PersistentCalls.m_Calls.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -28437,7 +28489,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1511382639}
   m_Layer: 0
-  m_Name: Area2
+  m_Name: Area 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28667,6 +28719,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Puzzle
       objectReference: {fileID: 0}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: boolChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 46ccee27e40e6416c8b069970ce4cc96, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: floatChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e289fdddf11d4f359051ab69a5b9dfb, type: 2}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].config
       value: 
@@ -29675,9 +29735,17 @@ PrefabInstance:
       value: Puzzle
       objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: boolChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 46ccee27e40e6416c8b069970ce4cc96, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].config
       value: 
       objectReference: {fileID: 11400000, guid: cc90eaf5818ebfb4fb22372c941fa81d, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].triggerName
+      value: Left Pressure Plate
+      objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].reTriggerable
       value: 1
@@ -30155,9 +30223,33 @@ PrefabInstance:
       value: Puzzle
       objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: debugMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: boolChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 46ccee27e40e6416c8b069970ce4cc96, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: floatChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e289fdddf11d4f359051ab69a5b9dfb, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].config
       value: 
       objectReference: {fileID: 11400000, guid: 3a93255a040ce7748921132a1574acf5, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].debugMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].triggerName
+      value: Left Pillar
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].reTriggerable
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].onSolved.m_PersistentCalls.m_Calls.Array.size
       value: 2
@@ -33756,6 +33848,30 @@ PrefabInstance:
       value: Area4_StoneLock1
       objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: debugMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: boolChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 46ccee27e40e6416c8b069970ce4cc96, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: floatChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e289fdddf11d4f359051ab69a5b9dfb, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].config
+      value: 
+      objectReference: {fileID: 11400000, guid: e6308a98d59ea424a8f23de82abeb80f, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].debugMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].triggerName
+      value: Puzzle 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].reTriggerable
       value: 1
       objectReference: {fileID: 0}
@@ -34627,9 +34743,17 @@ PrefabInstance:
       propertyPath: Inputlock
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
+      propertyPath: activatorID
+      value: 
+      objectReference: {fileID: 11400000, guid: d58dff07e31844c6a970ff148a86ddb7, type: 2}
+    - target: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
+      propertyPath: stateChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e289fdddf11d4f359051ab69a5b9dfb, type: 2}
     - target: {fileID: 5793265984128807537, guid: 849a2953bd45e6641b5949533b662758, type: 3}
       propertyPath: m_Name
-      value: Turn Trigger (2)
+      value: Middle Pillar
       objectReference: {fileID: 0}
     - target: {fileID: 7060759569015407617, guid: 849a2953bd45e6641b5949533b662758, type: 3}
       propertyPath: m_LocalPosition.x
@@ -34950,9 +35074,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: boolChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 46ccee27e40e6416c8b069970ce4cc96, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: floatChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e289fdddf11d4f359051ab69a5b9dfb, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].config
       value: 
       objectReference: {fileID: 11400000, guid: e6308a98d59ea424a8f23de82abeb80f, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].triggerName
+      value: TurningTrigger
+      objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].reTriggerable
       value: 1
@@ -37883,9 +38019,21 @@ PrefabInstance:
       value: Puzzle
       objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: boolChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 46ccee27e40e6416c8b069970ce4cc96, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: floatChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 8e289fdddf11d4f359051ab69a5b9dfb, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].config
       value: 
       objectReference: {fileID: 11400000, guid: c6f6d92205c0a814e9f2ba1d44bfc97d, type: 2}
+    - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
+      propertyPath: triggers.Array.data[0].triggerName
+      value: Middle Pillar
+      objectReference: {fileID: 0}
     - target: {fileID: 8900179067904258053, guid: 84b14e8c5f6a954418b02b613c614690, type: 3}
       propertyPath: triggers.Array.data[0].onSolved.m_PersistentCalls.m_Calls.Array.size
       value: 2
@@ -42556,19 +42704,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5883572094190004548, guid: 5207f4b59f593e64a80a21b6a9441baa, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.78
+      value: 146.36226
       objectReference: {fileID: 0}
     - target: {fileID: 5883572094190004548, guid: 5207f4b59f593e64a80a21b6a9441baa, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.3
+      value: 16.50998
       objectReference: {fileID: 0}
     - target: {fileID: 5883572094190004548, guid: 5207f4b59f593e64a80a21b6a9441baa, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 509.68
+      value: 398.93375
       objectReference: {fileID: 0}
     - target: {fileID: 5883572094190004548, guid: 5207f4b59f593e64a80a21b6a9441baa, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: -0.36002266
       objectReference: {fileID: 0}
     - target: {fileID: 5883572094190004548, guid: 5207f4b59f593e64a80a21b6a9441baa, type: 3}
       propertyPath: m_LocalRotation.x
@@ -42576,7 +42724,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5883572094190004548, guid: 5207f4b59f593e64a80a21b6a9441baa, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.9329436
       objectReference: {fileID: 0}
     - target: {fileID: 5883572094190004548, guid: 5207f4b59f593e64a80a21b6a9441baa, type: 3}
       propertyPath: m_LocalRotation.z
