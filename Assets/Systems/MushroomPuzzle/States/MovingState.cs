@@ -9,14 +9,16 @@ public class MovingState : CritterState
     private readonly float arriveRadius;
     private readonly float walkBudget;
     private readonly float calmDuration;
+    private readonly bool calmPermanent;
     private float endTime;
 
-    public MovingState(Vector3 destination, float arriveRadius, float walkBudget, float calmDuration)
+    public MovingState(Vector3 destination, float arriveRadius, float walkBudget, float calmDuration, bool calmPermanent = false)
     {
         this.destination = destination;
         this.arriveRadius = arriveRadius;
         this.walkBudget = walkBudget;
         this.calmDuration = calmDuration;
+        this.calmPermanent = calmPermanent;
     }
 
     public override void Enter(CritterController critter)
@@ -32,7 +34,7 @@ public class MovingState : CritterState
 
         if (toTarget.sqrMagnitude <= arriveRadius * arriveRadius || Time.time > endTime)
         {
-            critter.SetState(new CalmUnderCapState(calmDuration));
+            critter.SetState(new CalmUnderCapState(calmDuration, calmPermanent));
             return;
         }
 

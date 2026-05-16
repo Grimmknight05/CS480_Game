@@ -13,12 +13,15 @@ MonoBehaviour:
   m_Name: Area3
   m_EditorClassIdentifier: Assembly-CSharp::StoneConfiguration
   requiredStones:
-  - stoneID: Area3_2
+  - stoneID: {fileID: 11400000, guid: f03fa36b13572408fa7a1825939acfae, type: 2}
+    requireSpecificRotation: 1
     activationRotation: 90
     rotationTolerance: 5
-  - stoneID: Area3_3
+  - stoneID: {fileID: 11400000, guid: adad65dee614b47a6a4922f1e1d74aa3, type: 2}
+    requireSpecificRotation: 1
     activationRotation: 180
     rotationTolerance: 5
-  - stoneID: Area3_4
+  - stoneID: {fileID: 11400000, guid: 3498f7ec5f1b94f1a8db528f28fe2dfc, type: 2}
+    requireSpecificRotation: 1
     activationRotation: 270
     rotationTolerance: 5

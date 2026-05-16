@@ -14,6 +14,8 @@ public class Mushroom : MonoBehaviour
     [SerializeField] private MusicalNote assignedNote = MusicalNote.C;
 
     [Header("Activation")]
+    [Tooltip("If on, after Active Duration seconds the mushroom returns to dormant. If off, it stays active until reset, wrong melody, or solve lock.")]
+    [SerializeField] private bool returnToDormantAfterDuration;
     [SerializeField] private float activeDuration = 10f;
     [SerializeField] private float calmRadius = 15f;
     [SerializeField] private Color glowColor = Color.green;
@@ -21,7 +23,8 @@ public class Mushroom : MonoBehaviour
 
     [Header("Event Channels")]
     [SerializeField] private MushroomEventChannelSO mushroomChannel;
-    [SerializeField] private ActivatorStateChannel puzzleChannel;
+    [SerializeField] private MushroomColorChannel puzzleChannel;
+    [SerializeField] private ActivatorID puzzleActivatorID;
 
     [Header("Components")]
     [SerializeField] private MushroomAudioComponent audioComp;
@@ -34,22 +37,28 @@ public class Mushroom : MonoBehaviour
 
     private MushroomState currentState;
     private readonly Queue<IPuzzleCommand> queue = new Queue<IPuzzleCommand>();
+    private bool solvedLocked;
 
     public string MushroomID => mushroomID;
     public MushroomColor AssignedColor => assignedColor;
     public MusicalNote AssignedNote => assignedNote;
     public float ActiveDuration => activeDuration;
+    public bool ReturnToDormantAfterDuration => returnToDormantAfterDuration;
     public float CalmRadius => calmRadius;
     public Color GlowColor => glowColor;
     public AudioClip NoteClip => noteClip;
     public MushroomEventChannelSO MushroomChannel => mushroomChannel;
-    public ActivatorStateChannel PuzzleChannel => puzzleChannel;
+    public MushroomColorChannel PuzzleChannel => puzzleChannel;
+    public ActivatorID PuzzleActivatorID => puzzleActivatorID;
     public MushroomAudioComponent AudioComp => audioComp;
     public MushroomLightComponent LightComp => lightComp;
     public MushroomTimerComponent TimerComp => timerComp;
     public MushroomState CurrentState => currentState;
     public float DefaultCommandLifetime => defaultCommandLifetime;
     public bool IsActive => currentState is ActiveState;
+    public bool IsSolvedLocked => solvedLocked;
+    /// <summary>True after solve lock — player triggers should not queue or run interactions.</summary>
+    public bool IsInteractionLocked => solvedLocked || currentState is SolvedState;
 
     private void Awake()
     {
@@ -72,14 +81,36 @@ public class Mushroom : MonoBehaviour
 
     public void Activate()
     {
+        if (solvedLocked) return;
         if (currentState is ActiveState) return;
         SetState(new ActiveState());
     }
 
     public void QueueCommand(IPuzzleCommand command)
     {
-        if (command == null) return;
+        if (command == null || IsInteractionLocked) return;
         queue.Enqueue(command);
+    }
+
+    public void LockSolvedGlow()
+    {
+        solvedLocked = true;
+        queue.Clear();
+        SetState(new SolvedState());
+    }
+
+    public void UnlockSolvedGlow()
+    {
+        solvedLocked = false;
+        SetState(new DormantState());
+    }
+
+    /// <summary>Clears queued commands and returns to dormant (e.g. puzzle unsolved).</summary>
+    public void ForceDormant()
+    {
+        solvedLocked = false;
+        queue.Clear();
+        SetState(new DormantState());
     }
 
     private void Update()
@@ -98,7 +129,14 @@ public class Mushroom : MonoBehaviour
                 queue.Dequeue();
                 continue;
             }
-            if (!cmd.CanExecute(this)) break;
+            if (!cmd.CanExecute(this))
+            {
+                if (IsInteractionLocked)
+                    queue.Dequeue();
+                else
+                    break;
+                continue;
+            }
 
             queue.Dequeue();
             cmd.Execute(this);

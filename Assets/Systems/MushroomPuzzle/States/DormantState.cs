@@ -1,8 +1,7 @@
 using UnityEngine;
 
 // Author: David Haddad - CS480 design-patterns mushroom puzzle (May 2026)
-// Default mushroom state: dark, silent, ignoring further interactions until something
-// re-activates it (the InteractCommand flips it to ActiveState).
+// Inactive: restores original cap material (ClearGlow), stops audio/timer until next activation.
 
 public class DormantState : MushroomState
 {

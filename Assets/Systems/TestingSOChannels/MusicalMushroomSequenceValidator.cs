@@ -2,16 +2,16 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Collections.Generic;
 
-// Listens to ActivatorStateChannel for mushroom triggers and enforces order.
+// Listens to BoolActivatorChannel for mushroom triggers and enforces order.
 // Wrong step: progress resets to zero and all referenced MusicalMushrooms get Reset().
 public class MusicalMushroomSequenceValidator : MonoBehaviour
 {
     [Header("Event Channels")]
-    [SerializeField] private ActivatorStateChannel stateChannel;
+    [SerializeField] private BoolActivatorChannel stateChannel;
 
     [Header("Sequence")]
-    [Tooltip("Mushroom IDs in the exact order the player must trigger them (must match each MusicalMushroom.mushroomID).")]
-    [SerializeField] private List<string> expectedOrder = new List<string>();
+    [Tooltip("ActivatorID SOs in the exact order the player must trigger them (must match each MusicalMushroom's activatorID field).")]
+    [SerializeField] private List<ActivatorID> expectedOrder = new List<ActivatorID>();
 
     [Header("Reset targets")]
     [Tooltip("All mushrooms that should visually / audibly reset when the sequence fails.")]
@@ -29,12 +29,12 @@ public class MusicalMushroomSequenceValidator : MonoBehaviour
     [SerializeField] private bool debugMode = true;
 
     private int progressIndex;
-    private HashSet<string> validIds;
+    private HashSet<ActivatorID> validIds;
     private bool puzzleComplete;
 
     private void Awake()
     {
-        validIds = new HashSet<string>(expectedOrder);
+        validIds = new HashSet<ActivatorID>(expectedOrder);
     }
 
     private void OnEnable()
@@ -49,7 +49,7 @@ public class MusicalMushroomSequenceValidator : MonoBehaviour
             stateChannel.OnStateChanged -= HandleStateChanged;
     }
 
-    private void HandleStateChanged(string activatorID, object state)
+    private void HandleStateChanged(ActivatorID id, bool state)
     {
         if (puzzleComplete && disableAfterSolve)
             return;
@@ -57,17 +57,17 @@ public class MusicalMushroomSequenceValidator : MonoBehaviour
         if (expectedOrder == null || expectedOrder.Count == 0)
             return;
 
-        if (!validIds.Contains(activatorID))
+        if (!validIds.Contains(id))
             return;
 
-        string expected = expectedOrder[progressIndex];
+        ActivatorID expected = expectedOrder[progressIndex];
 
-        if (activatorID == expected)
+        if (id == expected)
         {
             progressIndex++;
 
             if (debugMode)
-                Debug.Log($"[MushroomSequence] Correct step: {activatorID} ({progressIndex}/{expectedOrder.Count}).");
+                Debug.Log($"[MushroomSequence] Correct step: {id.name} ({progressIndex}/{expectedOrder.Count}).");
 
             if (progressIndex >= expectedOrder.Count)
             {
@@ -85,7 +85,7 @@ public class MusicalMushroomSequenceValidator : MonoBehaviour
         else
         {
             if (debugMode)
-                Debug.Log($"[MushroomSequence] Wrong order: expected '{expected}', got '{activatorID}'. Restarting sequence.");
+                Debug.Log($"[MushroomSequence] Wrong order: expected '{expected.name}', got '{id.name}'. Restarting sequence.");
 
             FailAndReset();
         }
@@ -104,9 +104,6 @@ public class MusicalMushroomSequenceValidator : MonoBehaviour
         onSequenceReset?.Invoke();
     }
 
-    /// <summary>
-    /// Call from gameplay if you need to re-arm the puzzle after it was solved.
-    /// </summary>
     public void RearmPuzzle()
     {
         puzzleComplete = false;

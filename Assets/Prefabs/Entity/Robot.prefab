@@ -71,6 +71,9 @@ MonoBehaviour:
   endedChannel: {fileID: 11400000, guid: b5e30c45ee0c145d48f736706cdf110f, type: 2}
   playerTag: Player
   requireEnter: 1
+  requireInteract: 1
+  promptChannel: {fileID: 11400000, guid: d5462cb4227154ee6aa7b0b45b986882, type: 2}
+  promptMessage: Press E to Talk
 --- !u!1001 &8255450397477056986
 PrefabInstance:
   m_ObjectHideFlags: 0

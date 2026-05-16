@@ -30,6 +30,19 @@ public class OrbitalCamera : MonoBehaviour
     [Header("Starting Perspective")]
     public float startingPitch = 20f; // 20 degrees looking down
 
+    void Awake()
+    {
+        // Stealing the BossLookAt survival tactic for WebGL
+        if (playerRef == null)
+        {
+            GameObject foundPlayer = GameObject.FindGameObjectWithTag("Player");
+            if (foundPlayer != null)
+            {
+                playerRef = foundPlayer.transform;
+                Debug.Log("OrbitalCamera: Player found via Tag in Awake!");
+            }
+        }
+    }
     void Start()
     {
         // Hide and lock the cursor

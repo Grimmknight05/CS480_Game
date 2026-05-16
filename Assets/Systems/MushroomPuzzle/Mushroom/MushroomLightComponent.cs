@@ -1,47 +1,53 @@
 using UnityEngine;
 
 // Author: David Haddad - CS480 design-patterns mushroom puzzle (May 2026)
-// Component pattern: handles cap glow via a Light and (optionally) an emissive
-// material on the cap renderer. Mushroom orchestrator drives SetGlow / ClearGlow.
+// Component pattern: handles mushroom appearance by swapping materials.
+// Assign an "active" material (with bloom/emission already authored in it)
+// and this component swaps to it while active, then restores the original.
 
 public class MushroomLightComponent : MonoBehaviour
 {
-    [SerializeField] private Light capLight;
     [SerializeField] private Renderer capRenderer;
-    [SerializeField] private float emissiveIntensity = 2f;
+    [Tooltip("Which material slot on the renderer to swap.")]
+    [SerializeField] private int materialIndex = 0;
+    [Tooltip("Material used while mushroom is active/solved. Put your bloom-enabled material here.")]
+    [SerializeField] private Material activeMaterial;
 
-    private static readonly int EmissionColorId = Shader.PropertyToID("_EmissionColor");
-    private MaterialPropertyBlock block;
+    private Material[] runtimeMaterials;
+    private Material dormantMaterial;
 
     private void Awake()
     {
-        block = new MaterialPropertyBlock();
+        if (capRenderer == null) return;
+        runtimeMaterials = capRenderer.materials;
+        if (runtimeMaterials != null && materialIndex >= 0 && materialIndex < runtimeMaterials.Length)
+        {
+            dormantMaterial = runtimeMaterials[materialIndex];
+        }
         ClearGlow();
     }
 
     public void SetGlow(Color color)
     {
-        if (capLight != null)
-        {
-            capLight.color = color;
-            capLight.enabled = true;
-        }
-        if (capRenderer != null)
-        {
-            capRenderer.GetPropertyBlock(block);
-            block.SetColor(EmissionColorId, color * emissiveIntensity);
-            capRenderer.SetPropertyBlock(block);
-        }
+        ApplyMaterial(activeMaterial != null ? activeMaterial : dormantMaterial);
     }
 
     public void ClearGlow()
     {
-        if (capLight != null) capLight.enabled = false;
-        if (capRenderer != null)
-        {
-            capRenderer.GetPropertyBlock(block);
-            block.SetColor(EmissionColorId, Color.black);
-            capRenderer.SetPropertyBlock(block);
-        }
+        ApplyMaterial(dormantMaterial);
+    }
+
+    private void ApplyMaterial(Material target)
+    {
+        if (capRenderer == null || target == null) return;
+
+        if (runtimeMaterials == null || runtimeMaterials.Length == 0)
+            runtimeMaterials = capRenderer.materials;
+
+        if (runtimeMaterials == null || materialIndex < 0 || materialIndex >= runtimeMaterials.Length)
+            return;
+
+        runtimeMaterials[materialIndex] = target;
+        capRenderer.materials = runtimeMaterials;
     }
 }

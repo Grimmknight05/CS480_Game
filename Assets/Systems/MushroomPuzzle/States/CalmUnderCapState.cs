@@ -7,11 +7,13 @@ using UnityEngine;
 public class CalmUnderCapState : CritterState
 {
     private readonly float duration;
+    private readonly bool permanent;
     private float endTime;
 
-    public CalmUnderCapState(float duration)
+    public CalmUnderCapState(float duration, bool permanent = false)
     {
         this.duration = duration;
+        this.permanent = permanent;
     }
 
     public override void Enter(CritterController critter)
@@ -26,9 +28,9 @@ public class CalmUnderCapState : CritterState
 
     public override void Tick(CritterController critter)
     {
+        if (permanent)
+            return;
         if (Time.time >= endTime)
-        {
             critter.SetState(new JumpingState());
-        }
     }
 }

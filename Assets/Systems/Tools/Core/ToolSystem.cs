@@ -25,12 +25,31 @@ public class ToolSystem : MonoBehaviour, IAimContext
     [SerializeField] private Transform usePoint;
     [SerializeField] private AudioSource audioSource;
 
+    [Header("Dialogue")]
+    [SerializeField] private DialogueEventChannelSO dialogueStartChannel;
+    [SerializeField] private DialogueEndedChannelSO dialogueEndedChannel;
+    private bool inputEnabled = true;
 
     private int currentToolIndex = 0;
     private PlayerInput playerInput;
     private InputAction useAction;
     private InputAction switchToolAction;
     private float[] lastUseTimes;
+
+    private void OnEnable()
+    {
+        if (dialogueStartChannel != null) dialogueStartChannel.OnRaised += HandleDialogueStart;
+        if (dialogueEndedChannel != null) dialogueEndedChannel.OnRaised += HandleDialogueEnded;
+    }
+
+    private void OnDisable()
+    {
+        if (dialogueStartChannel != null) dialogueStartChannel.OnRaised -= HandleDialogueStart;
+        if (dialogueEndedChannel != null) dialogueEndedChannel.OnRaised -= HandleDialogueEnded;
+    }
+
+    private void HandleDialogueStart(DialogueSO _) { inputEnabled = false; }
+    private void HandleDialogueEnded() { inputEnabled = true; }
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -62,6 +81,7 @@ public class ToolSystem : MonoBehaviour, IAimContext
     }
     void OnAttack(InputValue attackInput)
     {
+        if (!inputEnabled) return;
         if (attackInput.isPressed)
         {
             Debug.Log("Use Tool");
@@ -70,11 +90,13 @@ public class ToolSystem : MonoBehaviour, IAimContext
     }
     void OnSwitchTool(InputValue switchInput)
     {
+        if (!inputEnabled) return;
         Debug.Log("Switch Tool");
         SwitchTool();
     }
     private void Update()
     {
+        if (!inputEnabled) return;
         if (switchToolAction != null && switchToolAction.triggered)
         {
             SwitchTool();

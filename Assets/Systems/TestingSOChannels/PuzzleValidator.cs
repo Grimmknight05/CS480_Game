@@ -1,13 +1,75 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using System.Collections.Generic;
 
-// Author: Joshua Henrikson
-// Modified by: GitHub Copilot / Architecture Refactor (April 2026)
-// David - Updated to work with new ActivatorStateChannel and ActivatorConfiguration system (4/25/26)
-public class PuzzleValidator : MonoBehaviour
+public class PuzzleValidator : MonoBehaviour, IPuzzleStateProvider
 {
-    [System.Serializable]
+    [SerializeField] private BoolActivatorChannel boolChannel;
+    [SerializeField] private FloatActivatorChannel floatChannel;
+    [SerializeField] private MushroomColorChannel mushroomChannel;
+    [SerializeField] private MushroomColorArrayChannel mushroomArrayChannel;
+    [SerializeField] private List<PuzzleTrigger> triggers = new();
+    [SerializeField] private bool debugMode;
+
+    private readonly Dictionary<ActivatorID, bool> boolStates = new();
+    private readonly Dictionary<ActivatorID, float> floatStates = new();
+    private readonly Dictionary<ActivatorID, MushroomColor> mushroomStates = new();
+    private readonly Dictionary<ActivatorID, MushroomColor[]> mushroomArrayStates = new();
+
+    private void OnEnable()
+    {
+        if (boolChannel != null) boolChannel.OnStateChanged += HandleBoolChanged;
+        if (floatChannel != null) floatChannel.OnStateChanged += HandleFloatChanged;
+        if (mushroomChannel != null) mushroomChannel.OnStateChanged += HandleMushroomColorChanged;
+        if (mushroomArrayChannel != null) mushroomArrayChannel.OnStateChanged += HandleMushroomColorArrayChanged;
+    }
+
+    private void OnDisable()
+    {
+        if (boolChannel != null) boolChannel.OnStateChanged -= HandleBoolChanged;
+        if (floatChannel != null) floatChannel.OnStateChanged -= HandleFloatChanged;
+        if (mushroomChannel != null) mushroomChannel.OnStateChanged -= HandleMushroomColorChanged;
+        if (mushroomArrayChannel != null) mushroomArrayChannel.OnStateChanged -= HandleMushroomColorArrayChanged;
+    }
+
+    private void HandleBoolChanged(ActivatorID id, bool value)
+    {
+        boolStates[id] = value;
+        if (debugMode) Debug.Log($"[PuzzleValidator] {name} received bool: {id?.name} = {value}", this);
+        CheckAllPuzzles();
+    }
+
+    private void HandleFloatChanged(ActivatorID id, float value)
+    {
+        floatStates[id] = value;
+        if (debugMode) Debug.Log($"[PuzzleValidator] {name} received float: {id?.name} = {value}", this);
+        CheckAllPuzzles();
+    }
+
+    private void HandleMushroomColorChanged(ActivatorID id, MushroomColor value)
+    {
+        mushroomStates[id] = value;
+        CheckAllPuzzles();
+    }
+
+    private void HandleMushroomColorArrayChanged(ActivatorID id, MushroomColor[] value)
+    {
+        mushroomArrayStates[id] = value;
+        CheckAllPuzzles();
+    }
+
+    public bool TryGetBool(ActivatorID id, out bool value) => boolStates.TryGetValue(id, out value);
+    public bool TryGetFloat(ActivatorID id, out float value) => floatStates.TryGetValue(id, out value);
+    public bool TryGetMushroomColor(ActivatorID id, out MushroomColor value) => mushroomStates.TryGetValue(id, out value);
+    public bool TryGetMushroomColorArray(ActivatorID id, out MushroomColor[] value) => mushroomArrayStates.TryGetValue(id, out value);
+
+    private void CheckAllPuzzles()
+    {
+        for (int i = 0; i < triggers.Count; i++) triggers[i].Evaluate(this);
+    }
+
+    [Serializable]
     public class PuzzleTrigger
     {
         public string triggerName;
@@ -15,88 +77,42 @@ public class PuzzleValidator : MonoBehaviour
         public UnityEvent onSolved;
         public UnityEvent onUnsolved;
         public bool reTriggerable;
-        [HideInInspector] public bool hasFired;
-        [HideInInspector] public bool isCurrentlySolved;
-    }
+        public bool debugMode;
 
-    [Header("Event Channels")]
-    [Tooltip("The channel to listen to for stone/lever updates.")]
-    [SerializeField] private ActivatorStateChannel stateChannel;
+        [NonSerialized] private bool isCurrentlySolved;
+        [NonSerialized] private bool hasFired;
 
-    [Header("Puzzle Configuration")]
-    [SerializeField] private List<PuzzleTrigger> triggers;
-
-    private Dictionary<string, object> activatorStates = new Dictionary<string, object>();
-
-    private void OnEnable()
-    {
-        // Safe subscription to prevent memory leaks
-        if (stateChannel != null)
+        public void Evaluate(IPuzzleStateProvider state)
         {
-            stateChannel.OnStateChanged += HandleActivatorStateChanged;
-        }
-    }
-
-    private void OnDisable()
-    {
-        // Safe unsubscription
-        if (stateChannel != null)
-        {
-            stateChannel.OnStateChanged -= HandleActivatorStateChanged;
-        }
-    }
-
-    // Signature updated to match the new ActivatorStateChannel (string, object)
-    private void HandleActivatorStateChanged(string activatorID, object state)
-    {
-        activatorStates[activatorID] = state;
-        CheckAllPuzzles();
-    }
-
-    private void CheckAllPuzzles()
-    {
-        foreach (var trigger in triggers)
-        {
-            if (trigger.config == null)
-                continue;
-                
-            bool nowSolved = IsSolved(trigger.config);
-            bool wasSolved = trigger.isCurrentlySolved;
-
-            if (nowSolved && !wasSolved)//unsolved to solved
+            if (config == null)
             {
-                if(!trigger.reTriggerable && trigger.hasFired){continue;}
-                trigger.hasFired = true;
-                trigger.isCurrentlySolved = true;
-                // Fire the UnityEvent to trigger environment changes
-                trigger.onSolved?.Invoke();
-                Debug.Log($"[PuzzleValidator] PUZZLE SOLVED: {trigger.triggerName}");
+                if (debugMode) Debug.LogWarning($"[PuzzleTrigger:{triggerName}] Config is null — assign an ActivatorConfiguration.");
+                return;
             }
-            else if(!nowSolved && wasSolved)//Solved to unsolved
+
+            bool nowSolved = config.IsSolved(state);
+            if (debugMode) Debug.Log($"[PuzzleTrigger:{triggerName}] IsSolved={nowSolved}  wasAlreadySolved={isCurrentlySolved}  hasFired={hasFired}  reTriggerable={reTriggerable}");
+
+            if (nowSolved == isCurrentlySolved) return;
+
+            if (nowSolved)
             {
-                if(!trigger.reTriggerable && trigger.hasFired){continue;}
-                trigger.isCurrentlySolved = false;
-                trigger.hasFired = false;
-                trigger.onUnsolved?.Invoke();
-                Debug.Log($"[PuzzleValidator] PUZZLE UNSOLVED: {trigger.triggerName}");
+                if (hasFired && !reTriggerable)
+                {
+                    if (debugMode) Debug.LogWarning($"[PuzzleTrigger:{triggerName}] Blocked by hasFired+!reTriggerable — enable Re Triggerable to allow re-solve.");
+                    return;
+                }
+                isCurrentlySolved = true;
+                hasFired = true;
+                if (debugMode) Debug.Log($"[PuzzleTrigger:{triggerName}] → SOLVED. Invoking onSolved ({onSolved?.GetPersistentEventCount()} listeners).");
+                onSolved?.Invoke();
+            }
+            else
+            {
+                isCurrentlySolved = false;
+                if (debugMode) Debug.Log($"[PuzzleTrigger:{triggerName}] → UNSOLVED. Invoking onUnsolved ({onUnsolved?.GetPersistentEventCount()} listeners).");
+                onUnsolved?.Invoke();
             }
         }
-    }
-
-    private bool IsSolved(ActivatorConfiguration config)
-    {
-        IActivatorRequirement[] requirements = config.GetRequirements();
-
-        foreach (var requirement in requirements)
-        {
-            // If we haven't heard from a required stone yet, puzzle isn't solved
-            if (!activatorStates.TryGetValue(requirement.ActivatorID, out object state))
-                return false;
-
-            if (!requirement.IsSatisfied(state))
-                return false;
-        }
-
-        return true;
     }
 }

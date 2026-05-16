@@ -45,10 +45,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PuzzleValidator
   stateChannel: {fileID: 11400000, guid: 7e45909d0e56544439bbf6f81a226562, type: 2}
+  resetChannel: {fileID: 11400000, guid: 7b03292574597408a8eb335901f5c93c, type: 2}
   triggers:
   - triggerName: PuzzleName
     config: {fileID: 0}
     onSolved:
       m_PersistentCalls:
         m_Calls: []
+    onUnsolved:
+      m_PersistentCalls:
+        m_Calls: []
+    reTriggerable: 0
     hasFired: 0
+    isCurrentlySolved: 0

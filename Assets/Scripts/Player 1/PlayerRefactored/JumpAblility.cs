@@ -25,7 +25,8 @@ public class JumpAbility : MovementAbility
     [SerializeField] private float maxJumpVelocity = 15f; // Maximum jump Velocity cap
     private float jumpHoldTimer = 0f;
     private bool isJumpHolding = false;
-
+    public float LastJumpTime => lastJumpTime;
+    public bool IsJumpHolding => isJumpHolding;
     //MainCall
     public JumpAbility(int maxAirJumps, float groundForce, float airForce,
                        AudioClip[] groundClips, AudioClip[] airClips, AudioSource src)//Might be worth while to implement a config SO that can be passed into player and hold all these settings
@@ -55,7 +56,7 @@ public class JumpAbility : MovementAbility
         if (Time.time - lastJumpTime < jumpCooldown)
             return false;
 
-        if (player.OnGround)
+        if (player.IsWalkableGround)
         {
             // On ground: can jump only if ground cooldown finished AND CanJump
             return groundCooldownTimer <= 0f && player.CanJump;
@@ -81,9 +82,9 @@ public class JumpAbility : MovementAbility
         {
             rb.AddForce(Vector3.up * groundJumpForce, ForceMode.Impulse);
             PlayRandomClip(groundJumpClips);
-            player.animator.SetBool("isJumping", true);
-            player.animator.ResetTrigger("Jump");
-            player.animator.SetTrigger("Jump");
+            player.Animator.SetBool("isJumping", true);
+            player.Animator.ResetTrigger("Jump");
+            player.Animator.SetTrigger("Jump");
             isJumpHolding = true;
             jumpHoldTimer = 0f;
             Debug.Log("Jump executed, holding started");
@@ -94,8 +95,8 @@ public class JumpAbility : MovementAbility
             airJumpsLeft--;
             rb.AddForce(Vector3.up * airJumpForce, ForceMode.Impulse);
             PlayRandomClip(airJumpClips);
-            player.animator.ResetTrigger("Jump");
-            player.animator.SetTrigger("Jump");
+            player.Animator.ResetTrigger("Jump");
+            player.Animator.SetTrigger("Jump");
         }
     }
     public void OnJumpHeld(PlayerControllerRefactored player)

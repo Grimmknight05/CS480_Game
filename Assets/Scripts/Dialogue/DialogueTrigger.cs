@@ -43,11 +43,28 @@ public class DialogueTrigger : MonoBehaviour
              "trigger on Stay (useful if the player spawns inside).")]
     [SerializeField] private bool requireEnter = true;
 
+    [Header("Interact Gate (opt-in)")]
+    [Tooltip("When true, entering the trigger only arms the conversation — " +
+             "the player must press the Interact action (E by default) to " +
+             "actually start it. When false, behavior is unchanged.")]
+    [SerializeField] private bool requireInteract = false;
+
+    [Tooltip("Optional UI prompt channel. While the player is in range and " +
+             "interact is required, a 'Press E to Talk'-style prompt is " +
+             "raised here. Safe to leave empty.")]
+    [SerializeField] private InteractionPromptChannelSO promptChannel;
+
+    [Tooltip("Message shown by the prompt UI while the player is in range.")]
+    [SerializeField] private string promptMessage = "Press E to Talk";
+
     // Runtime state
     private bool hasPlayedOnce = false;
     private bool isActive = false;
     private float cooldownEndsAt = 0f;
     private IDialogueCommand startCommand;
+    private bool playerInRange = false;
+    private Collider lastPlayerCollider;
+    private bool promptShown = false;
 
     void OnEnable()
     {
@@ -55,6 +72,7 @@ public class DialogueTrigger : MonoBehaviour
         {
             endedChannel.OnRaised += HandleDialogueEnded;
         }
+        InteractionInputBridge.OnInteractPressed += HandleInteractPressed;
     }
 
     void OnDisable()
@@ -63,18 +81,57 @@ public class DialogueTrigger : MonoBehaviour
         {
             endedChannel.OnRaised -= HandleDialogueEnded;
         }
+        InteractionInputBridge.OnInteractPressed -= HandleInteractPressed;
+        HidePrompt();
     }
 
     void OnTriggerEnter(Collider other)
     {
+        if (!other.CompareTag(playerTag)) return;
+        playerInRange = true;
+        lastPlayerCollider = other;
+
+        if (requireInteract)
+        {
+            if (CanPlay()) ShowPrompt();
+            return;
+        }
+
         if (!requireEnter) return;
         TryStart(other);
     }
 
     void OnTriggerStay(Collider other)
     {
+        if (!other.CompareTag(playerTag)) return;
+        if (!playerInRange)
+        {
+            playerInRange = true;
+            lastPlayerCollider = other;
+            if (requireInteract && CanPlay()) ShowPrompt();
+        }
+
+        if (requireInteract) return;
         if (requireEnter) return;
         TryStart(other);
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag(playerTag)) return;
+        playerInRange = false;
+        lastPlayerCollider = null;
+        HidePrompt();
+    }
+
+    private void HandleInteractPressed()
+    {
+        if (!requireInteract) return;
+        if (!playerInRange) return;
+        if (!CanPlay()) return;
+        if (lastPlayerCollider == null) return;
+        HidePrompt();
+        TryStart(lastPlayerCollider);
     }
 
     private void TryStart(Collider other)
@@ -128,5 +185,28 @@ public class DialogueTrigger : MonoBehaviour
         {
             cooldownEndsAt = Time.time + dialogue.RetriggerCooldown;
         }
+
+        // Ghost-prompt fix: if the player is still inside the trigger and
+        // can play again, re-show the "Press E to Talk" prompt.
+        if (requireInteract && playerInRange && CanPlay())
+        {
+            ShowPrompt();
+        }
+    }
+
+    private void ShowPrompt()
+    {
+        if (promptChannel == null) return;
+        if (promptShown) return;
+        promptChannel.Raise(new InteractionPromptData(this, true, promptMessage));
+        promptShown = true;
+    }
+
+    private void HidePrompt()
+    {
+        if (promptChannel == null) return;
+        if (!promptShown) return;
+        promptChannel.Raise(new InteractionPromptData(this, false, string.Empty));
+        promptShown = false;
     }
 }
