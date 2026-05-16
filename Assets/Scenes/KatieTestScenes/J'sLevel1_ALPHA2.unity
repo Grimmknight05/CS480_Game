@@ -1901,6 +1901,14 @@ PrefabInstance:
       propertyPath: stoneID
       value: BossWave1
       objectReference: {fileID: 0}
+    - target: {fileID: 1643442849035746568, guid: 5bb1d2fecb92c9b499e5aef00479bde0, type: 3}
+      propertyPath: activatorID
+      value: 
+      objectReference: {fileID: 11400000, guid: e6a6a179056824e32871a3a5f0c139a5, type: 2}
+    - target: {fileID: 1643442849035746568, guid: 5bb1d2fecb92c9b499e5aef00479bde0, type: 3}
+      propertyPath: stateChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 6bcd56738ddba419b9196956e8be63e1, type: 2}
     - target: {fileID: 2918564072526224524, guid: 5bb1d2fecb92c9b499e5aef00479bde0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 26.375076
@@ -7035,6 +7043,14 @@ PrefabInstance:
       propertyPath: stoneID
       value: BossWave2
       objectReference: {fileID: 0}
+    - target: {fileID: 2038627091740505095, guid: e2fffec703ebf60438fb06210b782fa5, type: 3}
+      propertyPath: activatorID
+      value: 
+      objectReference: {fileID: 11400000, guid: a007ba979cd914876beae7bad0bb36d7, type: 2}
+    - target: {fileID: 2038627091740505095, guid: e2fffec703ebf60438fb06210b782fa5, type: 3}
+      propertyPath: stateChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 6bcd56738ddba419b9196956e8be63e1, type: 2}
     - target: {fileID: 2451317838525552003, guid: e2fffec703ebf60438fb06210b782fa5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -16.73494
@@ -11508,7 +11524,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1346588535067001510, guid: 2561f99ef13d58f4b9d739049521f0c9, type: 3}
       propertyPath: m_Name
-      value: Area3 Gate (1)
+      value: Boss Fight Door
       objectReference: {fileID: 0}
     - target: {fileID: 6897501463697714147, guid: 2561f99ef13d58f4b9d739049521f0c9, type: 3}
       propertyPath: m_LocalScale.x
@@ -27302,6 +27318,14 @@ PrefabInstance:
       propertyPath: stoneID
       value: BossWave3
       objectReference: {fileID: 0}
+    - target: {fileID: 4200740343290106853, guid: 8d3a24fe4d041614fa400be6b281d161, type: 3}
+      propertyPath: activatorID
+      value: 
+      objectReference: {fileID: 11400000, guid: 39e4085d36c8b444e9710292cbb8720e, type: 2}
+    - target: {fileID: 4200740343290106853, guid: 8d3a24fe4d041614fa400be6b281d161, type: 3}
+      propertyPath: stateChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 6bcd56738ddba419b9196956e8be63e1, type: 2}
     - target: {fileID: 5256249710815992696, guid: 8d3a24fe4d041614fa400be6b281d161, type: 3}
       propertyPath: m_Name
       value: BossPillarWaveThree
@@ -37477,7 +37501,7 @@ MonoBehaviour:
   phaseEntries:
   - config: {fileID: 11400000, guid: e1b8a07d9f0508e428bd668fc2eb5522, type: 2}
     pillar: {fileID: 892699973}
-    stateChannel: {fileID: 11400000, guid: 7e45909d0e56544439bbf6f81a226562, type: 2}
+    stateChannel: {fileID: 11400000, guid: 6bcd56738ddba419b9196956e8be63e1, type: 2}
     onPhaseStart:
       m_PersistentCalls:
         m_Calls:
@@ -37574,7 +37598,7 @@ MonoBehaviour:
           m_CallState: 2
   - config: {fileID: 11400000, guid: c2b5733233f49f64892a902e0b4f3e91, type: 2}
     pillar: {fileID: 1545422147}
-    stateChannel: {fileID: 11400000, guid: 7e45909d0e56544439bbf6f81a226562, type: 2}
+    stateChannel: {fileID: 11400000, guid: 6bcd56738ddba419b9196956e8be63e1, type: 2}
     onPhaseStart:
       m_PersistentCalls:
         m_Calls:
@@ -37659,7 +37683,7 @@ MonoBehaviour:
           m_CallState: 2
   - config: {fileID: 11400000, guid: 661e8ee04b5389446b455f3aac5b12f7, type: 2}
     pillar: {fileID: 434659671}
-    stateChannel: {fileID: 11400000, guid: 7e45909d0e56544439bbf6f81a226562, type: 2}
+    stateChannel: {fileID: 11400000, guid: 6bcd56738ddba419b9196956e8be63e1, type: 2}
     onPhaseStart:
       m_PersistentCalls:
         m_Calls:
