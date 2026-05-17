@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Area3_3
   m_EditorClassIdentifier: Assembly-CSharp::StoneConfiguration
   requiredStones:
-  - stoneID: Area3_3
+  - stoneID: {fileID: 11400000, guid: adad65dee614b47a6a4922f1e1d74aa3, type: 2}
+    requireSpecificRotation: 1
     activationRotation: 180
     rotationTolerance: 5

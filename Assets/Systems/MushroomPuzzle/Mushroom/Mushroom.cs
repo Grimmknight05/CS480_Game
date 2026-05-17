@@ -23,7 +23,8 @@ public class Mushroom : MonoBehaviour
 
     [Header("Event Channels")]
     [SerializeField] private MushroomEventChannelSO mushroomChannel;
-    [SerializeField] private ActivatorStateChannel puzzleChannel;
+    [SerializeField] private MushroomColorChannel puzzleChannel;
+    [SerializeField] private ActivatorID puzzleActivatorID;
 
     [Header("Components")]
     [SerializeField] private MushroomAudioComponent audioComp;
@@ -47,7 +48,8 @@ public class Mushroom : MonoBehaviour
     public Color GlowColor => glowColor;
     public AudioClip NoteClip => noteClip;
     public MushroomEventChannelSO MushroomChannel => mushroomChannel;
-    public ActivatorStateChannel PuzzleChannel => puzzleChannel;
+    public MushroomColorChannel PuzzleChannel => puzzleChannel;
+    public ActivatorID PuzzleActivatorID => puzzleActivatorID;
     public MushroomAudioComponent AudioComp => audioComp;
     public MushroomLightComponent LightComp => lightComp;
     public MushroomTimerComponent TimerComp => timerComp;

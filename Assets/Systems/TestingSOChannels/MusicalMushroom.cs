@@ -7,7 +7,8 @@ public class MusicalMushroom : MonoBehaviour
 {
     [Header("Event Channels")]
     [Tooltip("Channel used to notify the sequence validator (can be dedicated mushroom channel or shared).")]
-    [SerializeField] private ActivatorStateChannel stateChannel;
+    [SerializeField] private BoolActivatorChannel stateChannel;
+    [SerializeField] private ActivatorID activatorID;
 
     [Header("Identity")]
     [SerializeField] private string mushroomID;
@@ -48,8 +49,8 @@ public class MusicalMushroom : MonoBehaviour
 
         onTriggered?.Invoke();
 
-        if (stateChannel != null)
-            stateChannel.RaiseEvent(mushroomID, true);
+        if (stateChannel != null && activatorID != null)
+            stateChannel.RaiseEvent(activatorID, true);
     }
 
     /// <summary>
