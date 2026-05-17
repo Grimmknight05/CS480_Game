@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 // Author: Joshua Henrikson
 // Modified by: GitHub Copilot / Architecture Refactor (April 2026)
@@ -8,7 +9,8 @@ public class TurnableStone : MonoBehaviour
 {
     [Header("Event Channels")]
     [Tooltip("The walkie-talkie channel this stone uses to broadcast its state.")]
-    [SerializeField] private ActivatorStateChannel stateChannel;
+    [SerializeField] private FloatActivatorChannel stateChannel;
+    [SerializeField] private ActivatorID activatorID;
 
     [Header("Rotation Settings")]
     [SerializeField] private float rotationSpeed = 90f; // Adjusted for degree-per-second rotation
@@ -24,7 +26,8 @@ public class TurnableStone : MonoBehaviour
     [SerializeField] private bool Playerlock = false;//Lock for player Channel
     [SerializeField] private GameObject InputlockVisual;
     [SerializeField] private GameObject PlayerlockVisual;
-
+    [Header("Interaction Events")]
+    public UnityEvent onInteract;   
     [Header("Stone Reference")]
     [SerializeField] private string stoneID;
     
@@ -49,14 +52,15 @@ public class TurnableStone : MonoBehaviour
             Debug.Log($"[TurnableStone] {stoneID} initialized. Starting rotation: {initialRotationY}°, Offset: {currentRotation}°");
         SetLockVisablity();    
         // Broadcast initial state on startup so the Validator knows where we are
-        if (stateChannel != null)
-            stateChannel.RaiseEvent(stoneID, currentRotation);
+        if (stateChannel != null && activatorID != null)
+            stateChannel.RaiseEvent(activatorID, currentRotation);
     }
 
     // Call this method from your new InteractableTrigger volume
     public void Interact()
     {
         if (Inputlock || Playerlock) return; // If either lock dont let player rotate
+        onInteract?.Invoke();
         setTargetRot();
     }
     public void InteractBypassPlayerLock()
@@ -143,8 +147,8 @@ public class TurnableStone : MonoBehaviour
                 
                 // Normalize for the broadcast (e.g. 360 becomes 0) so the Puzzle Validator understands it
                 float normalizedRotation = Mathf.Repeat(currentRotation, 360f);
-                if (stateChannel != null)
-                    stateChannel.RaiseEvent(stoneID, normalizedRotation);
+                if (stateChannel != null && activatorID != null)
+                    stateChannel.RaiseEvent(activatorID, normalizedRotation);
             }
 
             // We finished one turn. Remove it from the queue.

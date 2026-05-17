@@ -20,7 +20,7 @@ GameObject:
   - component: {fileID: 3748066088543828873}
   - component: {fileID: 6888055206237136355}
   - component: {fileID: 7795293525274703267}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -294,6 +294,7 @@ MonoBehaviour:
   deathSFX: {fileID: 8300000, guid: 5788a0e24a89d1048836bedb038bac6a, type: 3}
   enemySoundMinInterval: 3
   enemySoundMaxInterval: 5
+  resetChannel: {fileID: 11400000, guid: 7b03292574597408a8eb335901f5c93c, type: 2}
 --- !u!114 &8871548944646071166
 MonoBehaviour:
   m_ObjectHideFlags: 0

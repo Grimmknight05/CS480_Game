@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60c2480050d1f4cf293d4d7b4c9de810, type: 3}
+  m_Name: LaserWeapon
+  m_EditorClassIdentifier: Assembly-CSharp::LaserWeapon
+  toolName: Laser
+  toolDescription: Laser Weapon causes Burn Effect
+  cooldown: 0.5
+  useSFX: {fileID: 8300000, guid: 6b75b6252e9a23a429de87ad8e495083, type: 3}
+  toolIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 1536
+  effects:
+  - {fileID: 11400000, guid: 629a7a849c143b84f8795f9eaefd0ca0, type: 2}
+  damagePerHit: 32
+  range: 50
+  laserPrefab: {fileID: 7126521720523635901, guid: f67306764cdd891469ac112d0a427361, type: 3}
+  assistAngle: 90
+  assistStrength: 1

@@ -29,7 +29,75 @@ public class OrbitalCamera : MonoBehaviour
 
     [Header("Starting Perspective")]
     public float startingPitch = 20f; // 20 degrees looking down
+    // =====================================================================
+// ADD these fields and methods to the existing OrbitalCamera class.
+// =====================================================================
 
+[Header("External Control")]
+[Tooltip("When true, the camera ignores mouse input and stays under external control.")]
+private bool externalControl = false;
+
+// Saved state for smooth restoration after cutscenes.
+private float savedYaw;
+private float savedPitch;
+private float savedDistance;
+private float savedFOV;
+
+// Reference to the Camera component (add if not already present).
+private Camera cam;
+    /// <summary>
+    /// Call before a cutscene begins. Disables orbital updates and stores current
+    /// camera settings so they can be restored later.
+    /// </summary>
+    public void EnableExternalControl()
+    {
+        if (externalControl) return;
+
+        // Save current orbit angles, distance, and camera FOV.
+        savedYaw = currentYaw;
+        savedPitch = currentPitch;
+        savedDistance = distance;
+        if (cam != null) savedFOV = cam.fieldOfView;
+
+        externalControl = true;
+    }
+
+    /// <summary>
+    /// Call after a cutscene finishes. Re‑enables orbital updates and restores the
+    /// camera’s previous state.
+    /// </summary>
+    public void DisableExternalControl()
+    {
+        if (!externalControl) return;
+
+        externalControl = false;
+
+        // Restore orbital parameters.
+        currentYaw = savedYaw;
+        currentPitch = savedPitch;
+        distance = savedDistance;
+
+        // Restore FOV.
+        if (cam != null) cam.fieldOfView = savedFOV;
+
+        // Force immediate camera update.
+        LateUpdate();
+    }
+    void Awake()
+    {
+        // Stealing the BossLookAt survival tactic for WebGL
+        if (playerRef == null)
+        {
+            GameObject foundPlayer = GameObject.FindGameObjectWithTag("Player");
+            if (foundPlayer != null)
+            {
+                playerRef = foundPlayer.transform;
+                Debug.Log("OrbitalCamera: Player found via Tag in Awake!");
+            }
+        }
+        cam = GetComponentInChildren<Camera>();
+        if (cam == null) cam = GetComponent<Camera>();
+    }
     void Start()
     {
         // Hide and lock the cursor
@@ -46,7 +114,7 @@ public class OrbitalCamera : MonoBehaviour
     void LateUpdate()
     {
         if (playerRef == null) return;
-
+        if (externalControl) return;
         // 1. Get Mouse Input (Using your Mouse.current method)
         Mouse m = Mouse.current;
         if (m != null)

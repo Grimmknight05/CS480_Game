@@ -4,7 +4,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     //might want to have player character refrencing gamecontroller to send game won event or not circular dependacies may be a problem with this
-    [SerializeField] private PlayerController playerController; //Ref to player controller
+    [SerializeField] private PlayerControllerRefactored playerController; //Ref to player controller
     [SerializeField] private int pointsNeededToWin = 25; //Score to win
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip[] winSFX;
@@ -18,8 +18,8 @@ public class GameController : MonoBehaviour
     void Start()
     {
         playRandomSFX(gameStartSFX);
-        playerController.OnScoreChanged += CheckWinCondition; //Add CheckWinCondition function to list of things called when OnScoreChanged is invoked
-        playerController.OnPlayerDeath += gameLoose;
+        //playerController.OnScoreChanged += CheckWinCondition; //Add CheckWinCondition function to list of things called when OnScoreChanged is invoked
+        //playerController.OnPlayerDeath += gameLoose;
     }
 
     private void playRandomSFX(AudioClip[] soundList)
@@ -38,7 +38,7 @@ public class GameController : MonoBehaviour
     {
         Debug.Log("Player wins!");
         //OnGameWon?.Invoke();//Invoke subscribers on won
-        playerController.ShowWinScreen();
+        //playerController.ShowWinScreen();
         playRandomSFX(winSFX);
         Time.timeScale = 0f; // Pause the game
         Destroy(GameObject.FindGameObjectWithTag("Enemy"));

@@ -27,6 +27,19 @@ public abstract class Tool : ScriptableObject
             audioSource.PlayOneShot(useSFX);
         }
     }
+    /// <summary>
+    /// Applies all status effects assigned to this tool to the target.
+    /// </summary>
+    protected void ApplyEffects(GameObject target, Vector3 hitDirection)
+    {
+        if (effects == null || effects.Length == 0) return;
+
+        foreach (StatusEffect effect in effects)
+        {
+            effect.Apply(target, hitDirection);
+        }
+    }
+    
 
 
 }

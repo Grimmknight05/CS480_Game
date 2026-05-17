@@ -6,19 +6,50 @@ using UnityEngine.Rendering;
 
 // Manages tool usage and switching for the player.
 // Attach to player
-
-public class ToolSystem : MonoBehaviour
+// Adding IAimContext allows tools to know where to aim (the camera) vs where to fire from (the usePoint).
+public class ToolSystem : MonoBehaviour, IAimContext
 {
+
+    [Header("Aiming Setup")]
+    [Tooltip("The camera determining what we are logically aiming at.")]
+    [SerializeField] private Transform aimSource;
+    
+    [Tooltip("The physical barrel of the gun on the character model.")]
+    [SerializeField] private Transform visualFirePoint;
+
+    // 2. Fulfill the interface contract so weapons can read these variables
+    public Transform AimSource => aimSource != null ? aimSource : transform;
+    public Transform VisualFirePoint => visualFirePoint != null ? visualFirePoint : transform;
+    
     [SerializeField] private Tool[] tools;
     [SerializeField] private Transform usePoint;
     [SerializeField] private AudioSource audioSource;
 
+    [Header("Dialogue")]
+    [SerializeField] private DialogueEventChannelSO dialogueStartChannel;
+    [SerializeField] private DialogueEndedChannelSO dialogueEndedChannel;
+    private bool inputEnabled = true;
 
     private int currentToolIndex = 0;
     private PlayerInput playerInput;
     private InputAction useAction;
     private InputAction switchToolAction;
     private float[] lastUseTimes;
+
+    private void OnEnable()
+    {
+        if (dialogueStartChannel != null) dialogueStartChannel.OnRaised += HandleDialogueStart;
+        if (dialogueEndedChannel != null) dialogueEndedChannel.OnRaised += HandleDialogueEnded;
+    }
+
+    private void OnDisable()
+    {
+        if (dialogueStartChannel != null) dialogueStartChannel.OnRaised -= HandleDialogueStart;
+        if (dialogueEndedChannel != null) dialogueEndedChannel.OnRaised -= HandleDialogueEnded;
+    }
+
+    private void HandleDialogueStart(DialogueSO _) { inputEnabled = false; }
+    private void HandleDialogueEnded() { inputEnabled = true; }
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -50,6 +81,7 @@ public class ToolSystem : MonoBehaviour
     }
     void OnAttack(InputValue attackInput)
     {
+        if (!inputEnabled) return;
         if (attackInput.isPressed)
         {
             Debug.Log("Use Tool");
@@ -58,11 +90,13 @@ public class ToolSystem : MonoBehaviour
     }
     void OnSwitchTool(InputValue switchInput)
     {
+        if (!inputEnabled) return;
         Debug.Log("Switch Tool");
         SwitchTool();
     }
     private void Update()
     {
+        if (!inputEnabled) return;
         if (switchToolAction != null && switchToolAction.triggered)
         {
             SwitchTool();
