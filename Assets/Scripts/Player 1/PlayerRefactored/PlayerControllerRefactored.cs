@@ -17,6 +17,8 @@ public class PlayerControllerRefactored : MonoBehaviour
     [Header("Movement Settings")]
     [SerializeField, Tooltip("Starting movement mode")] private MovementMode initialMode = MovementMode.AccelerationBased;
     [SerializeField] private float playerSpeed = 5f;
+    [SerializeField, Tooltip("Multiplier applied to playerSpeed while the Sprint input is held.")]
+    private float sprintMultiplier = 1.6f;
     [SerializeField] private float acceleration = 10f;
     [SerializeField] private float deceleration = 15f;
     [SerializeField] private float rotationSpeed = 10f;
@@ -63,11 +65,13 @@ public class PlayerControllerRefactored : MonoBehaviour
     // Input & commands
     private Queue<ICommand> inputQueue = new Queue<ICommand>();
     private InputAction jumpAction;
+    private InputAction sprintAction;
     public bool InputEnabled { get; private set; } = true;
     private MovementMode previousModeBeforeDialogue;
 
     // Abilities
     public JumpAbility jumpAbility;
+    public SprintAbility sprintAbility;
 
     // Events
     public delegate void ScoreChangedDelegate(int newScore);
@@ -80,6 +84,8 @@ public class PlayerControllerRefactored : MonoBehaviour
     public Vector3 GroundNormal => groundNormal;
     public Animator Animator => animator;
     public float PlayerSpeed => playerSpeed;
+    // Effective ground/air speed: base speed scaled by the sprint modifier (1x when not sprinting).
+    public float CurrentMoveSpeed => playerSpeed * (sprintAbility != null ? sprintAbility.SpeedMultiplier : 1f);
     public float Acceleration => acceleration;
     public float Deceleration => deceleration;
     public float ZGAcceleration => zgAcceleration;
@@ -108,6 +114,7 @@ public class PlayerControllerRefactored : MonoBehaviour
             playerHealth.OnPlayerDeath.AddListener(OnHealthDeath);
 
         jumpAbility = new JumpAbility(maxInAirjumps, jumpForce, airJumpForce, jumpSFX, airJumpSFX, audioSource);
+        sprintAbility = new SprintAbility(sprintMultiplier);
 
         SetMovementState(initialMode == MovementMode.ZeroGrav
             ? new ZeroGMovementState()
@@ -121,6 +128,13 @@ public class PlayerControllerRefactored : MonoBehaviour
         jumpAction.started += OnJumpStarted;
         jumpAction.canceled += OnJumpCanceled;
 
+        sprintAction = inputActions.FindAction("Sprint");
+        if (sprintAction != null)
+        {
+            sprintAction.started += OnSprintStarted;
+            sprintAction.canceled += OnSprintCanceled;
+        }
+
         if (dialogueStartChannel != null) dialogueStartChannel.OnRaised += HandleDialogueStart;
         if (dialogueEndedChannel != null) dialogueEndedChannel.OnRaised += HandleDialogueEnded;
     }
@@ -129,6 +143,12 @@ public class PlayerControllerRefactored : MonoBehaviour
     {
         jumpAction.started -= OnJumpStarted;
         jumpAction.canceled -= OnJumpCanceled;
+
+        if (sprintAction != null)
+        {
+            sprintAction.started -= OnSprintStarted;
+            sprintAction.canceled -= OnSprintCanceled;
+        }
 
         if (dialogueStartChannel != null) dialogueStartChannel.OnRaised -= HandleDialogueStart;
         if (dialogueEndedChannel != null) dialogueEndedChannel.OnRaised -= HandleDialogueEnded;
@@ -182,6 +202,18 @@ public class PlayerControllerRefactored : MonoBehaviour
         jumpAbility.OnJumpReleased();
     }
 
+    private void OnSprintStarted(InputAction.CallbackContext ctx)
+    {
+        if (!InputEnabled) return;
+        sprintAbility.SetSprinting(true);
+    }
+
+    // Always clears, even when input is disabled, so a held key can't "stick" sprinting on.
+    private void OnSprintCanceled(InputAction.CallbackContext ctx)
+    {
+        sprintAbility.SetSprinting(false);
+    }
+
     public void QueueCommand(ICommand command)
     {
         inputQueue.Enqueue(command);
@@ -212,6 +244,7 @@ public class PlayerControllerRefactored : MonoBehaviour
         previousModeBeforeDialogue = (currentState is ZeroGMovementState) ? MovementMode.ZeroGrav : MovementMode.AccelerationBased;
         InputEnabled = false;
         moveX = moveY = moveZ = 0f;
+        sprintAbility?.SetSprinting(false);
         SetMovementState(new DialogueMovementState());
     }
 
@@ -347,7 +380,10 @@ public class PlayerControllerRefactored : MonoBehaviour
             Vector3 movement = cachedMoveDirection;
             if (movement.sqrMagnitude > 1f) movement.Normalize();
 
-            Vector3 targetVelocity = movement * playerSpeed;
+            // Sprint-scaled speed. Slope adhesion below still ProjectOnPlane's this
+            // target, so a larger magnitude never adds an upward (ramp-launch) component.
+            float speed = CurrentMoveSpeed;
+            Vector3 targetVelocity = movement * speed;
             float slopeAngle = Vector3.Angle(Vector3.up, groundNormal);
             bool ascending = rb.linearVelocity.y > 0.1f;
             bool onWalkableSlope = !ascending && slopeAngle > 0.1f;
@@ -362,7 +398,7 @@ public class PlayerControllerRefactored : MonoBehaviour
             Vector3 velocity = Vector3.Lerp(rb.linearVelocity, targetVelocity, t);
 
             Vector3 horizontal = new Vector3(velocity.x, 0, velocity.z);
-            horizontal = Vector3.ClampMagnitude(horizontal, playerSpeed);
+            horizontal = Vector3.ClampMagnitude(horizontal, speed);
             velocity = new Vector3(horizontal.x, velocity.y, horizontal.z);
 
             if (onWalkableSlope && cachedMoveDirection.sqrMagnitude < 0.01f)
@@ -382,11 +418,13 @@ public class PlayerControllerRefactored : MonoBehaviour
         Vector3 movement = cachedMoveDirection;
         if (movement.sqrMagnitude > 1f) movement.Normalize();
 
-        Vector3 targetVelocity = movement * playerSpeed;
+        // Sprint momentum carries into the air (running jump).
+        float speed = CurrentMoveSpeed;
+        Vector3 targetVelocity = movement * speed;
         float airAccel = acceleration * 0.5f;
         float t = 1f - Mathf.Exp(-airAccel * Time.fixedDeltaTime);
         Vector3 newVelocity = Vector3.Lerp(rb.linearVelocity, targetVelocity, t);
-        newVelocity = Vector3.ClampMagnitude(newVelocity, playerSpeed);
+        newVelocity = Vector3.ClampMagnitude(newVelocity, speed);
         newVelocity.y = rb.linearVelocity.y;
         rb.linearVelocity = newVelocity;
     }
