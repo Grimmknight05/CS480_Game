@@ -72,6 +72,11 @@ public class MusicalSequenceConfiguration : ActivatorConfiguration
 
     [SerializeField] private SequenceRequirement requirement;
 
+    [Tooltip("When ON, warns once/play mode if PuzzleValidator never received MushroomColor[] for your Sequence ActivatorID (often wrong SO reference vs tracker).")]
+    [SerializeField] private bool logSolveDiagnostics;
+
+    [System.NonSerialized] private bool loggedMissingArrayStateForActivator;
+
     /// <summary>The ActivatorID SO raised by <see cref="MushroomSequenceTracker"/> — pair tracker + validator with this asset so it stays in one place.</summary>
     public ActivatorID SequenceActivatorID => requirement?.ActivatorID;
 
@@ -80,8 +85,22 @@ public class MusicalSequenceConfiguration : ActivatorConfiguration
 
     public override bool IsSolved(IPuzzleStateProvider state)
     {
-        if (requirement == null || requirement.ActivatorID == null) return false;
-        if (!state.TryGetMushroomColorArray(requirement.ActivatorID, out MushroomColor[] sequence)) return false;
+        if (requirement == null || requirement.ActivatorID == null)
+            return false;
+        if (!state.TryGetMushroomColorArray(requirement.ActivatorID, out MushroomColor[] sequence))
+        {
+            if (logSolveDiagnostics && !loggedMissingArrayStateForActivator)
+            {
+                loggedMissingArrayStateForActivator = true;
+                Debug.LogWarning(
+                    $"[MusicalSequenceConfiguration:{name}] No MushroomColor[] in PuzzleValidator for ActivatorID asset '{requirement.ActivatorID.name}'. " +
+                    "Use the SAME ActivatorID ScriptableObject on BOTH the melody config (Sequence ID) AND the MushroomSequenceTracker Raise (tracker Melody Configuration). Assign the same MushroomColorArrayChannel on tracker + PuzzleValidator.", this);
+            }
+            return false;
+        }
+
+        loggedMissingArrayStateForActivator = false;
+
         return requirement.IsSatisfied(sequence);
     }
 }

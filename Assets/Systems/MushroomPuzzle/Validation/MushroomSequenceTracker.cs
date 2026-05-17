@@ -3,21 +3,23 @@ using UnityEngine;
 
 // Author: David Haddad - CS480 design-patterns mushroom puzzle (May 2026)
 // Bridges per-mushroom activations to the existing puzzle framework. Subscribes
-// to MushroomEventChannelSO, accumulates a bounded list of recent colors, and
-// re-raises the running sequence on ActivatorStateChannel so PuzzleValidator can
-// match a MusicalSequenceConfiguration with the same sequenceID.
+// to MushroomEventChannelSO (one broadcast: critters, tracker, validator), accumulates
+// a bounded list of recent colors, and re-raises the running sequence on MushroomColorArrayChannel
+// so MushroomPuzzleValidator (or PuzzleValidator) can match a MusicalSequenceConfiguration with the same Sequence Activator ID.
 // Edited by Sarah Using Cursor
 
 public class MushroomSequenceTracker : MonoBehaviour
 {
     [Header("Melody (single source of truth)")]
-    [Tooltip("Same asset as PuzzleValidator trigger Config — defines Sequence ID + Expected Sequence once.")]
+    [Tooltip("Same asset as the puzzle root's trigger Config — defines Sequence ID + Expected Sequence once.")]
     [SerializeField] private MusicalSequenceConfiguration melodyConfiguration;
 
     [SerializeField] private MushroomEventChannelSO mushroomChannel;
     [SerializeField] private MushroomColorArrayChannel puzzleChannel;
     [SerializeField] private int maxHistory = 20;
     [SerializeField] private bool logHistoryChannelToConsole = true;
+    [Tooltip("Logs solve chain: tracker → channel RaiseEvent → (expect) MushroomPuzzleValidator Evaluate → OnPuzzleSolved. Enable while troubleshooting.")]
+    [SerializeField] private bool logPuzzleSolveDebug;
 
     [Header("Progress reset")]
     [Tooltip("Played when this tracker clears progress (Clear(), or wrong note if auto-reset is on).")]
@@ -33,13 +35,19 @@ public class MushroomSequenceTracker : MonoBehaviour
     [SerializeField] private Mushroom[] mushroomsToLockOnSolved;
     [SerializeField] private AudioClip solvedClip;
     [SerializeField] [Range(0f, 1f)] private float solvedClipVolume = 0.8f;
-    [Tooltip("Walks to Rest Point Under Mushroom, stays calm, tag becomes non-Enemy so the player is not hurt.")]
-    [SerializeField] private CritterController[] crittersToPacifyOnSolve;
-    [Tooltip("Non-critter enemies — same as critter pacify: zero AttackData damage and strip Enemy tags from touch damage.")]
-    [SerializeField] private EnemyControllerTest[] enemiesToPacifyOnSolve;
+    [Tooltip("Walks to Rest Point Under Mushroom OR plain enemy pacify: assign critter/enemy roots. Critters use PacifyAfterPuzzleSolve; enemies use SetPacifiedCombat.")]
+    [SerializeField] private GameObject[] pacifyOnSolve;
+
+    [Tooltip("Obsolete — migrated at runtime into Pacify On Solve if that list is empty. Remove after re-saving.")]
+    [SerializeField, HideInInspector] private CritterController[] crittersToPacifyOnSolve;
+
+    [Tooltip("Obsolete — migrated at runtime into Pacify On Solve if that list is empty. Remove after re-saving.")]
+    [SerializeField, HideInInspector] private EnemyControllerTest[] enemiesToPacifyOnSolve;
+    [Tooltip("Opened when puzzle solves (same timing as Mushroom Puzzle Validator trigger On Solved → OnPuzzleSolved). Uses DoorLerp.Open().")]
+    [SerializeField] private DoorLerp[] doorsToOpenOnSolve;
 
     [Header("Unsolve reset (optional)")]
-    [Tooltip("Off by default. Wrong-note reset uses only 'Reset When Sequence Breaks Expected Prefix' above. Enable this only if you need full reset when PuzzleValidator fires On Unsolved (e.g. was solved, then state invalidates).")]
+    [Tooltip("Off by default. Wrong-note reset uses only 'Reset When Sequence Breaks Expected Prefix' above. Enable this only if you need full reset when the puzzle validator fires On Unsolved (e.g. was solved, then state invalidates).")]
     [SerializeField] private bool applyResetOnPuzzleUnsolve;
     [Tooltip("Shared command log — cleared only when Apply Reset On Puzzle Unsolve is enabled.")]
     [SerializeField] private PuzzleCommandHistory puzzleCommandHistory;
@@ -49,13 +57,47 @@ public class MushroomSequenceTracker : MonoBehaviour
     private void Awake()
     {
         if (melodyConfiguration == null)
-            Debug.LogWarning("[MushroomSequenceTracker] Assign the same Musical Sequence Configuration asset used by PuzzleValidator (sequence ID + melody in one place).");
+            Debug.LogWarning("[MushroomSequenceTracker] Assign the same Musical Sequence Configuration asset used by Mushroom Puzzle Validator trigger (sequence ID + melody in one place).");
         if (mushroomsToLockOnSolved == null || mushroomsToLockOnSolved.Length == 0)
             mushroomsToLockOnSolved = GetComponentsInChildren<Mushroom>(true);
         if (puzzleCommandHistory == null)
             puzzleCommandHistory = GetComponentInChildren<PuzzleCommandHistory>(true);
 
         ValidateWrongNoteResetSetup();
+        LogSolveDebugSetupOnce();
+        MigrateLegacyPacifyAssignments();
+    }
+
+    private void MigrateLegacyPacifyAssignments()
+    {
+        bool hasPacify = pacifyOnSolve != null && pacifyOnSolve.Length > 0;
+        int nc = crittersToPacifyOnSolve != null ? crittersToPacifyOnSolve.Length : 0;
+        int ne = enemiesToPacifyOnSolve != null ? enemiesToPacifyOnSolve.Length : 0;
+        if (hasPacify || (nc == 0 && ne == 0))
+            return;
+
+        var merged = new List<GameObject>();
+        for (int i = 0; i < nc; i++)
+            if (crittersToPacifyOnSolve[i] != null)
+                merged.Add(crittersToPacifyOnSolve[i].gameObject);
+        for (int i = 0; i < ne; i++)
+            if (enemiesToPacifyOnSolve[i] != null)
+                merged.Add(enemiesToPacifyOnSolve[i].gameObject);
+        pacifyOnSolve = merged.ToArray();
+    }
+
+    private void LogSolveDebugSetupOnce()
+    {
+        if (!logPuzzleSolveDebug) return;
+        ActivatorID aid = melodyConfiguration != null ? melodyConfiguration.SequenceActivatorID : null;
+        int expLen = melodyConfiguration?.ExpectedSequence != null ? melodyConfiguration.ExpectedSequence.Length : 0;
+        Debug.Log(
+            $"[MushroomSequenceTracker:{name}] Solve-debug setup.\n" +
+            $"  MushroomChannel: {(mushroomChannel != null ? mushroomChannel.name : "MISSING — mushrooms never reach tracker")}\n" +
+            $"  Mushroom snapshot channel (array): {(puzzleChannel != null ? puzzleChannel.name : "MISSING — validator never hears melody")}\n" +
+            $"  Melody: {(melodyConfiguration != null ? melodyConfiguration.name : "MISSING")}\n" +
+            $"  Sequence Activator ID: {(aid != null ? aid.name + " (instance OK if same asset ref as validator melody)" : "MISSING — open melody asset, assign Sequence ID")}\n" +
+            $"  Expected melody length: {expLen}");
     }
 
     private void ValidateWrongNoteResetSetup()
@@ -136,19 +178,33 @@ public class MushroomSequenceTracker : MonoBehaviour
 
     private void RaiseSnapshotToChannel(MushroomColor[] snapshot)
     {
-        if (puzzleChannel == null) return;
+        if (puzzleChannel == null)
+        {
+            if (logPuzzleSolveDebug)
+                Debug.LogWarning($"[MushroomSequenceTracker:{name}] RaiseSnapshot aborted: puzzleChannel (MushroomColorArrayChannel) not assigned.", this);
+            return;
+        }
 
         ActivatorID id = melodyConfiguration != null ? melodyConfiguration.SequenceActivatorID : null;
         if (id == null)
         {
-            Debug.LogWarning("[MushroomSequenceTracker] Assign Melody Configuration (same asset as PuzzleValidator) so Sequence Activator ID is set.");
+            Debug.LogWarning("[MushroomSequenceTracker] Assign Melody Configuration (same asset as the puzzle validator trigger Config) so Sequence Activator ID is set.");
             return;
         }
 
         puzzleChannel.RaiseEvent(id, snapshot);
-        if (logHistoryChannelToConsole)
+
+        MushroomColor[] expected = melodyConfiguration != null ? melodyConfiguration.ExpectedSequence : null;
+        int L = expected != null ? expected.Length : 0;
+        if (logPuzzleSolveDebug && L > 0 && snapshot != null && snapshot.Length == L)
         {
-            Debug.Log($"[MushroomSequenceTracker] puzzle channel '{id.name}' history ({snapshot.Length}): {string.Join(", ", snapshot)}");
+            bool tailOk = IsValidPartialOrCompletePrefix(new List<MushroomColor>(snapshot), expected);
+            Debug.Log($"[MushroomSequenceTracker:{name}] Emitted FULL-LENGTH snapshot ({snapshot.Length} notes); tail matches melody = {tailOk}. Validator should run trigger IsSolved now.", this);
+        }
+
+        if (logHistoryChannelToConsole || logPuzzleSolveDebug)
+        {
+            Debug.Log($"[MushroomSequenceTracker] Raised '{id.name}' snapshot len={snapshot?.Length ?? 0}: {(snapshot != null && snapshot.Length > 0 ? string.Join(", ", snapshot) : "(empty)")}", this);
         }
     }
 
@@ -189,19 +245,38 @@ public class MushroomSequenceTracker : MonoBehaviour
 
     public void OnPuzzleSolved()
     {
+        if (logPuzzleSolveDebug)
+        {
+            int doorN = doorsToOpenOnSolve != null ? doorsToOpenOnSolve.Length : 0;
+            Debug.Log($"[MushroomSequenceTracker:{name}] ** OnPuzzleSolved ** (doors={doorN}, pacifyRoots={pacifyOnSolve?.Length ?? 0}, lockGlow={lockMushroomsGlowingWhenSolved}).", this);
+        }
+
         if (solvedClip != null)
             AudioSource.PlayClipAtPoint(solvedClip, transform.position, solvedClipVolume);
 
-        if (crittersToPacifyOnSolve != null)
+        if (pacifyOnSolve != null)
         {
-            for (int i = 0; i < crittersToPacifyOnSolve.Length; i++)
-                crittersToPacifyOnSolve[i]?.PacifyAfterPuzzleSolve();
+            for (int i = 0; i < pacifyOnSolve.Length; i++)
+            {
+                GameObject go = pacifyOnSolve[i];
+                if (go == null) continue;
+                CritterController critter = go.GetComponent<CritterController>();
+                if (critter != null)
+                {
+                    critter.PacifyAfterPuzzleSolve();
+                    continue;
+                }
+
+                EnemyControllerTest enemy = go.GetComponent<EnemyControllerTest>();
+                if (enemy == null) enemy = go.GetComponentInChildren<EnemyControllerTest>(true);
+                enemy?.SetPacifiedCombat();
+            }
         }
 
-        if (enemiesToPacifyOnSolve != null)
+        if (doorsToOpenOnSolve != null)
         {
-            for (int i = 0; i < enemiesToPacifyOnSolve.Length; i++)
-                enemiesToPacifyOnSolve[i]?.SetPacifiedCombat();
+            for (int i = 0; i < doorsToOpenOnSolve.Length; i++)
+                doorsToOpenOnSolve[i]?.Open();
         }
 
         if (!lockMushroomsGlowingWhenSolved || mushroomsToLockOnSolved == null) return;

@@ -92,9 +92,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e15c4180118046ba878fb1371b1dd60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MushroomSequenceTracker
-  melodyConfiguration: {fileID: 0}
-  mushroomChannel: {fileID: 0}
-  puzzleChannel: {fileID: 0}
+  melodyConfiguration: {fileID: 11400000, guid: e0fd5758a9bcd4694bf9fc68c5237576, type: 2}
+  mushroomChannel: {fileID: 11400000, guid: 62d28254fe4604c24944f3e29bb7bc37, type: 2}
+  puzzleChannel: {fileID: 11400000, guid: 2e08666b09ea646d5b7d4881db24462b, type: 2}
   maxHistory: 20
   resetWhenSequenceBreaksExpectedPrefix: 1
 --- !u!114 &8847123456789032145
@@ -106,11 +106,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2813633804991596651}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df43918d3d12fa74984a157e1ba21ee6, type: 3}
+  m_Script: {fileID: 11500000, guid: a9f3e2c154b74d6e8af1029384756bdc, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PuzzleValidator
-  stateChannel: {fileID: 11400000, guid: 2e08666b09ea646d5b7d4881db24462b, type: 2}
-  resetChannel: {fileID: 11400000, guid: 7b03292574597408a8eb335901f5c93c, type: 2}
+  m_EditorClassIdentifier: Assembly-CSharp::MushroomPuzzleValidator
+  mushroomChannel: {fileID: 11400000, guid: 62d28254fe4604c24944f3e29bb7bc37, type: 2}
+  mushroomArrayChannel: {fileID: 11400000, guid: 2e08666b09ea646d5b7d4881db24462b, type: 2}
   triggers:
   - triggerName: MushroomMusicalMelody
     config: {fileID: 11400000, guid: e0fd5758a9bcd4694bf9fc68c5237576, type: 2}
@@ -145,8 +145,8 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
     reTriggerable: 0
-    hasFired: 0
-    isCurrentlySolved: 0
+    debugMode: 0
+  debugMode: 0
 --- !u!1 &6394998109181505859
 GameObject:
   m_ObjectHideFlags: 0
