@@ -35971,6 +35971,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 644757814}
     m_Modifications:
+    - target: {fileID: 2165983798810383020, guid: e56954a07599ae44c8ba690a51978115, type: 3}
+      propertyPath: submergePlayerThreshold
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6365448175039443724, guid: e56954a07599ae44c8ba690a51978115, type: 3}
       propertyPath: m_LocalScale.x
       value: 39.332203
