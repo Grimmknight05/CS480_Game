@@ -12,6 +12,9 @@ public class BossLookAt : MonoBehaviour, ILock
     [Tooltip("The player's transform (optional if autoFindPlayer is true).")]
     [SerializeField] private Transform playerTransform;
 
+    [Tooltip("Seconds between retry attempts when the player cannot be found.")]
+    [SerializeField] private float playerSearchInterval = 0.5f;
+
     [Header("Rotation Settings")]
     [SerializeField] private float rotationSpeed = 180f;
     [SerializeField] private bool resetOnDeactivate = true;
@@ -28,6 +31,7 @@ public class BossLookAt : MonoBehaviour, ILock
     private bool isActive = false;
     private Quaternion originalRotation;
     private bool playerSearchFailed = false; // avoid spamming Find every frame
+    private float _nextPlayerSearchTime;
 
     private void Awake()
     {
@@ -59,7 +63,8 @@ public class BossLookAt : MonoBehaviour, ILock
         else
         {
             playerSearchFailed = true;
-            Debug.LogWarning("BossLookAt: No GameObject with tag 'Player' found. Will retry each frame until found.");
+            _nextPlayerSearchTime = Time.time + playerSearchInterval;
+            Debug.LogWarning($"BossLookAt: No GameObject with tag 'Player' found. Will retry every {playerSearchInterval}s until found.");
         }
     }
 
@@ -88,6 +93,7 @@ public class BossLookAt : MonoBehaviour, ILock
         {
             if (autoFindPlayer)
             {
+                if (playerSearchFailed && Time.time < _nextPlayerSearchTime) return;
                 TryFindPlayer();
                 if (playerTransform == null) return;
             }

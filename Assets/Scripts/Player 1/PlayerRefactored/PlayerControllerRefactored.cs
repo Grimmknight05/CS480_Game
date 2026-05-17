@@ -1,139 +1,99 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class PlayerControllerRefactored : MonoBehaviour
 {
-    [Header("Look & Rotation")]
-    [SerializeField] private float rotationSpeed = 10f;
-
-    [Header("Health")]
-    private PlayerHealth playerHealth;
-
-    [Header("Physics")]
-    public Rigidbody rb;
-
-    [Header("UI")]
-    [SerializeField] private TextMeshProUGUI winUI;
-    [SerializeField] private GameObject HUD;
-
-    [Header("Score")]
-    private int playerPoints;
-
-    [Header("Sound")]
+    [Header("References")]
+    [SerializeField] private Transform cameraPivot;
     [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip[] jumpSFX;
-    [SerializeField] private AudioClip[] airJumpSFX;
+    [SerializeField] private Animator animator;
+    public Rigidbody rb;
+    private CapsuleCollider capsule;
+    private PlayerHealth playerHealth;
+    private PlayerInput playerInput;
 
-    //[Header("Events")]
-    public delegate void ScoreChangedDelegate(int newScore);
-    public event ScoreChangedDelegate OnScoreChanged;
-    public delegate void DeathDelegate();
-    public event DeathDelegate OnPlayerDeath;
-
-    [Header("Movement")]
-    [SerializeField] private MovementMode initialMode = MovementMode.AccelerationBased;
-    private MovementState currentState;
-    private float moveX, moveY, moveZ;
+    [Header("Movement Settings")]
+    [SerializeField, Tooltip("Starting movement mode")] private MovementMode initialMode = MovementMode.AccelerationBased;
     [SerializeField] private float playerSpeed = 5f;
-    [SerializeField] private float zgAcceleration = 1f;
+    [SerializeField, Tooltip("Multiplier applied to playerSpeed while the Sprint input is held.")]
+    private float sprintMultiplier = 1.6f;
     [SerializeField] private float acceleration = 10f;
     [SerializeField] private float deceleration = 15f;
+    [SerializeField] private float rotationSpeed = 10f;
+    [SerializeField, Range(0f, 90f)] private float maxWalkableSlopeAngle = 45f;
+
+    [Header("Zero Gravity")]
+    [SerializeField] private float zgAcceleration = 1f;
     [SerializeField] private float zgDeceleration = 0f;
-    [SerializeField] private float maxWalkableSlopeAngle = 45f;
 
     [Header("Jump")]
     [SerializeField] private int maxInAirjumps = 1;
     [SerializeField] private float jumpForce = 5f;
     [SerializeField] private float airJumpForce = 8f;
     [SerializeField] private bool canJump = true;
-    private CapsuleCollider capsule;
-    private bool onGround = false;
-    private Vector3 groundNormal = Vector3.up;
-    private LayerMask jumpable;
-    private bool wasGrounded;
-    private bool onSteepSlope;
+    [SerializeField] private AudioClip[] jumpSFX;
+    [SerializeField] private AudioClip[] airJumpSFX;
 
-    [Header("Look & Camera")]
-    [SerializeField] private Transform cameraPivot;
-    private Vector3 cachedMoveDirection;
+    [Header("Ground Snapping")]
+    [SerializeField] private float groundSnapMaxDistance = 1.0f;
+    [SerializeField] private float snapBlockDurationAfterJump = 0.5f;
+
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI winUI;
+    [SerializeField] private GameObject HUD;
 
     [Header("Dialogue")]
     [SerializeField] private DialogueEventChannelSO dialogueStartChannel;
     [SerializeField] private DialogueEndedChannelSO dialogueEndedChannel;
+
+    // Movement state
+    private MovementState currentState;
+    private Vector3 cachedMoveDirection;
+    private float moveX, moveY, moveZ;
+
+    // Ground state
+    private bool onGround;
+    private bool wasGrounded;
+    private Vector3 groundNormal = Vector3.up;
+    private RaycastHit groundHit;
+    private bool hasGroundHit;
+    public bool IsWalkableGround { get; private set; }
+    private LayerMask jumpable;
+
+    // Input & commands
+    private Queue<ICommand> inputQueue = new Queue<ICommand>();
+    private InputAction jumpAction;
+    private InputAction sprintAction;
     public bool InputEnabled { get; private set; } = true;
-    private MovementMode previousModeBeforeDialogue = MovementMode.AccelerationBased;
+    private MovementMode previousModeBeforeDialogue;
 
-    private PlayerInput playerInput;
-    public Animator animator;
+    // Abilities
+    public JumpAbility jumpAbility;
+    public SprintAbility sprintAbility;
 
-    // Public properties for other states to read
+    // Events
+    public delegate void ScoreChangedDelegate(int newScore);
+    public event ScoreChangedDelegate OnScoreChanged;
+    public delegate void DeathDelegate();
+    public event DeathDelegate OnPlayerDeath;
+
+    // Public properties
     public bool OnGround => onGround;
     public Vector3 GroundNormal => groundNormal;
+    public Animator Animator => animator;
     public float PlayerSpeed => playerSpeed;
+    // Effective ground/air speed: base speed scaled by the sprint modifier (1x when not sprinting).
+    public float CurrentMoveSpeed => playerSpeed * (sprintAbility != null ? sprintAbility.SpeedMultiplier : 1f);
     public float Acceleration => acceleration;
     public float Deceleration => deceleration;
     public float ZGAcceleration => zgAcceleration;
     public float ZGDeceleration => zgDeceleration;
     public float MaxWalkableSlopeAngle => maxWalkableSlopeAngle;
     public bool CanJump => canJump;
-    private RaycastHit groundHit;      // stores the most recent ground hit
-    private bool hasGroundHit = false; // whether groundHit is valid this frame
-    public JumpAbility jumpAbility;
-    private Queue<ICommand> inputQueue = new Queue<ICommand>();
-    private InputAction jumpAction;
 
-    void OnEnable()
-    {
-        var inputActions = GetComponent<PlayerInput>().actions;
-        jumpAction = inputActions.FindAction("Jump");
-        jumpAction.started += OnJumpStarted;   // button down
-        jumpAction.canceled += OnJumpCanceled; // button up
-
-        if (dialogueStartChannel != null) dialogueStartChannel.OnRaised += HandleDialogueStart;
-        if (dialogueEndedChannel != null) dialogueEndedChannel.OnRaised += HandleDialogueEnded;
-    }
-
-    void OnDisable()
-    {
-        jumpAction.started -= OnJumpStarted;
-        jumpAction.canceled -= OnJumpCanceled;
-
-        if (dialogueStartChannel != null) dialogueStartChannel.OnRaised -= HandleDialogueStart;
-        if (dialogueEndedChannel != null) dialogueEndedChannel.OnRaised -= HandleDialogueEnded;
-    }
-
-    private void HandleDialogueStart(DialogueSO _)
-    {
-        previousModeBeforeDialogue = (currentState is ZeroGMovementState)
-            ? MovementMode.ZeroGrav
-            : MovementMode.AccelerationBased;
-        InputEnabled = false;
-        moveX = 0f;
-        moveY = 0f;
-        moveZ = 0f;
-        SetMovementState(new DialogueMovementState());
-    }
-
-    private void HandleDialogueEnded()
-    {
-        InputEnabled = true;
-        SetMovementMode(previousModeBeforeDialogue);
-    }
-
-    private void OnJumpStarted(InputAction.CallbackContext ctx)
-    {
-        if (!InputEnabled) return;
-        QueueCommand(new JumpCommand());
-    }
-
-    private void OnJumpCanceled(InputAction.CallbackContext ctx)
-    {
-        jumpAbility.OnJumpReleased();
-    }
+    #region Unity Lifecycle
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -154,14 +114,148 @@ public class PlayerControllerRefactored : MonoBehaviour
             playerHealth.OnPlayerDeath.AddListener(OnHealthDeath);
 
         jumpAbility = new JumpAbility(maxInAirjumps, jumpForce, airJumpForce, jumpSFX, airJumpSFX, audioSource);
+        sprintAbility = new SprintAbility(sprintMultiplier);
 
-        // Set initial state based on inspector choice
-        if (initialMode == MovementMode.ZeroGrav)
-            SetMovementState(new ZeroGMovementState());
-        else
-            SetMovementState(new GroundedMovementState());
+        SetMovementState(initialMode == MovementMode.ZeroGrav
+            ? new ZeroGMovementState()
+            : new GroundedMovementState());
     }
 
+    void OnEnable()
+    {
+        var inputActions = GetComponent<PlayerInput>().actions;
+        jumpAction = inputActions.FindAction("Jump");
+        jumpAction.started += OnJumpStarted;
+        jumpAction.canceled += OnJumpCanceled;
+
+        sprintAction = inputActions.FindAction("Sprint");
+        if (sprintAction != null)
+        {
+            sprintAction.started += OnSprintStarted;
+            sprintAction.canceled += OnSprintCanceled;
+        }
+
+        if (dialogueStartChannel != null) dialogueStartChannel.OnRaised += HandleDialogueStart;
+        if (dialogueEndedChannel != null) dialogueEndedChannel.OnRaised += HandleDialogueEnded;
+    }
+
+    void OnDisable()
+    {
+        jumpAction.started -= OnJumpStarted;
+        jumpAction.canceled -= OnJumpCanceled;
+
+        if (sprintAction != null)
+        {
+            sprintAction.started -= OnSprintStarted;
+            sprintAction.canceled -= OnSprintCanceled;
+        }
+
+        if (dialogueStartChannel != null) dialogueStartChannel.OnRaised -= HandleDialogueStart;
+        if (dialogueEndedChannel != null) dialogueEndedChannel.OnRaised -= HandleDialogueEnded;
+    }
+
+    void FixedUpdate()
+    {
+        checkGround();
+        SnapToGroundIfClose();
+        currentState.FixedTick(this);
+        jumpAbility?.OnJumpHeld(this);
+        HandleRotation();
+    }
+
+    void Update()
+    {
+        currentState.Tick(this);
+        UpdateAnimations();
+        jumpAbility.UpdateAbility(this);
+        ProcessCommandQueue();
+    }
+    #endregion
+
+    #region Input & Dialogue
+    void OnMove(InputValue value)
+    {
+        if (!InputEnabled)
+        {
+            moveX = moveY = 0f;
+            return;
+        }
+        Vector2 v = value.Get<Vector2>();
+        moveX = v.x;
+        moveY = v.y;
+    }
+
+    public void OnInteract(InputValue value)
+    {
+        if (!InputEnabled) return;
+        Debug.Log($"[PlayerController] OnInteract called, isPressed: {value.isPressed}");
+    }
+
+    private void OnJumpStarted(InputAction.CallbackContext ctx)
+    {
+        if (!InputEnabled) return;
+        QueueCommand(new JumpCommand());
+    }
+
+    private void OnJumpCanceled(InputAction.CallbackContext ctx)
+    {
+        jumpAbility.OnJumpReleased();
+    }
+
+    private void OnSprintStarted(InputAction.CallbackContext ctx)
+    {
+        if (!InputEnabled) return;
+        sprintAbility.SetSprinting(true);
+    }
+
+    // Always clears, even when input is disabled, so a held key can't "stick" sprinting on.
+    private void OnSprintCanceled(InputAction.CallbackContext ctx)
+    {
+        sprintAbility.SetSprinting(false);
+    }
+
+    public void QueueCommand(ICommand command)
+    {
+        inputQueue.Enqueue(command);
+    }
+
+    private void ProcessCommandQueue()
+    {
+        while (inputQueue.Count > 0)
+        {
+            ICommand cmd = inputQueue.Peek();
+            if (Time.time > cmd.ExpiryTime)
+            {
+                inputQueue.Dequeue();
+                continue;
+            }
+            if (cmd.CanExecute(this))
+            {
+                cmd.Execute(this);
+                inputQueue.Dequeue();
+                break;
+            }
+            break;
+        }
+    }
+
+    private void HandleDialogueStart(DialogueSO _)
+    {
+        previousModeBeforeDialogue = (currentState is ZeroGMovementState) ? MovementMode.ZeroGrav : MovementMode.AccelerationBased;
+        InputEnabled = false;
+        moveX = moveY = moveZ = 0f;
+        sprintAbility?.SetSprinting(false);
+        SetMovementState(new DialogueMovementState());
+    }
+
+    private void HandleDialogueEnded()
+    {
+        InputEnabled = true;
+        SetMovementMode(previousModeBeforeDialogue);
+    }
+    #endregion
+
+    #region Movement State Management
     public void SetMovementState(MovementState newState)
     {
         if (currentState == newState) return;
@@ -172,36 +266,32 @@ public class PlayerControllerRefactored : MonoBehaviour
 
     public void SetMovementMode(MovementMode mode)
     {
-        if (mode == MovementMode.ZeroGrav)
-            SetMovementState(new ZeroGMovementState());
-        else
-            SetMovementState(new GroundedMovementState());
-    }
-    public void QueueCommand(ICommand command)
-    {
-        inputQueue.Enqueue(command);
-    }
-    // Input callbacks
-    void OnMove(InputValue value)
-    {
-        if (!InputEnabled) { moveX = 0f; moveY = 0f; return; }
-        Vector2 v = value.Get<Vector2>();
-        moveX = v.x;
-        moveY = v.y;
+        SetMovementState(mode == MovementMode.ZeroGrav ? new ZeroGMovementState() : new GroundedMovementState());
     }
 
-    /*void OnJump(InputValue value)
+    public void UpdateGroundMovementInput()
     {
-        if (!value.isPressed) return;
-        QueueCommand(new JumpCommand());
-    }*/
-
-    public void OnInteract(InputValue value)
-    {
-        if (!InputEnabled) return;
-        Debug.Log($"[PlayerController] OnInteract called, isPressed: {value.isPressed}");
+        Vector3 forward = cameraPivot.forward;
+        Vector3 right = cameraPivot.right;
+        forward.y = right.y = 0f;
+        forward.Normalize();
+        right.Normalize();
+        cachedMoveDirection = forward * moveY + right * moveX;
     }
-    void checkGround()
+
+    public void UpdateZeroGInput()
+    {
+        Vector3 forward = cameraPivot.forward;
+        Vector3 right = cameraPivot.right;
+        Vector3 up = cameraPivot.up;
+        cachedMoveDirection = forward * moveY + right * moveX + up * moveZ;
+        if (cachedMoveDirection.sqrMagnitude > 1f)
+            cachedMoveDirection.Normalize();
+    }
+    #endregion
+
+    #region Ground & Collision
+    private void checkGround()
     {
         if (capsule == null) return;
 
@@ -211,98 +301,182 @@ public class PlayerControllerRefactored : MonoBehaviour
 
         bool newGrounded = Physics.SphereCast(origin, radius, Vector3.down, out groundHit, castDistance, jumpable);
         hasGroundHit = newGrounded;
-        if (newGrounded)
-            groundNormal = groundHit.normal;
-        else
-            groundNormal = Vector3.up;
+        groundNormal = newGrounded ? groundHit.normal : Vector3.up;
 
-        // Forward-down ray for small steps
-        if (!newGrounded && rb.linearVelocity.y <= 0.2f)
+        // Optional step-up ray (commented out if not used)
+        // if (!newGrounded && rb.linearVelocity.y <= 0.2f) { ... }
+
+        IsWalkableGround = newGrounded && Vector3.Angle(Vector3.up, groundNormal) <= maxWalkableSlopeAngle;
+        onGround = newGrounded;
+        wasGrounded = newGrounded;
+    }
+
+    private void SnapToGroundIfClose()
+    {
+        if (jumpAbility.IsJumpHolding || (Time.time - jumpAbility.LastJumpTime < snapBlockDurationAfterJump))
+            return;
+
+        float radius = capsule.radius * 0.95f;
+        Vector3 origin = transform.position + Vector3.up * 0.1f;
+
+        if (Physics.SphereCast(origin, radius, Vector3.down, out RaycastHit hit, groundSnapMaxDistance, jumpable))
         {
-            Vector3 moveDir = cachedMoveDirection.sqrMagnitude > 0.01f ? cachedMoveDirection.normalized : transform.forward;
-            Vector3 kneeOrigin = transform.position + Vector3.up * 0.5f;
-            float stepDistance = 0.4f;
-            if (Physics.Raycast(kneeOrigin, moveDir, out RaycastHit stepWall, stepDistance, jumpable))
+            float slopeAngle = Vector3.Angle(Vector3.up, hit.normal);
+            if (slopeAngle <= maxWalkableSlopeAngle)
             {
-                if (stepWall.normal.y < 0.2f)
+                float targetY = hit.point.y + (capsule.height * 0.5f - capsule.radius);
+                float deltaY = transform.position.y - targetY;
+
+                if (deltaY > 0.01f)
                 {
-                    Vector3 aboveStep = kneeOrigin + Vector3.up * 0.3f + moveDir * stepWall.distance;
-                    if (Physics.Raycast(aboveStep, Vector3.down, out RaycastHit stepTop, 0.5f, jumpable))
-                    {
-                        float stepHeight = stepTop.point.y - transform.position.y;
-                        if (stepHeight > 0.05f && stepHeight < 0.35f)
-                        {
-                            newGrounded = true;
-                            groundNormal = stepTop.normal;
-                            groundHit = stepTop;
-                            hasGroundHit = true;
-                        }
-                    }
+                    transform.position = new Vector3(transform.position.x, targetY, transform.position.z);
+                    if (rb.linearVelocity.y > 0f)
+                        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+
+                    onGround = true;
+                    IsWalkableGround = true;
+                    groundNormal = hit.normal;
+                    groundHit = hit;
+                    hasGroundHit = true;
+                    animator.SetBool("isJumping", false);
                 }
             }
         }
-
-        onGround = newGrounded;
-
-        //if (newGrounded && !wasGrounded)
-        //    jumpAbility.ResetOnGround();
-
-        wasGrounded = newGrounded;
-
-        Debug.DrawRay(origin, Vector3.down * castDistance, onGround ? Color.green : Color.red);
-        Debug.DrawRay(origin + Vector3.down * castDistance, Vector3.up * 0.2f, Color.yellow);
+        
     }
 
-    private void HandleStepUp()
+    void OnCollisionStay(Collision collision)
     {
-        if (!onGround || rb.linearVelocity.y > 0.1f) return;
-
-        float stepHeight = 0.3f;
-        float stepCheckDistance = 0.4f;
-
-        Vector3 moveDir = cachedMoveDirection;
-        if (moveDir.sqrMagnitude < 0.01f) return;
-
-        Vector3 origin = transform.position + Vector3.up * 0.1f; // foot level
-        if (!Physics.Raycast(origin, moveDir.normalized, out RaycastHit wallHit, stepCheckDistance, jumpable))
-            return;
-
-        if (wallHit.normal.y > 0.2f) return; // not a vertical wall
-
-        Vector3 aboveOrigin = origin + Vector3.up * stepHeight + moveDir.normalized * wallHit.distance;
-        if (Physics.Raycast(aboveOrigin, Vector3.down, out RaycastHit stepHit, stepHeight + 0.2f, jumpable))
+        if (((1 << collision.gameObject.layer) & jumpable) == 0) return;
+        foreach (ContactPoint contact in collision.contacts)
         {
-            float stepHeightActual = stepHit.point.y - transform.position.y;
-            if (stepHeightActual > 0.05f && stepHeightActual <= stepHeight)
-            {
-                Vector3 newPos = transform.position;
-                newPos.y = stepHit.point.y + 0.05f;
-                transform.position = newPos;
-                rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
-            }
+            if (Vector3.Angle(Vector3.up, contact.normal) > maxWalkableSlopeAngle)
+                Debug.DrawRay(contact.point, contact.normal, Color.magenta, 0.5f);
         }
     }
+    #endregion
 
-    public void PreventWallSticking(ref Vector3 velocity)
+    #region Movement Logic
+    public void HandleGroundMovement()
     {
-        if (rb.linearVelocity.y > 0.2f) return; // allow upward movement
+        // Steep slope sliding
+        if (onGround && !IsWalkableGround)
+        {
+            bool isJumping = jumpAbility.IsJumpHolding || (Time.time - jumpAbility.LastJumpTime < snapBlockDurationAfterJump);
+            if (!isJumping && rb.linearVelocity.y > 0)
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+
+            Vector3 slideDirection = Vector3.ProjectOnPlane(Vector3.down, groundNormal).normalized;
+            rb.AddForce(slideDirection * 25f, ForceMode.Acceleration);
+            rb.linearDamping = 0.5f;
+            animator.SetBool("isJumping", false);
+            return;
+        }
+
+        // Normal walkable ground
+        if (onGround && IsWalkableGround)
+        {
+            rb.linearDamping = 0f;
+            Vector3 movement = cachedMoveDirection;
+            if (movement.sqrMagnitude > 1f) movement.Normalize();
+
+            // Sprint-scaled speed. Slope adhesion below still ProjectOnPlane's this
+            // target, so a larger magnitude never adds an upward (ramp-launch) component.
+            float speed = CurrentMoveSpeed;
+            Vector3 targetVelocity = movement * speed;
+            float slopeAngle = Vector3.Angle(Vector3.up, groundNormal);
+            bool ascending = rb.linearVelocity.y > 0.1f;
+            bool onWalkableSlope = !ascending && slopeAngle > 0.1f;
+
+            if (onWalkableSlope)
+                targetVelocity = Vector3.ProjectOnPlane(targetVelocity, groundNormal);
+            else
+                targetVelocity.y = rb.linearVelocity.y;
+
+            float accelRate = (movement.sqrMagnitude > 0.01f) ? acceleration : deceleration;
+            float t = 1f - Mathf.Exp(-accelRate * Time.fixedDeltaTime);
+            Vector3 velocity = Vector3.Lerp(rb.linearVelocity, targetVelocity, t);
+
+            Vector3 horizontal = new Vector3(velocity.x, 0, velocity.z);
+            horizontal = Vector3.ClampMagnitude(horizontal, speed);
+            velocity = new Vector3(horizontal.x, velocity.y, horizontal.z);
+
+            if (onWalkableSlope && cachedMoveDirection.sqrMagnitude < 0.01f)
+                velocity = Vector3.zero;
+
+            PreventWallSticking(ref velocity);
+            rb.linearVelocity = velocity;
+            return;
+        }
+
+        // Air movement
+        HandleAirMovement();
+    }
+
+    public void HandleAirMovement()
+    {
+        Vector3 movement = cachedMoveDirection;
+        if (movement.sqrMagnitude > 1f) movement.Normalize();
+
+        // Sprint momentum carries into the air (running jump).
+        float speed = CurrentMoveSpeed;
+        Vector3 targetVelocity = movement * speed;
+        float airAccel = acceleration * 0.5f;
+        float t = 1f - Mathf.Exp(-airAccel * Time.fixedDeltaTime);
+        Vector3 newVelocity = Vector3.Lerp(rb.linearVelocity, targetVelocity, t);
+        newVelocity = Vector3.ClampMagnitude(newVelocity, speed);
+        newVelocity.y = rb.linearVelocity.y;
+        rb.linearVelocity = newVelocity;
+    }
+
+    public void HandleZeroGMovement()
+    {
+        Vector3 movement = cachedMoveDirection;
+        if (movement.sqrMagnitude > 1f) movement.Normalize();
+
+        Vector3 targetVelocity = movement * playerSpeed;
+        float accelRate = (movement.sqrMagnitude > 0.01f) ? zgAcceleration : zgDeceleration;
+        float t = 1f - Mathf.Exp(-accelRate * Time.fixedDeltaTime);
+        Vector3 newVelocity = Vector3.Lerp(rb.linearVelocity, targetVelocity, t);
+        newVelocity = Vector3.ClampMagnitude(newVelocity, playerSpeed);
+        rb.linearVelocity = newVelocity;
+    }
+
+    public void HandleRotation()
+    {
+        if (currentState is ZeroGMovementState) return;
+
+        Vector3 dir = cachedMoveDirection;
+        dir.y = 0f;
+        if (dir.sqrMagnitude < 0.001f) return;
+        Quaternion target = Quaternion.LookRotation(dir);
+        rb.MoveRotation(Quaternion.Slerp(rb.rotation, target, rotationSpeed * Time.fixedDeltaTime));
+    }
+
+    public void FaceCameraDirection()
+    {
+        Vector3 camForward = cameraPivot.forward;
+        camForward.y = 0f;
+        if (camForward.sqrMagnitude < 0.001f) return;
+        Quaternion target = Quaternion.LookRotation(camForward);
+        rb.MoveRotation(Quaternion.Slerp(rb.rotation, target, rotationSpeed * Time.fixedDeltaTime));
+    }
+
+    private void PreventWallSticking(ref Vector3 velocity)
+    {
+        if (rb.linearVelocity.y > 0.2f) return;
 
         Vector3 horizontal = new Vector3(velocity.x, 0f, velocity.z);
         if (horizontal.sqrMagnitude < 0.0001f) return;
 
         Vector3 origin = transform.TransformPoint(capsule.center);
         float radius = capsule.radius * 0.95f;
-        float distance = 0.1f;
         int mask = ~LayerMask.GetMask("Player");
 
-        if (Physics.SphereCast(origin, radius, horizontal.normalized, out RaycastHit hit, distance, mask, QueryTriggerInteraction.Ignore))
+        if (Physics.SphereCast(origin, radius, horizontal.normalized, out RaycastHit hit, 0.1f, mask, QueryTriggerInteraction.Ignore))
         {
-            Debug.DrawRay(hit.point, hit.normal, Color.blue, 0.5f);
             if (hit.normal.y > 0.5f) return;
-
-            float lipThreshold = 0.2f;
-            if (hit.normal.y > lipThreshold && horizontal.magnitude < 2f)
-                return;   // allow gentle step up
+            if (hit.normal.y > 0.2f && horizontal.magnitude < 2f) return;
 
             if (hit.rigidbody != null && !hit.rigidbody.isKinematic)
             {
@@ -318,226 +492,42 @@ public class PlayerControllerRefactored : MonoBehaviour
         velocity.x = horizontal.x;
         velocity.z = horizontal.z;
     }
-    public void HandleGroundMovement()
+    #endregion
+
+    #region Animation & UI
+    private float NormalizeVelocity()
     {
-        Vector3 movement = cachedMoveDirection;
-        float slopeAngle = Vector3.Angle(Vector3.up, groundNormal);
-        bool ascending = rb.linearVelocity.y > 0.1f;
-        bool onWalkableSlope = onGround && !ascending && slopeAngle > 0.1f && slopeAngle <= maxWalkableSlopeAngle;
-        bool isSmallLip = false;
-        if (onGround && slopeAngle > maxWalkableSlopeAngle)
+        float horizontalSpeed = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).magnitude;
+        return Mathf.Clamp01(horizontalSpeed / playerSpeed);
+    }
+
+    private void UpdateAnimations()
+    {
+        bool newOnGround = onGround;
+        animator.SetBool("onGround", newOnGround);
+        if (newOnGround)
         {
-            float verticalDiff = transform.position.y - groundHit.point.y;
-            
-
-            if (verticalDiff < 0.3f && Mathf.Abs(Vector3.Dot(cachedMoveDirection, groundNormal)) > 0.7f)
-            {
-                isSmallLip = true;
-            }
-        }
-        onSteepSlope = onGround && !isSmallLip && slopeAngle > maxWalkableSlopeAngle;
-        if (onSteepSlope && !isSmallLip)
-        {
-            // Cancel player input
-            Vector3 slideDirection = Vector3.ProjectOnPlane(Vector3.down, groundNormal).normalized;
-            float slideAcceleration = 25f; // tune this for desired slide speed
-            rb.AddForce(slideDirection * slideAcceleration, ForceMode.Acceleration);
-            
-            rb.linearDamping = 0.5f;
-            return;
-        }
-        else
-        {
-            // Reset damping when not on steep slope
-            rb.linearDamping = 0f;
-        }
-
-        if (movement.sqrMagnitude > 1f)
-            movement.Normalize();
-
-        Vector3 targetVelocity = movement * playerSpeed;
-        HandleStepUp();
-        
-
-
-        if (onWalkableSlope)
-            targetVelocity = Vector3.ProjectOnPlane(targetVelocity, groundNormal);
-        else
-            targetVelocity.y = rb.linearVelocity.y;
-
-        float accelRate = (movement.sqrMagnitude > 0.01f) ? acceleration : deceleration;
-        float t = 1f - Mathf.Exp(-accelRate * Time.fixedDeltaTime);
-        Vector3 velocity = Vector3.Lerp(rb.linearVelocity, targetVelocity, t);
-
-        Vector3 horizontal = new Vector3(velocity.x, 0, velocity.z);
-        horizontal = Vector3.ClampMagnitude(horizontal, playerSpeed);
-        velocity = new Vector3(horizontal.x, velocity.y, horizontal.z);
-
-        // Anti-slide on walkable slopes with no input
-        if (onWalkableSlope && cachedMoveDirection.sqrMagnitude < 0.01f)
-            velocity = Vector3.zero;
-
-        PreventWallSticking(ref velocity);
-        rb.linearVelocity = velocity;
-    }
-
-    public void HandleZeroGMovement()
-    {
-        Vector3 movement = cachedMoveDirection;
-        if (movement.sqrMagnitude > 1f)
-            movement.Normalize();
-
-        Vector3 targetVelocity = movement * playerSpeed;
-        float accelRate = (movement.sqrMagnitude > 0.01f) ? zgAcceleration : zgDeceleration;
-        float t = 1f - Mathf.Exp(-accelRate * Time.fixedDeltaTime);
-        Vector3 newVelocity = Vector3.Lerp(rb.linearVelocity, targetVelocity, t);
-        newVelocity = Vector3.ClampMagnitude(newVelocity, playerSpeed);
-        rb.linearVelocity = newVelocity;
-    }
-
-    public void HandleRotation()
-    {
-        if (currentState is ZeroGMovementState) 
-        
-        return;
-        Vector3 dir = cachedMoveDirection;
-        dir.y = 0f;
-        if (dir.sqrMagnitude < 0.001f) return;
-        Quaternion target = Quaternion.LookRotation(dir);
-        rb.MoveRotation(Quaternion.Slerp(rb.rotation, target, rotationSpeed * Time.fixedDeltaTime));
-    }
-    public void FaceCameraDirection()
-    {
-        Vector3 camForward = cameraPivot.forward;
-        camForward.y = 0f;
-        if (camForward.sqrMagnitude < 0.001f) return;
-        Quaternion target = Quaternion.LookRotation(camForward);
-        rb.MoveRotation(Quaternion.Slerp(rb.rotation, target, rotationSpeed * Time.fixedDeltaTime));
-    }
-    // Input direction builders (mirror original)
-    public void UpdateGroundMovementInput()
-    {
-        Vector3 forward = cameraPivot.forward;
-        Vector3 right = cameraPivot.right;
-        forward.y = 0f;
-        right.y = 0f;
-        forward.Normalize();
-        right.Normalize();
-        cachedMoveDirection = forward * moveY + right * moveX;
-    }
-
-    public void UpdateZeroGInput()
-    {
-        Vector3 forward = cameraPivot.forward;
-        Vector3 right = cameraPivot.right;
-        Vector3 up = cameraPivot.up;
-        cachedMoveDirection = forward * moveY + right * moveX + up * moveZ;
-        if (cachedMoveDirection.sqrMagnitude > 1f)
-            cachedMoveDirection.Normalize();
-    }
-
-    float NormalizeVelocity()
-    {
-        float horizontalSpeedSqr = rb.linearVelocity.x * rb.linearVelocity.x + rb.linearVelocity.z * rb.linearVelocity.z;
-        float normalizedSpeed = Mathf.Clamp01(Mathf.Sqrt(horizontalSpeedSqr) / playerSpeed);
-        if (normalizedSpeed < 0.01f) normalizedSpeed = 0f;
-        return normalizedSpeed;
-    }
-
-    void UpdateAnimations()
-    {
-        animator.SetBool("onGround", onGround);
-        if (onGround)
             animator.SetBool("isJumping", false);
+            // Debug.Log($"Anim: onGround=true, isJumping set false");
+        }
 
         bool isWalking = cachedMoveDirection != Vector3.zero && !(currentState is ZeroGMovementState);
         animator.SetBool("isWalking", isWalking);
-
-        float normalizedSpeed = NormalizeVelocity();
-        animator.SetFloat("Speed", normalizedSpeed);
-    }
-    void OnCollisionEnter(Collision collision)
-    {
-        //if ((jumpable.value & (1 << collision.gameObject.layer)) > 0)
-            //jumpAbility.ResetOnGround();
+        animator.SetFloat("Speed", NormalizeVelocity());
     }
 
+    private void OnHealthDeath() => OnPlayerDeath?.Invoke();
+    public void ShowWinScreen() => winUI.gameObject.SetActive(true);
+    #endregion
+
+    #region Events & Scoring
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("PickUp"))
-        {
-            var pickUp = other.GetComponent<PickUpDefault>();
-            if (pickUp != null)
-            {
-                pickUp.onPickup();
-                playerPoints += pickUp.points;
-                OnScoreChanged?.Invoke(playerPoints);
-            }
-        }
-        else if (other.CompareTag("Enemy"))
-        {
-            if (playerHealth != null)
-                playerHealth.TakeDamage(10);
-            else
-            {
-                OnPlayerDeath?.Invoke();
-            }
-        }
+        //if (other.CompareTag("Enemy"))
+        //{
+        //    if (playerHealth != null) playerHealth.TakeDamage(10);
+        //    else OnPlayerDeath?.Invoke();
+        //}
     }
-    private void ProcessCommandQueue()
-    {
-        while (inputQueue.Count > 0)
-        {
-            ICommand cmd = inputQueue.Peek();
-            Debug.Log($"Processing command: {cmd.GetType()}, Expires at {cmd.ExpiryTime}, Now {Time.time}");
-            
-            if (Time.time > cmd.ExpiryTime)
-            {
-                Debug.Log("Command expired, removing");
-                inputQueue.Dequeue();
-                continue;
-            }
-            
-            if (cmd.CanExecute(this))
-            {
-                Debug.Log("Command can execute, doing it");
-                cmd.Execute(this);
-                inputQueue.Dequeue(); 
-                break;
-            }
-            else
-            {
-                Debug.Log("Command cannot execute yet, waiting");
-                break;
-            }
-        }
-    }
-    // Health & UI
-    private void OnHealthDeath()
-    {
-        OnPlayerDeath?.Invoke();
-    }
-
-    public void ShowWinScreen() => winUI.gameObject.SetActive(true);
-
-    // Unity lifecycle
-    void FixedUpdate()
-    {
-        checkGround();
-        currentState.FixedTick(this);
-        jumpAbility?.OnJumpHeld(this);
-        HandleRotation();
-    }
-
-    void Update()
-    {
-        currentState.Tick(this);
-        UpdateAnimations();
-        // Process input queue
-        jumpAbility.UpdateAbility(this);
-        ProcessCommandQueue();
-        
-        
-        
-    }
+    #endregion
 }

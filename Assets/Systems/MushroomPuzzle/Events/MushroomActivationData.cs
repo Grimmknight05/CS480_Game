@@ -2,7 +2,7 @@ using UnityEngine;
 
 // Author: David Haddad - CS480 design-patterns mushroom puzzle (May 2026)
 // Payload broadcast through MushroomEventChannelSO when a mushroom activates.
-// Listeners (critters, sequence tracker, audio mixers) self-filter on Position + CalmRadius.
+// Listeners (critters, sequence tracker, PuzzleValidator) self-filter; puzzle color state uses PuzzleActivatorID when set.
 
 public readonly struct MushroomActivationData
 {
@@ -13,6 +13,8 @@ public readonly struct MushroomActivationData
     public readonly float CalmRadius;
     public readonly float Duration;
     public readonly float ActivatedAtTime;
+    /// <summary>Optional: same <see cref="ActivatorID"/> as <c>MushroomConfiguration</c> requirements — drives <see cref="PuzzleValidator"/> single-color state from this one event.</summary>
+    public readonly ActivatorID PuzzleActivatorID;
 
     public MushroomActivationData(
         string mushroomID,
@@ -20,7 +22,8 @@ public readonly struct MushroomActivationData
         MusicalNote note,
         Vector3 position,
         float calmRadius,
-        float duration)
+        float duration,
+        ActivatorID puzzleActivatorID = null)
     {
         MushroomID = mushroomID;
         Color = color;
@@ -28,6 +31,7 @@ public readonly struct MushroomActivationData
         Position = position;
         CalmRadius = calmRadius;
         Duration = duration;
+        PuzzleActivatorID = puzzleActivatorID;
         ActivatedAtTime = Time.time;
     }
 }

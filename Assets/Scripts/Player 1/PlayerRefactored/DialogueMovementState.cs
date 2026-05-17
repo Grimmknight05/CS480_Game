@@ -8,10 +8,10 @@ public class DialogueMovementState : MovementState
         {
             player.rb.linearVelocity = Vector3.zero;
         }
-        if (player.animator != null)
+        if (player.Animator != null)
         {
-            player.animator.SetBool("isWalking", false);
-            player.animator.SetFloat("Speed", 0f);
+            player.Animator.SetBool("isWalking", false);
+            player.Animator.SetFloat("Speed", 0f);
         }
     }
 

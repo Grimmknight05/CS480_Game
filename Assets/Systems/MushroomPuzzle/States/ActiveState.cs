@@ -24,10 +24,10 @@ public class ActiveState : MushroomState
             mushroom.AssignedNote,
             mushroom.transform.position,
             mushroom.CalmRadius,
-            mushroom.ActiveDuration);
+            mushroom.ActiveDuration,
+            mushroom.PuzzleActivatorID);
 
         if (mushroom.MushroomChannel != null) mushroom.MushroomChannel.Raise(data);
-        if (mushroom.PuzzleChannel != null) mushroom.PuzzleChannel.RaiseEvent(mushroom.MushroomID, mushroom.AssignedColor);
 
         if (mushroom.ReturnToDormantAfterDuration &&
             mushroom.TimerComp != null &&

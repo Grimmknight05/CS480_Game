@@ -22,8 +22,10 @@ public class Mushroom : MonoBehaviour
     [SerializeField] private AudioClip noteClip;
 
     [Header("Event Channels")]
+    [Tooltip("Single broadcast for critters, sequence tracker, and PuzzleValidator (color state via Puzzle Activator ID).")]
     [SerializeField] private MushroomEventChannelSO mushroomChannel;
-    [SerializeField] private ActivatorStateChannel puzzleChannel;
+    [Tooltip("optional — when set, activation payload includes this ID so PuzzleValidator can satisfy Mushroom Configuration triggers.")]
+    [SerializeField] private ActivatorID puzzleActivatorID;
 
     [Header("Components")]
     [SerializeField] private MushroomAudioComponent audioComp;
@@ -47,7 +49,7 @@ public class Mushroom : MonoBehaviour
     public Color GlowColor => glowColor;
     public AudioClip NoteClip => noteClip;
     public MushroomEventChannelSO MushroomChannel => mushroomChannel;
-    public ActivatorStateChannel PuzzleChannel => puzzleChannel;
+    public ActivatorID PuzzleActivatorID => puzzleActivatorID;
     public MushroomAudioComponent AudioComp => audioComp;
     public MushroomLightComponent LightComp => lightComp;
     public MushroomTimerComponent TimerComp => timerComp;
