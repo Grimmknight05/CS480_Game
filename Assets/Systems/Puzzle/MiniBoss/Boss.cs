@@ -10,7 +10,7 @@ public abstract class Boss : MonoBehaviour
     {
         public PhaseConfig config;           // can be WavePhaseConfig, DoorLockConfig, etc.
         public BossPillar pillar;            // direct scene reference
-        public FloatActivatorChannel stateChannel;
+        public ActivatorStateChannel stateChannel;
         public UnityEvent onPhaseStart;      // Inspector events that can reference scene objects
         public UnityEvent onPhaseComplete;
         public ActivatorConfiguration puzzleRequirement;

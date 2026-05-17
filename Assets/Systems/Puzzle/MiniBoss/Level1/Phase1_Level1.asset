@@ -14,6 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PhaseData
   phaseType: 0
   phaseName: 
+  spawnPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  wavesToSpawn: 2
+  enemiesPerWave: 3
+  spawnInterval: 3
+  doorsToLock: []
   onPhaseStart:
     m_PersistentCalls:
       m_Calls: []

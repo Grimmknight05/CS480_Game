@@ -12,8 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 446b8780c58f87b4ea160d1fb8743fea, type: 3}
   m_Name: Phase3_Level1
   m_EditorClassIdentifier: Assembly-CSharp::PhaseData
-  phaseType: 0
   phaseName: 
+  phaseIndex: 0
+  requiredObjectives: 1
+  spawnInterval: 3
+  enemiesPerWave: 3
+  maxWaves: 2
+  spawnPoints: []
+  doorsToLock: []
+  enableLaserAttacks: 1
+  laserAttackInterval: 5
   onPhaseStart:
     m_PersistentCalls:
       m_Calls: []

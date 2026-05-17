@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Area4_2_Pillar
   m_EditorClassIdentifier: Assembly-CSharp::StoneConfiguration
   requiredStones:
-  - stoneID: {fileID: 11400000, guid: d58dff07e31844c6a970ff148a86ddb7, type: 2}
+  - stoneID: Area4_2
     requireSpecificRotation: 1
     activationRotation: 270
     rotationTolerance: 2

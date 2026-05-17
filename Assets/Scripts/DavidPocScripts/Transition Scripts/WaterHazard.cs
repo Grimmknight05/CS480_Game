@@ -26,6 +26,7 @@ public class WaterHazard : MonoBehaviour
     {
         public GameObject root;
         public Collider bodyCollider;
+        public int colliderCount;
         public float damageAccumulator;
     }
 
@@ -33,6 +34,7 @@ public class WaterHazard : MonoBehaviour
     {
         public GameObject root;
         public Collider bodyCollider;
+        public int colliderCount;
     }
 
     void Awake()
@@ -45,15 +47,12 @@ public class WaterHazard : MonoBehaviour
         }
     }
 
-    // Entry detection only. Once tracked, damage/reset eligibility is driven by
-    // submersion fraction in the tick loops, not by trigger overlap -- a fully
-    // submerged body can drop entirely below a thin trigger collider.
     void OnTriggerEnter(Collider other)
     {
         PlayerHealth health = other.GetComponentInParent<PlayerHealth>();
         if (health != null)
         {
-            if (!trackedPlayers.ContainsKey(health))
+            if (!trackedPlayers.TryGetValue(health, out var tracker))
             {
                 Collider body = FindBodyCollider(health.gameObject, preferCapsuleOrCC: true);
                 if (body == null)
@@ -61,17 +60,42 @@ public class WaterHazard : MonoBehaviour
                     Debug.LogWarning($"{gameObject.name}: WaterHazard could not find a body collider on player '{health.gameObject.name}'.", this);
                     return;
                 }
-                trackedPlayers.Add(health, new PlayerTracker { root = health.gameObject, bodyCollider = body, damageAccumulator = 0f });
+                tracker = new PlayerTracker { root = health.gameObject, bodyCollider = body, colliderCount = 0, damageAccumulator = 0f };
+                trackedPlayers.Add(health, tracker);
             }
+            tracker.colliderCount++;
             return;
         }
 
         Respawnable respawnable = other.GetComponentInParent<Respawnable>();
-        if (respawnable != null && !trackedPushables.ContainsKey(respawnable))
+        if (respawnable != null)
         {
-            Collider body = FindBodyCollider(respawnable.gameObject, preferCapsuleOrCC: false);
-            if (body == null) return;
-            trackedPushables.Add(respawnable, new PushableTracker { root = respawnable.gameObject, bodyCollider = body });
+            if (!trackedPushables.TryGetValue(respawnable, out var tr))
+            {
+                Collider body = FindBodyCollider(respawnable.gameObject, preferCapsuleOrCC: false);
+                if (body == null) return;
+                tr = new PushableTracker { root = respawnable.gameObject, bodyCollider = body, colliderCount = 0 };
+                trackedPushables.Add(respawnable, tr);
+            }
+            tr.colliderCount++;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        PlayerHealth health = other.GetComponentInParent<PlayerHealth>();
+        if (health != null && trackedPlayers.TryGetValue(health, out var tracker))
+        {
+            tracker.colliderCount--;
+            if (tracker.colliderCount <= 0) trackedPlayers.Remove(health);
+            return;
+        }
+
+        Respawnable respawnable = other.GetComponentInParent<Respawnable>();
+        if (respawnable != null && trackedPushables.TryGetValue(respawnable, out var tr))
+        {
+            tr.colliderCount--;
+            if (tr.colliderCount <= 0) trackedPushables.Remove(respawnable);
         }
     }
 
@@ -99,17 +123,10 @@ public class WaterHazard : MonoBehaviour
                 continue;
             }
 
-            Bounds playerBounds = tracker.bodyCollider.bounds;
-            float fraction = SubmersionFraction(playerBounds, waterTopY);
+            float fraction = SubmersionFraction(tracker.bodyCollider.bounds, waterTopY);
             if (fraction < submergePlayerThreshold)
             {
                 tracker.damageAccumulator = 0f;
-                // Untrack only once clear of the hazard: risen above the
-                // surface AND off the water's horizontal footprint.
-                if (fraction <= 0f && !OverlapsWaterXZ(playerBounds))
-                {
-                    (toRemove ??= new List<PlayerHealth>()).Add(health);
-                }
                 continue;
             }
 
@@ -147,15 +164,10 @@ public class WaterHazard : MonoBehaviour
                 continue;
             }
 
-            Bounds pushableBounds = tr.bodyCollider.bounds;
-            float fraction = SubmersionFraction(pushableBounds, waterTopY);
+            float fraction = SubmersionFraction(tr.bodyCollider.bounds, waterTopY);
             if (fraction >= submergePushableThreshold)
             {
                 r.ResetToSpawn();
-                (toRemove ??= new List<Respawnable>()).Add(r);
-            }
-            else if (fraction <= 0f && !OverlapsWaterXZ(pushableBounds))
-            {
                 (toRemove ??= new List<Respawnable>()).Add(r);
             }
         }
@@ -197,14 +209,6 @@ public class WaterHazard : MonoBehaviour
             if (c != null && !c.isTrigger) return c;
         }
         return null;
-    }
-
-    // True if the object's AABB overlaps the water volume on the horizontal plane.
-    private bool OverlapsWaterXZ(Bounds objBounds)
-    {
-        Bounds wb = waterCollider.bounds;
-        return objBounds.max.x >= wb.min.x && objBounds.min.x <= wb.max.x
-            && objBounds.max.z >= wb.min.z && objBounds.min.z <= wb.max.z;
     }
 
     private static float SubmersionFraction(Bounds objBounds, float waterTopY)

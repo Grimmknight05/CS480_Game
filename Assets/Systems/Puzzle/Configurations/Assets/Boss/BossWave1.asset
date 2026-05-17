@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BossWave1
   m_EditorClassIdentifier: Assembly-CSharp::StoneConfiguration
   requiredStones:
-  - stoneID: {fileID: 11400000, guid: e6a6a179056824e32871a3a5f0c139a5, type: 2}
+  - stoneID: BossWave1
     requireSpecificRotation: 1
     activationRotation: 90
     rotationTolerance: 5

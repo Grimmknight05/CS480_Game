@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Stone4Lock
   m_EditorClassIdentifier: Assembly-CSharp::StoneConfiguration
   requiredStones:
-  - stoneID: {fileID: 11400000, guid: ea36c216f14414ac7906c4d45a042703, type: 2}
-    requireSpecificRotation: 1
+  - stoneID: Area3_1
     activationRotation: 180
     rotationTolerance: 4

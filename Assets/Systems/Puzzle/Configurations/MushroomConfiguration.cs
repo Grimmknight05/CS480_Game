@@ -1,23 +1,30 @@
 using UnityEngine;
 
+// Template Author: Joshua Henrikson
+// Template Modified by: Sarah Temple (May 2026)
 [CreateAssetMenu(fileName = "MushroomConfig", menuName = "Puzzle/Mushroom Configuration")]
 public class MushroomConfiguration : ActivatorConfiguration
 {
     [System.Serializable]
-    public class MushroomRequirement : IActivatorRequirement<MushroomColor>
+    public class MushroomRequirement : IActivatorRequirement
     {
-        [Tooltip("Must match the ActivatorID SO wired to the MushroomColorChannel for this mushroom.")]
-        [SerializeField] private ActivatorID mushroomID;
+        [Tooltip("Must match Mushroom.MushroomID on the mushroom that raises puzzleChannel events.")]
+        [SerializeField] private string mushroomID = "id_1";
 
-        [Tooltip("If off, any activation (regardless of color) satisfies this requirement.")]
+        [Tooltip("If off, any activation (state is that mushroom's AssignedColor) satisfies.")]
         [SerializeField] private bool requireSpecificColor = false;
 
         [SerializeField] private MushroomColor expectedColor = MushroomColor.Green;
 
-        public ActivatorID ActivatorID => mushroomID;
+        public string ActivatorID => mushroomID;
 
-        public bool IsSatisfied(MushroomColor color)
+        /// <summary>
+        /// Expects the last state from ActivatorStateChannel for this ID — mushrooms raise
+        /// <see cref="MushroomColor"/> via <c>Mushroom.PuzzleChannel.RaiseEvent(mushroomID, AssignedColor)</c>.
+        /// </summary>
+        public bool IsSatisfied(object state)
         {
+            if (!(state is MushroomColor color)) return false;
             if (!requireSpecificColor) return true;
             return color == expectedColor;
         }
@@ -25,15 +32,5 @@ public class MushroomConfiguration : ActivatorConfiguration
 
     [SerializeField] private MushroomRequirement[] required;
 
-    public override bool IsSolved(IPuzzleStateProvider state)
-    {
-        if (required == null || required.Length == 0) return false;
-        foreach (var r in required)
-        {
-            if (r.ActivatorID == null) return false;
-            if (!state.TryGetMushroomColor(r.ActivatorID, out MushroomColor color)) return false;
-            if (!r.IsSatisfied(color)) return false;
-        }
-        return true;
-    }
+    public override IActivatorRequirement[] GetRequirements() => required;
 }

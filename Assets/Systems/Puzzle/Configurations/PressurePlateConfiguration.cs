@@ -4,26 +4,25 @@ using UnityEngine;
 public class PressurePlateConfiguration : ActivatorConfiguration
 {
     [System.Serializable]
-    public class PressurePlateRequirement : IActivatorRequirement<bool>
+    public class PressurePlateRequirement : IActivatorRequirement
     {
-        [SerializeField] private ActivatorID plateID;
-        [SerializeField] private bool mustBePressed = true;
+        public string plateID;
+        public bool mustBePressed = true;   // true = requires pressed, false = requires released
 
-        public ActivatorID ActivatorID => plateID;
-        public bool IsSatisfied(bool state) => state == mustBePressed;
+        public string ActivatorID => plateID;
+
+        public bool IsSatisfied(object activatorState)
+        {
+            // Pressure plate state is a bool (true = pressed)
+            if (activatorState is bool isPressed)
+            {
+                return isPressed == mustBePressed;
+            }
+            return false;
+        }
     }
 
     [SerializeField] private PressurePlateRequirement[] requiredPlates;
 
-    public override bool IsSolved(IPuzzleStateProvider state)
-    {
-        if (requiredPlates == null || requiredPlates.Length == 0) return false;
-        foreach (var r in requiredPlates)
-        {
-            if (r.ActivatorID == null) return false;
-            if (!state.TryGetBool(r.ActivatorID, out bool value)) return false;
-            if (!r.IsSatisfied(value)) return false;
-        }
-        return true;
-    }
+    public override IActivatorRequirement[] GetRequirements() => requiredPlates;
 }

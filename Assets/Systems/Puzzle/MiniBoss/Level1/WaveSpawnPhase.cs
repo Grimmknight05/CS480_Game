@@ -1,8 +1,8 @@
 using System.Linq;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
-public class WaveSpawnPhase : BossPhase, IPuzzleStateProvider
+public class WaveSpawnPhase : BossPhase
 {
     private WavePhaseConfig waveConfig;
     private int wavesCompleted;
@@ -11,14 +11,7 @@ public class WaveSpawnPhase : BossPhase, IPuzzleStateProvider
 
     private bool waitingForPuzzle = false;
     private bool pillarLowered = false;
-    private FloatActivatorChannel floatChannel;
-    private readonly Dictionary<ActivatorID, float> floatStates = new();
-
-    // IPuzzleStateProvider — boss puzzles are stone-rotation (float) only
-    public bool TryGetBool(ActivatorID id, out bool value) { value = default; return false; }
-    public bool TryGetFloat(ActivatorID id, out float value) => floatStates.TryGetValue(id, out value);
-    public bool TryGetMushroomColor(ActivatorID id, out MushroomColor value) { value = default; return false; }
-    public bool TryGetMushroomColorArray(ActivatorID id, out MushroomColor[] value) { value = default; return false; }
+    private ActivatorStateChannel stateChannel;
 
     public WaveSpawnPhase(Boss.PhaseEntry entry, WavePhaseConfig waveConfig, Boss boss)
         : base(entry, boss)
@@ -70,17 +63,17 @@ public class WaveSpawnPhase : BossPhase, IPuzzleStateProvider
 
     private void SubscribeToPuzzleChannel()
     {
-        if (floatChannel != null) return;
-        floatChannel = entry.stateChannel;
-        if (floatChannel != null)
-            floatChannel.OnStateChanged += OnFloatStateChanged;
+        if (stateChannel != null) return;
+        stateChannel = entry.stateChannel;
+        if (stateChannel != null)
+            stateChannel.OnStateChanged += OnStoneStateChanged;
         else
-            Debug.LogError($"Phase '{entry.config.phaseName}' has no FloatActivatorChannel assigned!");
+            Debug.LogError($"Phase '{entry.config.phaseName}' has no ActivatorStateChannel assigned!");
     }
 
-    private void OnFloatStateChanged(ActivatorID id, float value)
+    private void OnStoneStateChanged(string activatorID, object state)
     {
-        floatStates[id] = value;
+        stoneStates[activatorID] = state;
         if (waitingForPuzzle)
             CheckPuzzleCompletion();
     }
@@ -88,7 +81,23 @@ public class WaveSpawnPhase : BossPhase, IPuzzleStateProvider
     protected override void CheckPuzzleCompletion()
     {
         if (requiredPuzzle == null) return;
-        if (requiredPuzzle.IsSolved(this))
+
+        bool allSatisfied = true;
+        foreach (var req in requiredPuzzle.GetRequirements())
+        {
+            if (!stoneStates.ContainsKey(req.ActivatorID))
+            {
+                allSatisfied = false;
+                break;
+            }
+            if (!req.IsSatisfied(stoneStates[req.ActivatorID]))
+            {
+                allSatisfied = false;
+                break;
+            }
+        }
+
+        if (allSatisfied)
         {
             waitingForPuzzle = false;
             UnsubscribeFromPuzzleChannel();
@@ -98,16 +107,16 @@ public class WaveSpawnPhase : BossPhase, IPuzzleStateProvider
 
     private void UnsubscribeFromPuzzleChannel()
     {
-        if (floatChannel != null)
-            floatChannel.OnStateChanged -= OnFloatStateChanged;
-        floatChannel = null;
+        if (stateChannel != null)
+            stateChannel.OnStateChanged -= OnStoneStateChanged;
+        stateChannel = null;
     }
 
     private void SpawnWave()
     {
         for (int i = 0; i < waveConfig.enemiesPerWave; i++)
         {
-            var pos = spawnPositions[UnityEngine.Random.Range(0, spawnPositions.Length)];
+            var pos = spawnPositions[Random.Range(0, spawnPositions.Length)];
             boss.SpawnEnemyAt(pos);
         }
     }

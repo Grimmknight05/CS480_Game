@@ -2,25 +2,13 @@ using UnityEngine;
 
 public class LeverActivator : MonoBehaviour
 {
-    [SerializeField] private BoolActivatorChannel stateChannel;
-    [SerializeField] private ActivatorID leverID;
-
-    private bool isEngaged;
-
-    private void Start()
-    {
-        Publish();
-    }
+    [SerializeField] private string leverID = "lever_1";
+    private bool isEngaged = false;
 
     public void SetEngaged(bool engaged)
     {
         isEngaged = engaged;
-        Publish();
-    }
-
-    private void Publish()
-    {
-        if (stateChannel == null || leverID == null) return;
-        stateChannel.RaiseEvent(leverID, isEngaged);
+        // Emit generic activator event with boolean state
+        GameEvents.RaiseActivatorStateChanged(leverID, isEngaged);
     }
 }

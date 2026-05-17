@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Area4_3Lock
   m_EditorClassIdentifier: Assembly-CSharp::PressurePlateConfiguration
   requiredPlates:
-  - plateID: {fileID: 11400000, guid: 896a6fb65cb09477a8a7e488cc39b316, type: 2}
+  - plateID: Area4_3_PressurePlate
     mustBePressed: 1
