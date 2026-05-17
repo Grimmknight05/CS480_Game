@@ -1,26 +1,29 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MovementZone : MonoBehaviour
 {
     [SerializeField] private MovementMode zoneMode;
+    private static Dictionary<PlayerControllerRefactored, MovementMode> previousModes = new Dictionary<PlayerControllerRefactored, MovementMode>();
 
     private void OnTriggerEnter(Collider other)
     {
-        PlayerControllerWithHealth player = other.GetComponent<PlayerControllerWithHealth>();
-
+        PlayerControllerRefactored player = other.GetComponent<PlayerControllerRefactored>();
         if (player != null)
         {
+            if (!previousModes.ContainsKey(player))
+                previousModes[player] = player.CurrentMovementMode; // you'd need a getter
             player.SetMovementMode(zoneMode);
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
-        PlayerControllerWithHealth player = other.GetComponent<PlayerControllerWithHealth>();
-
-        if (player != null)
+        PlayerControllerRefactored player = other.GetComponent<PlayerControllerRefactored>();
+        if (player != null && previousModes.TryGetValue(player, out MovementMode previous))
         {
-            // Revert to default when leaving
-            player.SetMovementMode(player.GetDefaultMode());
+            player.SetMovementMode(previous);
+            previousModes.Remove(player);
         }
     }
 }

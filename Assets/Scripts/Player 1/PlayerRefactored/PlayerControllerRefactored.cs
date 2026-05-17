@@ -52,6 +52,7 @@ public class PlayerControllerRefactored : MonoBehaviour
     private MovementState currentState;
     private Vector3 cachedMoveDirection;
     private float moveX, moveY, moveZ;
+    public MovementMode CurrentMovementMode => (currentState is ZeroGMovementState) ? MovementMode.ZeroGrav : MovementMode.AccelerationBased;
 
     // Ground state
     private bool onGround;
@@ -61,7 +62,6 @@ public class PlayerControllerRefactored : MonoBehaviour
     private bool hasGroundHit;
     public bool IsWalkableGround { get; private set; }
     private LayerMask jumpable;
-
     // Input & commands
     private Queue<ICommand> inputQueue = new Queue<ICommand>();
     private InputAction jumpAction;
@@ -92,7 +92,8 @@ public class PlayerControllerRefactored : MonoBehaviour
     public float ZGDeceleration => zgDeceleration;
     public float MaxWalkableSlopeAngle => maxWalkableSlopeAngle;
     public bool CanJump => canJump;
-
+    public MovementMode DefaultMovementMode => initialMode;
+    
     #region Unity Lifecycle
     void Awake()
     {
