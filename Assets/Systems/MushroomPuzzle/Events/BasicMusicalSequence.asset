@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MusicalSequenceConfiguration
   requirement:
     sequenceID: {fileID: 11400000, guid: 8f2eab4ccd1947c9bdd4a8619c1e5b42, type: 2}
-    expectedSequence: 00000000010000000200000003000000050000000600000007000000
+    expectedSequence: 000000000100000002000000030000000500000006000000
     logComparisonChecks: 1
+  logSolveDiagnostics: 0
