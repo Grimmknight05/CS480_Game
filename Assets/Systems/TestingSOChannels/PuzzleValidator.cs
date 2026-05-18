@@ -93,7 +93,11 @@ public class PuzzleValidator : MonoBehaviour, IPuzzleStateProvider
             bool nowSolved = config.IsSolved(state);
             if (debugMode) Debug.Log($"[PuzzleTrigger:{triggerName}] IsSolved={nowSolved}  wasAlreadySolved={isCurrentlySolved}  hasFired={hasFired}  reTriggerable={reTriggerable}");
 
-            if (nowSolved == isCurrentlySolved) return;
+            if (nowSolved == isCurrentlySolved)
+            {
+                if (debugMode) Debug.Log($"[PuzzleTrigger:{triggerName}] IsSolved={nowSolved} is the same as isCurrentlySolved={isCurrentlySolved} so no action is needed.");
+                return;
+            } 
 
             if (nowSolved)
             {

@@ -305,6 +305,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  promptChannel: {fileID: 0}
+  promptMessage: Press E to Interact
 --- !u!1 &5793265984128807537
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,6 +317,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7060759569015407617}
   - component: {fileID: 3580995838141405878}
+  - component: {fileID: -936165377317185894}
   m_Layer: 6
   m_Name: Turn Trigger
   m_TagString: Untagged
@@ -355,14 +358,122 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   stateChannel: {fileID: 11400000, guid: 7e45909d0e56544439bbf6f81a226562, type: 2}
+  activatorID: {fileID: 0}
   rotationSpeed: 40
   rotationTolerance: 2
+  maxQueuedTurns: 3
   Inputlock: 0
   Playerlock: 0
   InputlockVisual: {fileID: 4499367181317648353}
   PlayerlockVisual: {fileID: 1469706003077643344}
+  onInteract:
+    m_PersistentCalls:
+      m_Calls: []
+  turningLoopClip: {fileID: 8300000, guid: bf0779d2ea4c545e1933bc4dbba4a784, type: 3}
+  correctPoseSound: {fileID: 0}
+  correctPoseRotationDegrees: 0
+  correctPoseTolerance: 0.5
+  turnSoundVolume: 1
+  audioSource: {fileID: -936165377317185894}
   stoneID: 
   debugMode: 1
+--- !u!82 &-936165377317185894
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5793265984128807537}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &6665104379036368436
 GameObject:
   m_ObjectHideFlags: 0
@@ -488,6 +599,7 @@ GameObject:
   - component: {fileID: 6782897283981288403}
   - component: {fileID: 4718223710837325905}
   - component: {fileID: 132740398598519822}
+  - component: {fileID: 2283320951724085617}
   m_Layer: 6
   m_Name: Stone
   m_TagString: Untagged
@@ -621,6 +733,24 @@ MonoBehaviour:
     startMaterial: {fileID: 2100000, guid: 42dee58d74b78e743a18758be86050c4, type: 2}
     targetMaterial: {fileID: 2100000, guid: f00dc7289f38d054b97879d3603ec2e0, type: 2}
     state: 0
+--- !u!114 &2283320951724085617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7701664733924112734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c9e4b2a1d3048f6a5e8c0d3b7f91245, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundToggleController
+  Object:
+  - source: {fileID: -936165377317185894}
+    passiveClip: {fileID: 0}
+    activeClip: {fileID: 8300000, guid: 3234d55d1406b4f5298390fe69f042e0, type: 3}
+    state: 0
+  volume: 1
 --- !u!1001 &2381443974608357081
 PrefabInstance:
   m_ObjectHideFlags: 0
