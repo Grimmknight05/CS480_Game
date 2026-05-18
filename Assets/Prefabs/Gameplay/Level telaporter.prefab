@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 3791749621013637764}
   - component: {fileID: 1231542653797666987}
   - component: {fileID: 686823891420554319}
+  - component: {fileID: 5942061059952870808}
+  - component: {fileID: 7453320282768828689}
   m_Layer: 0
   m_Name: Level telaporter
   m_TagString: Untagged
@@ -4915,5 +4917,47 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.19
+  m_Radius: 4
   m_Center: {x: 0.000000059604645, y: 1.24, z: -0.00000008940697}
+--- !u!114 &5942061059952870808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5533675274799790793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9468664ccc79c948a7d2433fcab31a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HologramLevelSelector
+  levelSelectionUI: {fileID: 0}
+--- !u!114 &7453320282768828689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5533675274799790793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 333d37abe8bad4ca19f929405eb877f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableTrigger
+  OnInteracted:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5942061059952870808}
+        m_TargetAssemblyTypeName: HologramLevelSelector, Assembly-CSharp
+        m_MethodName: ShowLevelSelection
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  promptChannel: {fileID: 0}
+  promptMessage: Press E to Interact
