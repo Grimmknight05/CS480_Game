@@ -20,8 +20,18 @@ public class GameLoopManager : MonoBehaviour
 
     void HandlePlayerDeath()
     {
-        // The Game Over UI gates the soft reset now — see RequestContinue.
+        // Reload current level but keep the checkpoint (so player respawns at last saved point)
+        if (LevelManager.Instance != null && LevelManager.Instance.TryGetCurrentWorld(out WorldSO currentWorld))
+        {
+            LevelManager.Instance.LoadWorld(currentWorld, true);  // keep checkpoint
+        }
+        else
+        {
+            playerHealth?.RestoreFull();
+            resetChannel?.Raise();
+        }
     }
+    
 
     public void RequestContinue()
     {

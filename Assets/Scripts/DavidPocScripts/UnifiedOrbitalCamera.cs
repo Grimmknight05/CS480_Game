@@ -100,15 +100,20 @@ private Camera cam;
     }
     void Start()
     {
-        // Hide and lock the cursor
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        
-        // Grab the initial Y rotation from the player so we start facing their back
-        currentYaw = playerRef.eulerAngles.y; 
-        
-        // Force the classic "slightly above" tilt
-        currentPitch = startingPitch; 
+        if (playerRef == null)
+        {
+            GameObject found = GameObject.FindGameObjectWithTag("Player");
+            if (found != null)
+                playerRef = found.transform;
+            else
+                Debug.LogWarning("OrbitalCamera: Player not found yet. Will be assigned later."); // instead of error
+        }
+
+        if (playerRef != null)
+        {
+            currentYaw = playerRef.eulerAngles.y;
+            currentPitch = startingPitch;
+        }
     }
 
     void LateUpdate()

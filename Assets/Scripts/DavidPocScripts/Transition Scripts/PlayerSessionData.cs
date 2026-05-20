@@ -5,6 +5,9 @@ public class PlayerSessionData : ScriptableObject
 {
     [SerializeField] private Vector3 lastCheckpoint;
     [SerializeField] private bool hasCheckpoint;
+    private string lastZone;
+    public void SetLastZone(string zone) => lastZone = zone;
+    public string GetLastZone() => lastZone;
 
     void OnEnable()
     {

@@ -5,6 +5,7 @@ public class CheckpointVolume : MonoBehaviour
 {
     [SerializeField] private PlayerSessionData sessionData;
     [SerializeField] private Transform safeSpawnPoint;
+    [SerializeField] private string zoneId; // e.g., "Zone1", "BossRoom"
     [SerializeField] private string playerTag = "Player";
     [SerializeField] private bool oneShot = false;
 
@@ -32,6 +33,7 @@ public class CheckpointVolume : MonoBehaviour
         if (sessionData == null || safeSpawnPoint == null) return;
 
         sessionData.SetCheckpoint(safeSpawnPoint.position);
+        sessionData.SetLastZone(zoneId); // optional: store zone in session data
         consumed = true;
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerControllerRefactored : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Transform cameraPivot;
+    private Transform cameraPivot;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private Animator animator;
     public Rigidbody rb;
@@ -104,24 +104,30 @@ public class PlayerControllerRefactored : MonoBehaviour
         animator = GetComponent<Animator>();
         HUD.SetActive(true);
         jumpable = LayerMask.GetMask("Jumpable");
+        jumpAbility = new JumpAbility(maxInAirjumps, jumpForce, airJumpForce, jumpSFX, airJumpSFX, audioSource);
+        sprintAbility = new SprintAbility(sprintMultiplier);
     }
-
+    public Transform CameraPivot
+    {
+        get => cameraPivot;
+        set => cameraPivot = value;
+    }
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        CursorHelper.Lock(); 
 
         if (playerHealth != null)
             playerHealth.OnPlayerDeath.AddListener(OnHealthDeath);
 
-        jumpAbility = new JumpAbility(maxInAirjumps, jumpForce, airJumpForce, jumpSFX, airJumpSFX, audioSource);
-        sprintAbility = new SprintAbility(sprintMultiplier);
 
-        SetMovementState(initialMode == MovementMode.ZeroGrav
-            ? new ZeroGMovementState()
-            : new GroundedMovementState());
+
+        if (currentState == null)
+        {
+            SetMovementState(initialMode == MovementMode.ZeroGrav
+                ? new ZeroGMovementState()
+                : new GroundedMovementState());
+        }
     }
-
     void OnEnable()
     {
         var inputActions = GetComponent<PlayerInput>().actions;
@@ -259,6 +265,7 @@ public class PlayerControllerRefactored : MonoBehaviour
     #region Movement State Management
     public void SetMovementState(MovementState newState)
     {
+        Debug.Log($"SetMovementMode called with mode: {newState}");
         if (currentState == newState) return;
         currentState?.Exit(this);
         currentState = newState;
@@ -269,11 +276,19 @@ public class PlayerControllerRefactored : MonoBehaviour
     {
         SetMovementState(mode == MovementMode.ZeroGrav ? new ZeroGMovementState() : new GroundedMovementState());
     }
-
     public void UpdateGroundMovementInput()
     {
-        Vector3 forward = cameraPivot.forward;
-        Vector3 right = cameraPivot.right;
+        // Use assigned pivot, or fall back to main camera
+        Transform camTransform = cameraPivot;
+        if (camTransform == null && Camera.main != null)
+            camTransform = Camera.main.transform;
+
+        if (camTransform == null)
+        {
+            return;
+        }
+        Vector3 forward = camTransform.forward;
+        Vector3 right = camTransform.right;
         forward.y = right.y = 0f;
         forward.Normalize();
         right.Normalize();
@@ -282,9 +297,14 @@ public class PlayerControllerRefactored : MonoBehaviour
 
     public void UpdateZeroGInput()
     {
-        Vector3 forward = cameraPivot.forward;
-        Vector3 right = cameraPivot.right;
-        Vector3 up = cameraPivot.up;
+        Transform camTransform = cameraPivot;
+        if (camTransform == null && Camera.main != null)
+            camTransform = Camera.main.transform;
+        if (camTransform == null) return;
+
+        Vector3 forward = camTransform.forward;
+        Vector3 right = camTransform.right;
+        Vector3 up = camTransform.up;
         cachedMoveDirection = forward * moveY + right * moveX + up * moveZ;
         if (cachedMoveDirection.sqrMagnitude > 1f)
             cachedMoveDirection.Normalize();

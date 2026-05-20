@@ -671,7 +671,6 @@ GameObject:
   - component: {fileID: 9006367665804065200}
   - component: {fileID: 8805179015813273139}
   - component: {fileID: 3022700799373802475}
-  - component: {fileID: 6346114294260408300}
   - component: {fileID: 8495722937744921435}
   m_Layer: 0
   m_Name: Player
@@ -832,34 +831,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &6346114294260408300
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8831719078033826639}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f464308872adb24592e0d92d118a01a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  maxInAirjumps: 1
-  jumpForce: 5
-  airJumpForce: 8
-  canJump: 1
-  playerSpeed: 5
-  countText: {fileID: 2945197621559073528}
-  winUI: {fileID: 6792448491932656392}
-  deathUI: {fileID: 6202277487676118183}
-  audioSource: {fileID: 8495722937744921435}
-  jumpSFX:
-  - {fileID: 8300000, guid: 7d11de44c1752a84ab73ddd8ec8027c9, type: 3}
-  - {fileID: 8300000, guid: 5e26159eb8f563b4f9420afdcd0959ce, type: 3}
-  airJumpSFX:
-  - {fileID: 8300000, guid: bc18fe1a807ecc04fab7d60e3e616add, type: 3}
-  - {fileID: 8300000, guid: 96fb674b02da5f549b2196a4f919db42, type: 3}
-  - {fileID: 8300000, guid: 55af11cfc862f074984db678bf147411, type: 3}
 --- !u!82 &8495722937744921435
 AudioSource:
   m_ObjectHideFlags: 0

@@ -4,6 +4,18 @@ public class ZeroGMovementState : MovementState
 {
     public override void Enter(PlayerControllerRefactored player)
     {
+        if (player.CameraPivot == null && Camera.main != null)
+        {
+            player.CameraPivot = Camera.main.transform;
+            Debug.LogWarning("ZeroGMovementState: CameraPivot was null, falling back to Main Camera.");
+        }
+
+        // If still null, log error and return (prevents crash)
+        if (player.CameraPivot == null)
+        {
+            Debug.LogError("ZeroGMovementState: No CameraPivot available! Cannot enter state.");
+            return;
+        }
         player.rb.useGravity = false;
         player.rb.linearDamping = 0f;
         player.jumpAbility.IsEnabled = false;   // no jumping in zero‑grav

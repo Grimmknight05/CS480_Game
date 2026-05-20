@@ -8,27 +8,15 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 0
-    path: Assets/Scenes/level1Sandbox.unity
-    guid: 2032d85c04d2a8d4e99d2938f53b9864
-  - enabled: 0
-    path: Assets/Scenes/Josh'sTestScenes/J'slevel1Sandbox 1.unity
-    guid: f7dc7c7213a7a6243ba7494d42c79bc4
-  - enabled: 0
-    path: Assets/Scenes/David'sTestScenes/DavidCopy.unity
-    guid: e182899dc228f4d1bbb00ed26da4eadf
-  - enabled: 0
-    path: Assets/Scenes/Josh'sTestScenes/J'sLevel1_ALPHA2.unity
-    guid: 06b9018383d34ca46b08a9c0b790e1fb
-  - enabled: 0
-    path: Assets/Scenes/Josh'sTestScenes/J'sLevel1_ALPHA3.unity
-    guid: e2e56dc958318214bb85fdacd45e438f
-  - enabled: 0
-    path: Assets/Scenes/KatieTestScenes/J'sLevel1_ALPHA2.unity
-    guid: be15a06a86a6c4cc69b776d9362d979f
   - enabled: 1
     path: Assets/Scenes/KatieTestScenes/David'sPuzzleFixes.unity
     guid: 6276d2920384d4b09be87abbcda26d3b
+  - enabled: 1
+    path: Assets/Scenes/Josh'sTestScenes/J'sSpaceHub.unity
+    guid: e41d6e322e022c04e9368ba62649caf5
+  - enabled: 1
+    path: Assets/Scenes/Josh'sTestScenes/David'sPuzzleFixesLMTest.unity
+    guid: 7de7a8ec181edd0429529b0563d52d8e
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

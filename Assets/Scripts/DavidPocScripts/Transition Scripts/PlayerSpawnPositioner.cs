@@ -4,7 +4,7 @@ public class PlayerSpawnPositioner : MonoBehaviour
 {
     [SerializeField] private PlayerSessionData sessionData;
     [SerializeField] private LevelResetChannelSO resetChannel;
-
+    [SerializeField] private PlayerHealth playerHealth;
     void OnEnable()
     {
         if (resetChannel != null)
@@ -34,13 +34,24 @@ public class PlayerSpawnPositioner : MonoBehaviour
             sessionData.SetCheckpoint(transform.position);
         }
     }
-
+    void Awake()
+    {
+        playerHealth = GetComponent<PlayerHealth>();
+        if (playerHealth == null)
+            Debug.LogError("PlayerSpawnPositioner: PlayerHealth component missing on this GameObject.");
+    }
     public void RespawnAtCheckpoint()
     {
         if (sessionData == null) return;
         if (sessionData.TryGetCheckpoint(out Vector3 pos))
         {
             SafeTeleport(pos);
+            
+            // Restore health
+            if (playerHealth != null)
+                playerHealth.RestoreFull();
+            else
+                Debug.LogWarning("PlayerSpawnPositioner: No PlayerHealth reference, health not restored.");
         }
     }
 
