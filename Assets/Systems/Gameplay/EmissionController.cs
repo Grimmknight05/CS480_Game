@@ -110,7 +110,22 @@ public class MaterialController : MonoBehaviour, ILock
 
     private void UpdateMaterial(flipFlop ff)
     {
-        ff.ObjectToChange.material = ff.state ? ff.targetMaterial : ff.startMaterial;
+        Material material = ff.state ? ff.targetMaterial : ff.startMaterial;
+        ApplyMaterial(ff.ObjectToChange, material);
+    }
+
+    private void ApplyMaterial(Renderer rootRenderer, Material material)
+    {
+        if (rootRenderer == null || material == null) return;
+
+        rootRenderer.material = material;
+
+        Renderer[] childRenderers = rootRenderer.GetComponentsInChildren<Renderer>(true);
+        foreach (Renderer childRenderer in childRenderers)
+        {
+            if (childRenderer == null || childRenderer == rootRenderer) continue;
+            childRenderer.material = material;
+        }
     }
 
     public void ResetAllMaterials()

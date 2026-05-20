@@ -57,6 +57,10 @@ public class DialogueTrigger : MonoBehaviour
     [Tooltip("Message shown by the prompt UI while the player is in range.")]
     [SerializeField] private string promptMessage = "Press E to Talk";
 
+    [Header("First Interaction Icon")]
+    [Tooltip("Optional icon above this NPC. It is hidden after the first successful interaction starts dialogue.")]
+    [SerializeField] private GameObject iconToHideAfterFirstDialogue;
+
     // Runtime state
     private bool hasPlayedOnce = false;
     private bool isActive = false;
@@ -65,6 +69,10 @@ public class DialogueTrigger : MonoBehaviour
     private bool playerInRange = false;
     private Collider lastPlayerCollider;
     private bool promptShown = false;
+
+    public bool IsPlayerInRange => playerInRange;
+    public bool IsDialogueActive => isActive;
+    public bool CanStartDialogue => CanPlay();
 
     void OnEnable()
     {
@@ -162,6 +170,7 @@ public class DialogueTrigger : MonoBehaviour
         isActive = true;
         startCommand = new StartDialogueCommand(startChannel, dialogue);
         startCommand.Execute();
+        HideFirstInteractionIcon();
     }
 
     private bool CanPlay()
@@ -186,6 +195,8 @@ public class DialogueTrigger : MonoBehaviour
             cooldownEndsAt = Time.time + dialogue.RetriggerCooldown;
         }
 
+        HideFirstInteractionIcon();
+
         // Ghost-prompt fix: if the player is still inside the trigger and
         // can play again, re-show the "Press E to Talk" prompt.
         if (requireInteract && playerInRange && CanPlay())
@@ -208,5 +219,25 @@ public class DialogueTrigger : MonoBehaviour
         if (!promptShown) return;
         promptChannel.Raise(new InteractionPromptData(this, false, string.Empty));
         promptShown = false;
+    }
+
+    private void HideFirstInteractionIcon()
+    {
+        GameObject icon = iconToHideAfterFirstDialogue;
+
+        if (icon == null)
+        {
+            DialogueIconIndicator iconIndicator = GetComponentInParent<DialogueIconIndicator>();
+            if (iconIndicator == null && transform.root != null)
+                iconIndicator = transform.root.GetComponentInChildren<DialogueIconIndicator>(true);
+
+            if (iconIndicator != null)
+                icon = iconIndicator.gameObject;
+        }
+
+        if (icon == null)
+            return;
+
+        icon.SetActive(false);
     }
 }
