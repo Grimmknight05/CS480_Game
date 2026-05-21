@@ -11,7 +11,7 @@ public class LoadWorldCommand : ISceneCommand
         this.world = world;
     }
 
-    public IEnumerator Execute(LevelManager manager)
+    /*public IEnumerator Execute(LevelManager manager)
     {
         if (manager.IsLoading) yield break;
 
@@ -58,6 +58,20 @@ public class LoadWorldCommand : ISceneCommand
             cam.playerRef = player.transform;
             Debug.Log("Assigned player to OrbitalCamera");
         }
+    }*/
+    public IEnumerator Execute(LevelManager manager)
+    {
+        if (manager.IsLoading) yield break;
+
+        manager.RaiseLoadStarted(world);
+        world.OnWillLoad(manager.Session);
+
+        AsyncOperation op = SceneManager.LoadSceneAsync(world.sceneName);
+        while (!op.isDone) yield return null;
+
+        manager.SetCurrentWorld(world);
+        world.OnDidLoad(manager.Session);
+        manager.RaiseLoadCompleted(world);
     }
     private Vector3 GetSpawnPosition(LevelManager manager)
     {
@@ -75,6 +89,7 @@ public class LoadWorldCommand : ISceneCommand
             if (sp.Group == "PlayerStart")   // or maybe "HubStart", "LevelStart", etc.
             {
                 Debug.Log($"Using SpawnPoint '{sp.name}' at {sp.Position}");
+                manager.Session.SetCheckpoint(sp.Position);
                 return sp.Position;
             }
         }

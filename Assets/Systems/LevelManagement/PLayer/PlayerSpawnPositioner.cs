@@ -19,20 +19,7 @@ public class PlayerSpawnPositioner : MonoBehaviour
 
     void Start()
     {
-        if (sessionData == null)
-        {
-            Debug.LogError($"{gameObject.name}: PlayerSpawnPositioner has no sessionData assigned.", this);
-            return;
-        }
 
-        if (sessionData.TryGetCheckpoint(out Vector3 pos))
-        {
-            SafeTeleport(pos);
-        }
-        else
-        {
-            sessionData.SetCheckpoint(transform.position);
-        }
     }
     void Awake()
     {
