@@ -4,68 +4,52 @@ using System.Collections.Generic;
 [CreateAssetMenu(menuName = "Session/Player Session Data", fileName = "PlayerSessionData")]
 public class PlayerSessionData : ScriptableObject
 {
-    [SerializeField] private Vector3 lastCheckpoint;
+    [SerializeField] private SpawnSO lastCheckpointSpawn;
     [SerializeField] private bool hasCheckpoint;
-    [SerializeField] private List<string> completedAreas = new List<string>(); // stores areaId strings
-    private string lastZone;
-
-    // Optional static instance (if you still use it)
+    [SerializeField] private List<AreaSO> completedAreas = new List<AreaSO>();
+    private AreaSO lastArea;  
     private static PlayerSessionData _instance;
     public static void SetInstance(PlayerSessionData data) => _instance = data;
     public static PlayerSessionData Instance => _instance;
 
-    void OnEnable()
-    {
-        // Reset checkpoint for a clean session each play mode entry
-        hasCheckpoint = false;
-        lastCheckpoint = Vector3.zero;
-    }
 
     // --- Checkpoint methods ---
-    public void SetCheckpoint(Vector3 pos)
+    public void SetCheckpointSpawn(SpawnSO spawn)
     {
-        lastCheckpoint = pos;
+        lastCheckpointSpawn = spawn;
         hasCheckpoint = true;
+    }
+    public bool TryGetCheckpointSpawn(out SpawnSO spawn)
+    {
+        spawn = lastCheckpointSpawn;
+        return hasCheckpoint;
     }
 
     public void ClearCheckpoint()
     {
-        lastCheckpoint = Vector3.zero;
+        lastCheckpointSpawn = null;
         hasCheckpoint = false;
     }
 
-    public bool TryGetCheckpoint(out Vector3 pos)
-    {
-        pos = lastCheckpoint;
-        return hasCheckpoint;
-    }
+
 
     // --- Area methods (accept AreaSO) ---
     public bool IsAreaCompleted(AreaSO area)
     {
         if (area == null) return false;
-        return completedAreas.Contains(area.AreaId);
+        return completedAreas.Contains(area);
     }
 
     public void CompleteArea(AreaSO area)
     {
         if (area == null) return;
-        string id = area.AreaId;
-        if (!completedAreas.Contains(id))
-            completedAreas.Add(id);
-    }
-
-    // Optional: raw string methods (for legacy or direct use)
-    public bool IsAreaCompleted(string areaId) => completedAreas.Contains(areaId);
-    public void CompleteArea(string areaId)
-    {
-        if (!completedAreas.Contains(areaId))
-            completedAreas.Add(areaId);
+        if (!completedAreas.Contains(area))
+            completedAreas.Add(area);
     }
 
     public void ResetAllAreas() => completedAreas.Clear();
 
     // --- Zone methods (if still needed) ---
-    public void SetLastZone(string zone) => lastZone = zone;
-    public string GetLastZone() => lastZone;
+    public void SetLastArea(AreaSO area) => lastArea = area;
+    public AreaSO GetLastArea() => lastArea;
 }

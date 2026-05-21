@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SpawnPoint : MonoBehaviour
 {
-    [SerializeField] private string spawnPointGroup;
-    public string Group => spawnPointGroup;
+    [SerializeField] private SpawnSO spawnSO;   // replaces spawnPointGroup string
+    public SpawnSO SpawnSO => spawnSO;
     public Vector3 Position => transform.position;
 }

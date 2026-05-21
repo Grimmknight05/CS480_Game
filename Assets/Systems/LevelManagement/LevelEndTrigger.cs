@@ -1,18 +1,31 @@
-// LevelEndTrigger.cs
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelEndTrigger : MonoBehaviour
 {
-    [SerializeField] private WorldSO thisWorld; // optional, for validation
+    [SerializeField] private string playerTag = "Player";
+    [SerializeField] private bool oneShot = true;
+    [Tooltip("Scene name to load if LevelManager is not present (for direct testing)")]
+    [SerializeField] private string fallbackHubScene = "J'sSpaceHub";
+
+    private bool triggered = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (oneShot && triggered) return;
+        if (!other.CompareTag(playerTag)) return;
+        triggered = true;
+
+        // Try to use LevelManager if it exists
+        if (LevelManager.Instance != null)
         {
             LevelManager.Instance.CompleteCurrentLevel();
         }
+        else
+        {
+            Debug.LogWarning("LevelManager not found – loading fallback hub scene directly.");
+            GameProgress.ClearCheckpoint(); // optional cleanup
+            SceneManager.LoadScene(fallbackHubScene);
+        }
     }
-
-    // Alternative: call from UI button
-    public void EndLevelManually() => LevelManager.Instance.CompleteCurrentLevel();
 }

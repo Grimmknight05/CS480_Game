@@ -39,18 +39,9 @@ public static class GameProgress
         Session.CompleteArea(area);
     }
 
-    public static bool TryGetCheckpoint(out Vector3 pos)
-    {
-        return Session.TryGetCheckpoint(out pos);
-    }
-
-    public static void SetCheckpoint(Vector3 pos)
-    {
-        Session.SetCheckpoint(pos);
-    }
-
-    public static void ClearCheckpoint()
-    {
-        Session.ClearCheckpoint();
-    }
+    public static bool TryGetCheckpointSpawn(out SpawnSO spawn) => Session.TryGetCheckpointSpawn(out spawn);
+    public static void SetCheckpointSpawn(SpawnSO spawn) => Session.SetCheckpointSpawn(spawn);
+    public static void ClearCheckpoint() => Session.ClearCheckpoint();
+    public static void SetLastArea(AreaSO area) => Session.SetLastArea(area);
+    public static AreaSO GetLastArea() => Session.GetLastArea();
 }

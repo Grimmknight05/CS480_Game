@@ -4,7 +4,7 @@ using System.Collections;
 public class LevelBootstrapper : MonoBehaviour
 {
     [SerializeField] private GameObject playerPrefab;
-    [SerializeField] private string defaultSpawnGroup = "PlayerStart";
+    [SerializeField] private SpawnSO defaultSpawnSO;
 
     private void Start()
     {
@@ -44,19 +44,25 @@ public class LevelBootstrapper : MonoBehaviour
 
     private Vector3 GetSpawnPosition()
     {
-        if (GameProgress.TryGetCheckpoint(out Vector3 checkpoint))
-            return checkpoint;
+        if (GameProgress.TryGetCheckpointSpawn(out SpawnSO checkpointSpawn))
+            return SpawnUtility.GetPosition(checkpointSpawn);
         return GetDefaultSpawnPoint();
     }
 
     private Vector3 GetDefaultSpawnPoint()
     {
+        if (defaultSpawnSO == null)
+        {
+            Debug.LogError("LevelBootstrapper: No defaultSpawnSO assigned!");
+            return Vector3.zero;
+        }
+
         SpawnPoint[] spawns = FindObjectsByType<SpawnPoint>(FindObjectsSortMode.None);
         foreach (var sp in spawns)
-            if (sp.Group == defaultSpawnGroup)
+            if (sp.SpawnSO == defaultSpawnSO)
                 return sp.Position;
 
-        Debug.LogWarning($"No SpawnPoint with group '{defaultSpawnGroup}' found. Using zero.");
+        Debug.LogWarning($"No SpawnPoint with SpawnSO '{defaultSpawnSO.name}' found. Using zero.");
         return Vector3.zero;
     }
 }

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PressurePlateIntegrated : MonoBehaviour
+public class PressurePlateIntegrated : ResettableBehaviour
 {
     [Header("Puzzle System")]
     [SerializeField] private BoolActivatorChannel stateChannel;
@@ -83,5 +83,22 @@ public class PressurePlateIntegrated : MonoBehaviour
         foreach (string t in acceptedTags)
             if (other.CompareTag(t)) return true;
         return false;
+    }
+    // ----- ResettableBehaviour implementation -----
+    protected override void ResetInternal()
+    {
+        // Clear all occupants (they may have been destroyed or moved)
+        occupants.Clear();
+
+        // If the plate was visually pressed, raise it back up
+        if (visual != null)
+            visual.localPosition = visualUpLocalPos;
+
+        // Notify listeners that pressure is now false
+        PressedChanged?.Invoke(this, false);
+
+        // Broadcast the reset state to the puzzle system
+        if (stateChannel != null && plateID != null)
+            stateChannel.RaiseEvent(plateID, false);
     }
 }

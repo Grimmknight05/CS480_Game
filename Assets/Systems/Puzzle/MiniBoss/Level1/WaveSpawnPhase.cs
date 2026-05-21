@@ -29,7 +29,7 @@ public class WaveSpawnPhase : BossPhase, IPuzzleStateProvider
     protected override void OnPhaseStart()
     {
         var all = UnityEngine.Object.FindObjectsByType<SpawnPoint>(FindObjectsSortMode.None);
-        var matching = all.Where(sp => sp.Group == waveConfig.spawnGroupName).ToArray();
+        var matching = all.Where(sp => sp.SpawnSO == waveConfig.spawnPointGroup).ToArray();
         spawnPositions = matching.Select(sp => sp.Position).ToArray();
         StartNextWave();
     }

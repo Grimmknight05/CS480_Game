@@ -53,6 +53,10 @@ PrefabInstance:
       value: PlayerStart Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8405183078715348600, guid: 6edd4efa262a99f4baea59082749e803, type: 3}
+      propertyPath: spawnSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 73d635ce082db2642bb0aa5dd2656fa0, type: 2}
+    - target: {fileID: 8405183078715348600, guid: 6edd4efa262a99f4baea59082749e803, type: 3}
       propertyPath: spawnPointGroup
       value: PlayerStart
       objectReference: {fileID: 0}

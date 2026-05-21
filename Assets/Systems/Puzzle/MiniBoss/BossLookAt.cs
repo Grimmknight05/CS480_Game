@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BossLookAt : MonoBehaviour, ILock
+public class BossLookAt : ResettableBehaviour, ILock
 {
     [Header("Target")]
     [SerializeField] private Transform objectToRotate; // optional, uses this transform if null
@@ -32,7 +32,7 @@ public class BossLookAt : MonoBehaviour, ILock
     private Quaternion originalRotation;
     private bool playerSearchFailed = false; // avoid spamming Find every frame
     private float _nextPlayerSearchTime;
-
+    private bool initialActiveState; // store for reset
     private void Awake()
     {
         if (objectToRotate == null)
@@ -125,5 +125,30 @@ public class BossLookAt : MonoBehaviour, ILock
                 rotationSpeed * Time.deltaTime
             );
         }
+    }
+    // ----- ResettableBehaviour implementation -----
+    protected override void ResetInternal()
+    {
+        // Stop any active look behaviour
+        isActive = initialActiveState; // or simply false if you want reset to idle
+        // Usually we want the boss to stop looking at player after reset
+        isActive = false;
+
+        // Reset lock state (ILock)
+        LockState = false;
+
+        // Reset rotation to original
+        objectToRotate.localRotation = originalRotation;
+
+        // Stop any ongoing VFX
+        if (activationVFX != null && activationVFX.isPlaying)
+            activationVFX.Stop();
+        if (deactivationVFX != null && deactivationVFX.isPlaying)
+            deactivationVFX.Stop();
+
+        // Optionally play deactivation VFX
+        deactivationVFX?.Play();
+
+        Debug.Log($"[BossLookAt] {name} reset.");
     }
 }

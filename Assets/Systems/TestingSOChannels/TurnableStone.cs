@@ -41,13 +41,16 @@ public class TurnableStone : ResettableBehaviour
     public float TargetRotation => targetRotation;
     public float CurrentRotation => currentRotation;
     public string StoneID => stoneID;
+    private bool initialPlayerLock;
+    private bool initialInputLock;
     
     private void Start()
     {
         initialRotationY = transform.eulerAngles.y;//Gets the current rotation
         currentRotation = 0f;//Intialized both currentRotation and targetRotation to 0
         targetRotation = 0f;
-        
+        initialPlayerLock = Playerlock;
+        initialInputLock = Inputlock;
         if (debugMode)
             Debug.Log($"[TurnableStone] {stoneID} initialized. Starting rotation: {initialRotationY}°, Offset: {currentRotation}°");
         SetLockVisablity();    
@@ -197,6 +200,10 @@ public class TurnableStone : ResettableBehaviour
         targetRotation = 0f;
         transform.eulerAngles = new Vector3(transform.eulerAngles.x, initialRotationY, transform.eulerAngles.z);
         hasRaisedEventForCurrentTarget = true;
+        // Reset lock states to initial values
+        Playerlock = initialPlayerLock;
+        Inputlock = initialInputLock;
+        SetLockVisablity();
         // Broadcast the reset state (0°)
         if (stateChannel != null && activatorID != null)
             stateChannel.RaiseEvent(activatorID, 0f);

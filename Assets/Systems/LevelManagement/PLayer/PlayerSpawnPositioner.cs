@@ -29,16 +29,11 @@ public class PlayerSpawnPositioner : MonoBehaviour
     }
     public void RespawnAtCheckpoint()
     {
-        if (sessionData == null) return;
-        if (sessionData.TryGetCheckpoint(out Vector3 pos))
+        if (sessionData.TryGetCheckpointSpawn(out SpawnSO checkpointSpawn))
         {
+            Vector3 pos = SpawnUtility.GetPosition(checkpointSpawn);
             SafeTeleport(pos);
-            
-            // Restore health
-            if (playerHealth != null)
-                playerHealth.RestoreFull();
-            else
-                Debug.LogWarning("PlayerSpawnPositioner: No PlayerHealth reference, health not restored.");
+            playerHealth?.RestoreFull();
         }
     }
 

@@ -73,29 +73,5 @@ public class LoadWorldCommand : ISceneCommand
         world.OnDidLoad(manager.Session);
         manager.RaiseLoadCompleted(world);
     }
-    private Vector3 GetSpawnPosition(LevelManager manager)
-    {
-        // Priority 1: Checkpoint from PlayerSessionData
-        if (manager.Session.TryGetCheckpoint(out Vector3 checkpoint))
-        {
-            Debug.Log($"Using checkpoint at {checkpoint}");
-            return checkpoint;
-        }
 
-        // Priority 2: Find a SpawnPoint with group "PlayerStart" (or any group you decide)
-        SpawnPoint[] spawnPoints = Object.FindObjectsByType<SpawnPoint>(FindObjectsSortMode.None);
-        foreach (SpawnPoint sp in spawnPoints)
-        {
-            if (sp.Group == "PlayerStart")   // or maybe "HubStart", "LevelStart", etc.
-            {
-                Debug.Log($"Using SpawnPoint '{sp.name}' at {sp.Position}");
-                manager.Session.SetCheckpoint(sp.Position);
-                return sp.Position;
-            }
-        }
-
-        // Priority 3: Fallback
-        Debug.LogWarning($"No PlayerStart spawn point or checkpoint found. Using (0,0,0).");
-        return Vector3.zero;
-    }
 }
