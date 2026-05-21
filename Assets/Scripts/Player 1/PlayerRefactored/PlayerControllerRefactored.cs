@@ -75,7 +75,7 @@ public class PlayerControllerRefactored : MonoBehaviour
 
     // Events
     public delegate void ScoreChangedDelegate(int newScore);
-    public event ScoreChangedDelegate OnScoreChanged;
+    //public event ScoreChangedDelegate OnScoreChanged;
     public delegate void DeathDelegate();
     public event DeathDelegate OnPlayerDeath;
 

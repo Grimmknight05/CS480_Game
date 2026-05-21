@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0585292146a260439ed4e7b84cf287e, type: 3}
+  m_Name: SpaceHub
+  m_EditorClassIdentifier: Assembly-CSharp::WorldLoadingInfo
+  world: {fileID: 11400000, guid: 8292f36356f606a468078b541b28b416, type: 2}
+  planetPrefab: {fileID: 7616282864559219265, guid: c04bb7586066a7d42aaede9c610a86d5, type: 3}
+  tipList: {fileID: 11400000, guid: e83f019fa1ddc2e46b35715a3d1664b4, type: 2}
+  planetLocalPosition: {x: -38, y: -28, z: 89}
