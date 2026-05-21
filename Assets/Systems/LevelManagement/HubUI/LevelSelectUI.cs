@@ -1,24 +1,26 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // optional, if using TextMeshPro
+using TMPro;
 using System.Collections.Generic;
 
 public class LevelSelectUI : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private LevelManager levelManager; // drag from scene
-    [SerializeField] private GameObject buttonPrefab;   // your button prefab
-    [SerializeField] private Transform buttonContainer; // parent for buttons (e.g., ScrollView Content)
+    [SerializeField] private LevelManager levelManager;
+    [SerializeField] private GameObject buttonPrefab;
+    [SerializeField] private Transform buttonContainer;
 
     [Header("UI Text Settings")]
     [SerializeField] private bool useTextMeshPro = false;
-    [SerializeField] private string buttonTextFormat = "{0}"; // e.g., "{0} - {1}" for name + type
-    
+    [SerializeField] private string buttonTextFormat = "{0}";
+
+    [Header("Level Filtering")]
+    [SerializeField] private bool showHubWorld = false;
 
     private void Start()
     {
         if (levelManager == null)
-            levelManager = FindAnyObjectByType<LevelManager>();
+            levelManager = FindFirstObjectByType<LevelManager>();
 
         if (levelManager == null)
         {
@@ -28,52 +30,75 @@ public class LevelSelectUI : MonoBehaviour
 
         GenerateButtons();
     }
+
     private void OnEnable()
     {
         CursorHelper.Unlock();
     }
-    
+
     private void OnDisable()
     {
         CursorHelper.Lock();
     }
+
     private void GenerateButtons()
     {
-        // Clear existing buttons (optional, if you want to regenerate)
+        // Clear existing buttons
         foreach (Transform child in buttonContainer)
             Destroy(child.gameObject);
 
-        // Get all worlds from LevelManager
-        // You'll need to expose the list in LevelManager – add a property
         List<WorldSO> worlds = levelManager.GetAllWorlds();
+        Debug.Log($"LevelSelectUI: Found {worlds.Count} worlds total.");
 
+        int buttonCount = 0;
         foreach (WorldSO world in worlds)
         {
-            // Instantiate button
+            if (!showHubWorld && world.isHubWorld)
+            {
+                Debug.Log($"Skipping hub world: {world.displayName}");
+                continue;
+            }
+
+            Debug.Log($"Creating button for world: {world.displayName}, scene: {world.sceneName}");
             GameObject btnObj = Instantiate(buttonPrefab, buttonContainer);
             Button btn = btnObj.GetComponent<Button>();
-            
+            if (btn == null)
+            {
+                Debug.LogError($"Button prefab missing Button component on {btnObj.name}");
+                continue;
+            }
+
             // Set button text
             string displayText = string.Format(buttonTextFormat, world.displayName);
-            if (useTextMeshPro)
+            Debug.Log($"Setting text for {world.displayName} to '{displayText}'");
+
+            // Find all TMP components in the button hierarchy
+            TextMeshProUGUI[] allTMP = btnObj.GetComponentsInChildren<TextMeshProUGUI>(true);
+            Debug.Log($"Found {allTMP.Length} TMP components in {btnObj.name}");
+
+            if (allTMP.Length > 0)
             {
-                TextMeshProUGUI tmp = btnObj.GetComponentInChildren<TextMeshProUGUI>();
-                if (tmp != null) tmp.text = displayText;
+                // Use the first one (usually the most specific)
+                allTMP[0].text = displayText;
+                Debug.Log($"Assigned text to {allTMP[0].name}: {allTMP[0].text}");
             }
             else
             {
-                Text legacyText = btnObj.GetComponentInChildren<Text>();
-                if (legacyText != null) legacyText.text = displayText;
+                Debug.LogError($"No TextMeshProUGUI found in button prefab '{btnObj.name}'. Check prefab hierarchy.");
             }
 
-            // Add click listener – load the level
-            WorldSO capturedWorld = world; // important: capture local variable
-            btn.onClick.AddListener(() => 
+            // CRITICAL: capture the variable inside the loop
+            WorldSO capturedWorld = world;
+            btn.onClick.AddListener(() =>
             {
-                // Lock cursor before loading level
+                Debug.Log($"Loading world: {capturedWorld.displayName}");
                 CursorHelper.Lock();
-                levelManager.LoadWorld(world, false);
+                levelManager.LoadWorld(capturedWorld, false);
             });
+
+            buttonCount++;
         }
+
+        Debug.Log($"LevelSelectUI: Generated {buttonCount} buttons.");
     }
 }
