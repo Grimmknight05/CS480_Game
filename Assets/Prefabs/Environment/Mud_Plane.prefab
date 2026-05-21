@@ -111,8 +111,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 10, y: 2.220446e-16, z: 10}
-  m_Center: {x: 0, y: 0, z: -0.0000038146973}
+  m_Size: {x: 10, y: 2, z: 10.000001}
+  m_Center: {x: 1.6640042e-11, y: -1, z: -0.0000038028663}
 --- !u!114 &2165983798810383020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,8 +125,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7448e9060442d4357bff4e4a060ba729, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaterHazard
-  playerTag: Player
   damagePerSecond: 20
   submergePlayerThreshold: 0.5
   damageTickInterval: 0.5
   submergePushableThreshold: 0.9
+  resetChannel: {fileID: 0}

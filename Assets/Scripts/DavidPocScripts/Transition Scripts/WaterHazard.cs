@@ -17,7 +17,23 @@ public class WaterHazard : MonoBehaviour
     [Tooltip("Submersion fraction (0-1) at or above which a Respawnable pushable resets to its spawn.")]
     [Range(0f, 1f)]
     [SerializeField] private float submergePushableThreshold = 0.9f;
+    [SerializeField] private LevelResetChannelSO resetChannel;
+    private void OnEnable()
+    {
+        if (resetChannel != null)
+            resetChannel.OnRaised += ClearTracking;
+    }
 
+    private void OnDisable()
+    {
+        if (resetChannel != null)
+            resetChannel.OnRaised -= ClearTracking;
+    }
+        private void ClearTracking()
+    {
+        trackedPlayers.Clear();
+        trackedPushables.Clear();
+    }
     private Collider waterCollider;
     private readonly Dictionary<PlayerHealth, PlayerTracker> trackedPlayers = new();
     private readonly Dictionary<Respawnable, PushableTracker> trackedPushables = new();
@@ -34,7 +50,7 @@ public class WaterHazard : MonoBehaviour
         public GameObject root;
         public Collider bodyCollider;
     }
-
+    
     void Awake()
     {
         waterCollider = GetComponent<Collider>();
@@ -85,7 +101,7 @@ public class WaterHazard : MonoBehaviour
     {
         if (trackedPlayers.Count == 0) return;
 
-        float waterTopY = waterCollider.bounds.max.y;
+        Bounds waterBounds = waterCollider.bounds;
         List<PlayerHealth> toRemove = null;
 
         foreach (var kv in trackedPlayers)
@@ -100,16 +116,19 @@ public class WaterHazard : MonoBehaviour
             }
 
             Bounds playerBounds = tracker.bodyCollider.bounds;
-            float fraction = SubmersionFraction(playerBounds, waterTopY);
-            if (fraction < submergePlayerThreshold)
+
+            // Check if the player's bounds intersect the water volume
+            if (!waterBounds.Intersects(playerBounds))
+            {
+                (toRemove ??= new List<PlayerHealth>()).Add(health);
+                continue;
+            }
+
+            // Calculate submerged volume fraction (how much of player is inside water)
+            float submergedFraction = ComputeSubmergedFraction(playerBounds, waterBounds);
+            if (submergedFraction < submergePlayerThreshold)
             {
                 tracker.damageAccumulator = 0f;
-                // Untrack only once clear of the hazard: risen above the
-                // surface AND off the water's horizontal footprint.
-                if (fraction <= 0f && !OverlapsWaterXZ(playerBounds))
-                {
-                    (toRemove ??= new List<PlayerHealth>()).Add(health);
-                }
                 continue;
             }
 
@@ -129,6 +148,16 @@ public class WaterHazard : MonoBehaviour
         }
     }
 
+private float ComputeSubmergedFraction(Bounds objBounds, Bounds waterBounds)
+{
+    // Calculate the intersection volume between object and water
+    float intersectMinY = Mathf.Max(objBounds.min.y, waterBounds.min.y);
+    float intersectMaxY = Mathf.Min(objBounds.max.y, waterBounds.max.y);
+    float intersectHeight = Mathf.Max(0, intersectMaxY - intersectMinY);
+    float objectHeight = objBounds.size.y;
+    if (objectHeight <= 0) return 0f;
+    return intersectHeight / objectHeight;
+}
     private void TickPushables()
     {
         if (trackedPushables.Count == 0) return;
