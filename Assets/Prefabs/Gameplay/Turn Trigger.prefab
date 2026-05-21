@@ -611,6 +611,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc6534c2f7d5da4db96be6c55581fa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EmissionController
+  resetChannel: {fileID: 0}
   Object:
   - ObjectToChange: {fileID: 2606265241936903544}
     startMaterial: {fileID: 2100000, guid: 42dee58d74b78e743a18758be86050c4, type: 2}
@@ -636,6 +637,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8275220665255000968}
     m_Modifications:
+    - target: {fileID: 2323529257604271547, guid: 17fc1b86e4f37404c909b46bfc98d5b5, type: 3}
+      propertyPath: resetChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 7b03292574597408a8eb335901f5c93c, type: 2}
     - target: {fileID: 3213258876034997062, guid: 17fc1b86e4f37404c909b46bfc98d5b5, type: 3}
       propertyPath: m_Name
       value: Rune3
@@ -715,6 +720,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8275220665255000968}
     m_Modifications:
+    - target: {fileID: 2875056728858976811, guid: f338742d67b73ee409f97cb6b9979281, type: 3}
+      propertyPath: resetChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 7b03292574597408a8eb335901f5c93c, type: 2}
     - target: {fileID: 8873522730768180107, guid: f338742d67b73ee409f97cb6b9979281, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.20894
@@ -846,6 +855,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -29.787
       objectReference: {fileID: 0}
+    - target: {fileID: 2769823008959881878, guid: 44aba5e36803fa44ebf8612f3bb5ab13, type: 3}
+      propertyPath: resetChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 7b03292574597408a8eb335901f5c93c, type: 2}
     - target: {fileID: 8748717402834710459, guid: 44aba5e36803fa44ebf8612f3bb5ab13, type: 3}
       propertyPath: m_Name
       value: Rune1
@@ -965,6 +978,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
+    - target: {fileID: 6496517903491499633, guid: 949746b47011c5440af1b16ace7fa048, type: 3}
+      propertyPath: resetChannel
+      value: 
+      objectReference: {fileID: 11400000, guid: 7b03292574597408a8eb335901f5c93c, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

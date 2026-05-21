@@ -45,6 +45,7 @@ public class LevelManager : MonoBehaviour
             return;
         }
         Instance = this;
+        PlayerSessionData.SetInstance(playerSession);
         DontDestroyOnLoad(gameObject);
     }
 
@@ -53,6 +54,7 @@ public class LevelManager : MonoBehaviour
         // Start at hub if no current world
         if (currentWorld == null)
             LoadHub();
+        GameProgress.UsePersistentSession(playerSession);
     }
 
     private void Update()

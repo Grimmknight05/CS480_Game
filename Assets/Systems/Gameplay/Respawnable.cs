@@ -1,8 +1,7 @@
 using UnityEngine;
 
-public class Respawnable : MonoBehaviour
+public class Respawnable : ResettableBehaviour
 {
-    [SerializeField] private LevelResetChannelSO resetChannel;
     [Tooltip("Optional. If null, captures transform.position at Awake.")]
     [SerializeField] private Transform spawnPoint;
 
@@ -26,24 +25,6 @@ public class Respawnable : MonoBehaviour
         }
     }
 
-    void OnEnable()
-    {
-        if (resetChannel != null)
-            resetChannel.OnRaised += HandleLevelReset;
-    }
-
-    void OnDisable()
-    {
-        if (resetChannel != null)
-            resetChannel.OnRaised -= HandleLevelReset;
-    }
-
-    private void HandleLevelReset()
-    {
-        if (resetLocked) return;
-        ResetToSpawn();
-    }
-
     public void ResetToSpawn()
     {
         if (rb != null)
@@ -59,4 +40,9 @@ public class Respawnable : MonoBehaviour
 
     public void LockReset() => resetLocked = true;
     public void UnlockReset() => resetLocked = false;
+    protected override void ResetInternal()
+    {
+        if (resetLocked) return;
+        ResetToSpawn();
+    }
 }

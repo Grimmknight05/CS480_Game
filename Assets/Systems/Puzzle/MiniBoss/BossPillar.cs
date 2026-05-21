@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-public class BossPillar : MonoBehaviour
+public class BossPillar : ResettableBehaviour
 {
     //Adapted from David's door code
     [SerializeField] private Vector3 maxOffset = new Vector3(0f, 15f, 0f);
@@ -66,5 +66,9 @@ public class BossPillar : MonoBehaviour
         
         transform.localPosition = target;
         running = null;
+    }
+    protected override void ResetInternal()
+    {
+        Reset();
     }
 }

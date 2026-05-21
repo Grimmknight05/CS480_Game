@@ -14,10 +14,6 @@ public class LevelSelectUI : MonoBehaviour
     [SerializeField] private bool useTextMeshPro = false;
     [SerializeField] private string buttonTextFormat = "{0}"; // e.g., "{0} - {1}" for name + type
     
-    [Header("Cursor Settings")]
-    [SerializeField] private bool unlockCursorWhenVisible = true;
-    [SerializeField] private bool hideCursorWhenLocked = true;
-    private bool wasCursorLocked = false;
 
     private void Start()
     {

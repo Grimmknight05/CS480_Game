@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Rotator : MonoBehaviour, ILock
+public class Rotator : ResettableBehaviour, ILock
 {
     [System.Serializable]
     public class Rotation
@@ -16,6 +16,7 @@ public class Rotator : MonoBehaviour, ILock
         [HideInInspector] public Quaternion StartRotation;
         [HideInInspector] public Quaternion TargetRotation;
         [HideInInspector] public bool IsAnimating = false;
+        
     }
 
     [SerializeField] public Rotation[] Rotations;
@@ -32,7 +33,6 @@ public class Rotator : MonoBehaviour, ILock
         LockState = lockstate;
         Debug.Log($"Rotator is now {(lockstate ? "LOCKED" : "UNLOCKED")}");
     }
-
     void Start()
     {
         InitializeRotations();
@@ -156,5 +156,10 @@ public class Rotator : MonoBehaviour, ILock
             Debug.LogWarning("Cannot rotate - Rotator is locked!");
             return;
         }
+    }
+    // ResettableBehaviour implementation
+    protected override void ResetInternal()
+    {
+        ResetAllRotations();
     }
 }

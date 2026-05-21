@@ -1,6 +1,6 @@
 using UnityEngine;
 // Author: Joshua Henrikson
-public class Pusher : MonoBehaviour, ILock
+public class Pusher : ResettableBehaviour, ILock
 {
     private Vector3 startPos;
     private Rigidbody rb;
@@ -18,7 +18,6 @@ public class Pusher : MonoBehaviour, ILock
     [SerializeField] private PushDirections pushDirection;
     [SerializeField] private float pushDistance = 5f;
     [SerializeField] private float pushSpeed = 2f;
-    [SerializeField] private LevelResetChannelSO resetChannel;
     [Tooltip("Optional. If null, captures transform.position at Start.")]
     [SerializeField] private Transform spawnPoint;
     private bool resetLocked;
@@ -45,20 +44,7 @@ public class Pusher : MonoBehaviour, ILock
         startPos = spawnPoint != null ? spawnPoint.position : transform.position;
         rb = GetComponent<Rigidbody>();
     }
-
-    void OnEnable()
-    {
-        if (resetChannel != null)
-            resetChannel.OnRaised += HandleLevelReset;
-    }
-
-    void OnDisable()
-    {
-        if (resetChannel != null)
-            resetChannel.OnRaised -= HandleLevelReset;
-    }
-
-    private void HandleLevelReset()
+    protected override void ResetInternal()
     {
         if (resetLocked) return;
         Reset();

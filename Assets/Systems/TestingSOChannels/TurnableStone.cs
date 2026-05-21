@@ -5,7 +5,7 @@ using UnityEngine.Events;
 // Author: Joshua Henrikson
 // Modified by: GitHub Copilot / Architecture Refactor (April 2026)
 // David - Altered for InteractableTriggers and removing camera raycasting (4/25/26)
-public class TurnableStone : MonoBehaviour
+public class TurnableStone : ResettableBehaviour
 {
     [Header("Event Channels")]
     [Tooltip("The walkie-talkie channel this stone uses to broadcast its state.")]
@@ -185,5 +185,21 @@ public class TurnableStone : MonoBehaviour
             currentRotation += rotationStep;
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, initialRotationY + currentRotation, transform.eulerAngles.z);
         }
+    }
+    // ===== ResettableBehaviour implementation =====
+    protected override void ResetInternal()
+    {
+        // Stop any ongoing rotation
+        isRotating = false;
+        currentQueuedTurns = 0;
+        // Reset rotation offset to 0
+        currentRotation = 0f;
+        targetRotation = 0f;
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, initialRotationY, transform.eulerAngles.z);
+        hasRaisedEventForCurrentTarget = true;
+        // Broadcast the reset state (0°)
+        if (stateChannel != null && activatorID != null)
+            stateChannel.RaiseEvent(activatorID, 0f);
+        if (debugMode) Debug.Log($"[TurnableStone] {stoneID} reset to initial rotation.");
     }
 }

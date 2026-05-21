@@ -104,6 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc6534c2f7d5da4db96be6c55581fa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MaterialController
+  resetChannel: {fileID: 11400000, guid: 7b03292574597408a8eb335901f5c93c, type: 2}
   Object:
   - ObjectToChange: {fileID: 8376046724932903472}
     startMaterial: {fileID: 2100000, guid: 42dee58d74b78e743a18758be86050c4, type: 2}
@@ -119,7 +120,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1467877954682418394, guid: 9a6328d85d09e4899b9905ddd1cb3059, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: 42dee58d74b78e743a18758be86050c4, type: 2}
     - target: {fileID: 1706573194611665722, guid: 9a6328d85d09e4899b9905ddd1cb3059, type: 3}
       propertyPath: m_LocalScale.x
@@ -175,7 +176,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1846143049628945268, guid: 9a6328d85d09e4899b9905ddd1cb3059, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: 42dee58d74b78e743a18758be86050c4, type: 2}
     - target: {fileID: 2082114296266387840, guid: 9a6328d85d09e4899b9905ddd1cb3059, type: 3}
       propertyPath: m_Name
@@ -183,15 +184,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2203418339598740113, guid: 9a6328d85d09e4899b9905ddd1cb3059, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: 42dee58d74b78e743a18758be86050c4, type: 2}
     - target: {fileID: 2355800336334481183, guid: 9a6328d85d09e4899b9905ddd1cb3059, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: 42dee58d74b78e743a18758be86050c4, type: 2}
     - target: {fileID: 6442209059207010269, guid: 9a6328d85d09e4899b9905ddd1cb3059, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
-      value:
+      value: 
       objectReference: {fileID: 2100000, guid: 42dee58d74b78e743a18758be86050c4, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

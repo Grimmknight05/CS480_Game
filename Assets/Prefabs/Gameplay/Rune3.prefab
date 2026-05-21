@@ -104,6 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bc6534c2f7d5da4db96be6c55581fa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MaterialController
+  resetChannel: {fileID: 11400000, guid: 7b03292574597408a8eb335901f5c93c, type: 2}
   Object:
   - ObjectToChange: {fileID: 6966976519345918363}
     startMaterial: {fileID: 2100000, guid: 42dee58d74b78e743a18758be86050c4, type: 2}

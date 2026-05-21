@@ -1,33 +1,16 @@
 using System.Collections;
 using UnityEngine;
 
-public class DoorLerp : MonoBehaviour, IResettable
+public class DoorLerp : ResettableBehaviour
 {
     [SerializeField] private Vector3 openOffset = new Vector3(0f, 4f, 0f);
     [SerializeField] private float duration = 1.5f;
     [SerializeField] private AnimationCurve ease = AnimationCurve.EaseInOut(0, 0, 1, 1);
     [SerializeField] private ParticleSystem openVFX;
-    [SerializeField] private LevelResetChannelSO resetChannel;
     private Vector3 closedLocalPos;
     private Vector3 openLocalPos;
     private Coroutine running;
     private bool isOpen;
-    private void OnEnable()
-    {
-        if (resetChannel != null)
-            resetChannel.OnRaised += ResetState;
-    }
-
-    private void OnDisable()
-    {
-        if (resetChannel != null)
-            resetChannel.OnRaised -= ResetState;
-    }
-    public void ResetState()   // ← interface method implementation
-    {
-        if (isOpen)
-            Close();
-    }
     void Awake()
     {
         closedLocalPos = transform.localPosition;
@@ -68,5 +51,9 @@ public class DoorLerp : MonoBehaviour, IResettable
         }
         transform.localPosition = target;
         running = null;
+    }
+    protected override void ResetInternal()
+    {
+        if (isOpen) Close();
     }
 }

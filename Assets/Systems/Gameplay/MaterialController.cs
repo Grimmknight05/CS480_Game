@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class MaterialController : MonoBehaviour, ILock
+public class MaterialController : ResettableBehaviour, ILock
 {
     [System.Serializable]
     public class flipFlop
@@ -13,8 +13,6 @@ public class MaterialController : MonoBehaviour, ILock
     }
 
     [SerializeField] public flipFlop[] Object;
-
-
     private bool _lockState = false;
     public bool LockState 
     { 
@@ -26,8 +24,18 @@ public class MaterialController : MonoBehaviour, ILock
         LockState = lockstate;
         Debug.Log($"Pusher is now {(lockstate ? "LOCKED" : "UNLOCKED")}");
     }
-
     
+    public void ResetAllMaterialsForced()
+    {
+        // Reset all materials to startMaterial ignoring the lock state
+        foreach (flipFlop ff in Object)
+        {
+            if (ff.ObjectToChange == null) continue;
+            ff.state = false;
+            UpdateMaterial(ff);
+        }
+        _lockState = false; // optionally unlock after reset
+    }
     void Start()
     {
         InitAllMaterials();
@@ -156,8 +164,10 @@ public class MaterialController : MonoBehaviour, ILock
             return;
         }
     }
-    private void OnDisable()
+    // ResettableBehaviour implementation
+    protected override void ResetInternal()
     {
         ResetAllMaterialsBypassLock();
+        _lockState = false;
     }
 }
