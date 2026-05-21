@@ -5,16 +5,22 @@ public class LevelBootstrapper : MonoBehaviour
 {
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private SpawnSO defaultSpawnSO;
-
+    [SerializeField] private WorldSO currentWorld;
     private void Start()
     {
         StartCoroutine(DelayedSpawn());
     }
-
+    //private WorldSO GetWorldForCurrentScene() => currentWorld;
     private IEnumerator DelayedSpawn()
     {
         yield return null; // wait for LevelManager to initialize
-
+        //WorldSO currentWorld = GetWorldForCurrentScene();
+        if (LevelManager.Instance != null)
+        {
+            LevelManager.Instance.SetCurrentWorld(currentWorld);
+            currentWorld.OnDidLoad(LevelManager.Instance.Session);
+            LevelManager.Instance.RaiseLoadCompleted(currentWorld);
+        }
         bool isHub = LevelManager.Instance != null &&
                      LevelManager.Instance.CurrentWorld != null &&
                      LevelManager.Instance.CurrentWorld.isHubWorld;

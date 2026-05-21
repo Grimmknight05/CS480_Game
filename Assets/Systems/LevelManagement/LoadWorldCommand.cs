@@ -65,9 +65,8 @@ public class LoadWorldCommand : ISceneCommand
 
         manager.RaiseLoadStarted(world);
         world.OnWillLoad(manager.Session);
-
-        AsyncOperation op = SceneManager.LoadSceneAsync(world.sceneName);
-        while (!op.isDone) yield return null;
+        LoadingScreenManager.LoadScene(world.sceneName);// Tell the loading manager to handle the transition
+        yield break;
 
         manager.SetCurrentWorld(world);
         world.OnDidLoad(manager.Session);
