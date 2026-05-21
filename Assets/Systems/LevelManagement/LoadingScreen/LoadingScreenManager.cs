@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
@@ -11,36 +12,97 @@ public class LoadingScreenManager : MonoBehaviour
     public TextMeshProUGUI progressText;
     public TextMeshProUGUI tipText;
 
+    [Header("Planet Display")]
+    public Transform planetContainer;
+    public GameObject defaultPlanetPrefab;
+    public Vector3 defaultPlanetLocalPosition = Vector3.zero;
+
     [Header("Tip System")]
-    public TipListSO tipList;
+    [SerializeField] private TipListSO defaultTipList;   // renamed to avoid confusion
+    private TipListSO activeTipList;                     // will hold the one to use
+
+    [Header("World Info Database")]
+    [SerializeField] private List<WorldLoadingInfo> worldInfoList;
 
     [Header("Settings")]
     public float minDisplayTime = 1.5f;
-
     private static string targetSceneName;
+    private static WorldSO targetWorld;
 
     void Start()
     {
-        // Start loading the target scene immediately
         if (!string.IsNullOrEmpty(targetSceneName))
             StartCoroutine(LoadTargetScene());
         else
             Debug.LogError("No target scene specified for LoadingScreenManager");
     }
 
-    public static void LoadScene(string sceneName)
+    public static void LoadScene(string sceneName, WorldSO world = null)
     {
         targetSceneName = sceneName;
-        SceneManager.LoadScene("LoadingScreen"); // name of your loading scene
+        targetWorld = world;
+        SceneManager.LoadScene("LoadingScreen");
+    }
+
+    private WorldLoadingInfo GetInfoForWorld(WorldSO world)
+    {
+        if (world == null) return null;
+        foreach (var info in worldInfoList)
+            if (info.world == world)
+                return info;
+        return null;
+    }
+
+    private void SetupPlanetAndTips()
+    {
+        WorldLoadingInfo info = GetInfoForWorld(targetWorld);
+        activeTipList = defaultTipList;
+        GameObject planetToShow = defaultPlanetPrefab;
+        Vector3 pos = defaultPlanetLocalPosition;
+        //Vector3 rot = Vector3.zero;
+        //Vector3 scale = Vector3.one;
+
+        if (info != null)
+        {
+            if (info.planetPrefab != null)
+                planetToShow = info.planetPrefab;
+            if (info.tipList != null)
+                activeTipList = info.tipList;
+            pos = info.planetLocalPosition;
+            //rot = info.planetLocalRotation;
+            //scale = info.planetLocalScale;
+        }
+
+        if (planetToShow != null && planetContainer != null)
+        {
+            // Clear existing
+            foreach (Transform child in planetContainer)
+                Destroy(child.gameObject);
+
+            GameObject planet = Instantiate(planetToShow, planetContainer);
+            planet.transform.localPosition = pos;
+            //planet.transform.localEulerAngles = rot;
+            //planet.transform.localScale = scale;
+        }
+        else if (planetContainer != null)
+        {
+            planetContainer.gameObject.SetActive(false);
+        }
     }
 
     private IEnumerator LoadTargetScene()
     {
+        SetupPlanetAndTips();
+
         // Show random tip
-        if (tipList != null && tipList.tips.Count > 0)
+        if (activeTipList != null && activeTipList.tips.Count > 0)
         {
-            var tip = tipList.tips[Random.Range(0, tipList.tips.Count)];
+            var tip = activeTipList.tips[Random.Range(0, activeTipList.tips.Count)];
             if (tipText != null) tipText.text = tip.tipText;
+        }
+        else if (tipText != null)
+        {
+            tipText.text = "Loading...";
         }
 
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(targetSceneName);
@@ -51,7 +113,7 @@ public class LoadingScreenManager : MonoBehaviour
         while (!asyncLoad.isDone)
         {
             float progress = Mathf.Clamp01(asyncLoad.progress / 0.9f);
-            if (progressBar != null) progressBar.value = progress;
+            if (progressBar != null) progressBar.size = progress;
             if (progressText != null) progressText.text = $"{(progress * 100):F0}%";
 
             if (asyncLoad.progress >= 0.9f && (Time.time - startTime) >= minDisplayTime)
@@ -61,6 +123,7 @@ public class LoadingScreenManager : MonoBehaviour
             yield return null;
         }
 
-        // Target scene is now active, this LoadingScene is unloaded automatically
+        targetSceneName = null;
+        targetWorld = null;
     }
 }

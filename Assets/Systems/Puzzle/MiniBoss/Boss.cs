@@ -29,7 +29,7 @@ public abstract class Boss : ResettableBehaviour
     protected List<GameObject> activeEnemies = new List<GameObject>();
     protected GameObject enemyPrefab;
     public UnityEvent OnBossStartEvent;
-    public event Action OnBossStart;
+    //public event Action OnBossStart;
     public UnityEvent OnBossDefeatedEvent;
     public event Action OnBossDefeated;
     [SerializeField] private EnemyDeathChannel deathChannel;

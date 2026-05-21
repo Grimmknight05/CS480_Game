@@ -74,7 +74,7 @@ public class CutsceneCommandRunner : MonoBehaviour
     void Awake()
     {
         if (orbitalCamera == null)
-            orbitalCamera = FindObjectOfType<OrbitalCamera>();
+            orbitalCamera = FindAnyObjectByType<OrbitalCamera>();
     }
 
     public void StartCutscene()
