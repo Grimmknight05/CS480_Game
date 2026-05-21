@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb781ee870bc1a4ba59040ebfcadfb5, type: 3}
   m_Name: AreaBlast
   m_EditorClassIdentifier: Assembly-CSharp::KnockbackEffect
-  force: 30
+  duration: 0
+  force: 15
   stunDuration: 0.3

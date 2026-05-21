@@ -32,6 +32,7 @@ public class ToolSystem : MonoBehaviour, IAimContext
 
     private int currentToolIndex = 0;
     private PlayerInput playerInput;
+    private PlayerControllerRefactored playerController;
     private InputAction useAction;
     private InputAction switchToolAction;
     private float[] lastUseTimes;
@@ -53,7 +54,8 @@ public class ToolSystem : MonoBehaviour, IAimContext
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
-        
+        playerController = GetComponent<PlayerControllerRefactored>();
+
         if (usePoint == null)
         {
             usePoint = transform;
@@ -82,9 +84,14 @@ public class ToolSystem : MonoBehaviour, IAimContext
     void OnAttack(InputValue attackInput)
     {
         if (!inputEnabled) return;
-        if (attackInput.isPressed)
+        if (!attackInput.isPressed) return;
+
+        if (playerController != null)
         {
-            Debug.Log("Use Tool");
+            playerController.QueueCommand(new UseToolCommand(this, currentToolIndex));
+        }
+        else
+        {
             UseTool();
         }
     }
@@ -108,19 +115,33 @@ public class ToolSystem : MonoBehaviour, IAimContext
     /// </summary>
     public void UseTool()
     {
-        if (tools.Length == 0)
-            return;
-
-        Tool tool = tools[currentToolIndex];
-
-        if (Time.time < lastUseTimes[currentToolIndex] + tool.cooldown)
-            return;
-
-        lastUseTimes[currentToolIndex] = Time.time;
-
-            tool.Use(usePoint, audioSource, tool.GetTargetLayer());
+        if (!IsToolReady(currentToolIndex)) return;
+        UseToolBySlot(currentToolIndex);
     }
-        
+
+    /// <summary>
+    /// Cooldown + bounds check for a specific slot. Used by UseToolCommand.CanExecute
+    /// so the input buffer can hold the command until the cooldown clears.
+    /// </summary>
+    public bool IsToolReady(int slot)
+    {
+        if (slot < 0 || slot >= tools.Length) return false;
+        Tool tool = tools[slot];
+        if (tool == null) return false;
+        return Time.time >= lastUseTimes[slot] + tool.cooldown;
+    }
+
+    /// <summary>
+    /// Fires a specific slot. Assumes the caller already gated on IsToolReady().
+    /// </summary>
+    public void UseToolBySlot(int slot)
+    {
+        Tool tool = tools[slot];
+        lastUseTimes[slot] = Time.time;
+        tool.Use(usePoint, audioSource, tool.GetTargetLayer());
+    }
+
+
 
     /// <summary>
     /// Switch to next tool in array.
