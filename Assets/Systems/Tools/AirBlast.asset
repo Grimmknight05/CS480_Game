@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ece3c42097186462f997c4f13e002d83, type: 3}
   m_Name: AirBlast
   m_EditorClassIdentifier: Assembly-CSharp::AirBlastTool
-  toolName: Tool
+  toolName: Push Tool?
   toolDescription: A generic tool
   cooldown: 0.5
   useSFX: {fileID: 8300000, guid: bc18fe1a807ecc04fab7d60e3e616add, type: 3}
@@ -20,29 +20,12 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 1791
-  effects: []
-  effectRadius: 15
-  falloffCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: -1
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -1
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  effects:
+  - {fileID: 11400000, guid: c35df04121022fc44a6f344c8dbbf663, type: 2}
+  range: 30
+  cylinderRadius: 0.5
+  assistAngle: 23.9
+  assistStrength: 0.82
+  pushForce: 7
+  stunDuration: 1
+  pushVfxPrefab: {fileID: 7126521720523635901, guid: 7cc849da01dd14d65bd452952a02f3c0, type: 3}
