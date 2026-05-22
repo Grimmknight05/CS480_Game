@@ -1,5 +1,5 @@
 using UnityEngine;
-public abstract class Weapon : Tool
+public abstract class Weapon : TargetingTool
 {
     [Header("Weapon Properties")]
     [SerializeField] public int damagePerHit = 20;

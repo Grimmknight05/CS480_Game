@@ -1,39 +1,44 @@
 using UnityEngine;
+using UnityEngine.Scripting.APIUpdating;
 
-[CreateAssetMenu(fileName = "AirBlastTool", menuName = "Tools/Air Blast")]
-public class AirBlastTool : Tool
+[MovedFrom(false, null, null, "AirBlastTool")]
+[CreateAssetMenu(fileName = "PushTool", menuName = "Tools/Push Tool")]
+public class PushTool : TargetingTool
 {
-    [Header("Air Blast Settings")]
-    [SerializeField] private float effectRadius = 15f;
-    [SerializeField] private AnimationCurve falloffCurve = AnimationCurve.Linear(0, 1, 1, 0);
+    [Header("Push Settings")]
+    [SerializeField] private float pushForce = 18f;
+    [SerializeField] private float stunDuration = 0.25f;
+    [SerializeField] private GameObject pushVfxPrefab;
 
-    public override void Use(Transform usePoint, AudioSource audioSource, LayerMask layerMask)
+    public override void Use(Transform firePoint, AudioSource audioSource, LayerMask layerMask)
     {
         PlayUseSound(audioSource);
-        
-        Debug.Log($"<color=cyan>[Air Blast]</color> Fired from {usePoint.position}. Searching layer mask: {layerMask.value}");
 
-        Collider[] hits = Physics.OverlapSphere(usePoint.position, effectRadius, layerMask);
-        Debug.Log($"<color=cyan>[Air Blast]</color> Found {hits.Length} colliders in radius.");
+        Vector3 aimDir = ResolveAimDirection(firePoint, layerMask, out _);
+        Vector3 endPoint = firePoint.position + aimDir * range;
 
-        foreach (Collider hitCollider in hits)
+        if (AcquireTarget(firePoint, aimDir, layerMask, out RaycastHit hit))
         {
-            float distance = Vector3.Distance(usePoint.position, hitCollider.transform.position);
-            float normalizedDistance = Mathf.Clamp01(distance / effectRadius);
-            float falloff = falloffCurve.Evaluate(normalizedDistance);
+            endPoint = hit.point;
 
-            Debug.Log($"<color=yellow>[Air Blast]</color> Checking object: {hitCollider.gameObject.name} | Distance: {distance}");
+            var knockbackable = hit.collider.GetComponent<IKnockbackable>();
+            knockbackable.ApplyKnockback(aimDir, pushForce, stunDuration);
+            ApplyEffects(hit.collider.gameObject, aimDir);
+        }
 
-            IBlastReceiver receiver = hitCollider.GetComponent<IBlastReceiver>();
-            if (receiver != null)
+        if (pushVfxPrefab != null)
+        {
+            GameObject vfx = Instantiate(pushVfxPrefab, firePoint.position, Quaternion.LookRotation(aimDir));
+            LaserBeam beam = vfx.GetComponent<LaserBeam>();
+            if (beam != null)
             {
-                Debug.Log($"<color=green>[Air Blast]</color> SUCCESS! Sent blast signal to {hitCollider.gameObject.name} with falloff {falloff}");
-                receiver.OnBlast(usePoint.position, falloff);
-            }
-            else
-            {
-                Debug.Log($"<color=red>[Air Blast]</color> FAILED: {hitCollider.gameObject.name} has no IBlastReceiver component.");
+                beam.Fire(firePoint.position, endPoint);
             }
         }
+    }
+
+    protected override bool IsValidTarget(Collider candidate)
+    {
+        return candidate.GetComponent<IKnockbackable>() != null;
     }
 }
