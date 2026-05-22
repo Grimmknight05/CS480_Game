@@ -66,7 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1402c59dd7d294ece9d5f6165b6da98b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueTrigger
-  dialogue: {fileID: 11400000, guid: 2ff77ce1369724d11bdd0b008d39623f, type: 2}
+  dialogue: {fileID: 0}
   startChannel: {fileID: 11400000, guid: 63eb2f358c2644f718e1bbb1b8dc25fa, type: 2}
   endedChannel: {fileID: 11400000, guid: b5e30c45ee0c145d48f736706cdf110f, type: 2}
   playerTag: Player
@@ -74,6 +74,7 @@ MonoBehaviour:
   requireInteract: 1
   promptChannel: {fileID: 11400000, guid: d5462cb4227154ee6aa7b0b45b986882, type: 2}
   promptMessage: Press E to Talk
+  iconToHideAfterFirstDialogue: {fileID: 0}
 --- !u!1001 &8255450397477056986
 PrefabInstance:
   m_ObjectHideFlags: 0

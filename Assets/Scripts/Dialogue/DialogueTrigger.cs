@@ -170,7 +170,6 @@ public class DialogueTrigger : MonoBehaviour
         isActive = true;
         startCommand = new StartDialogueCommand(startChannel, dialogue);
         startCommand.Execute();
-        HideFirstInteractionIcon();
     }
 
     private bool CanPlay()
@@ -223,21 +222,91 @@ public class DialogueTrigger : MonoBehaviour
 
     private void HideFirstInteractionIcon()
     {
-        GameObject icon = iconToHideAfterFirstDialogue;
-
-        if (icon == null)
-        {
-            DialogueIconIndicator iconIndicator = GetComponentInParent<DialogueIconIndicator>();
-            if (iconIndicator == null && transform.root != null)
-                iconIndicator = transform.root.GetComponentInChildren<DialogueIconIndicator>(true);
-
-            if (iconIndicator != null)
-                icon = iconIndicator.gameObject;
-        }
-
+        GameObject icon = ResolveFirstInteractionIcon();
         if (icon == null)
             return;
 
         icon.SetActive(false);
+    }
+
+    private GameObject ResolveFirstInteractionIcon()
+    {
+        if (iconToHideAfterFirstDialogue != null)
+            return iconToHideAfterFirstDialogue;
+
+        DialogueIconIndicator iconIndicator = GetComponentInChildren<DialogueIconIndicator>(true);
+        if (iconIndicator != null)
+            return iconIndicator.gameObject;
+
+        GameObject namedIcon = FindClosestNamedDialogueIcon(transform);
+        if (namedIcon != null)
+            return namedIcon;
+
+        Transform searchRoot = transform.parent;
+        while (searchRoot != null)
+        {
+            DialogueIconIndicator[] candidates = searchRoot.GetComponentsInChildren<DialogueIconIndicator>(true);
+            if (candidates.Length == 1)
+                return candidates[0].gameObject;
+
+            if (candidates.Length > 1)
+                return FindClosestIcon(candidates)?.gameObject;
+
+            namedIcon = FindClosestNamedDialogueIcon(searchRoot);
+            if (namedIcon != null)
+                return namedIcon;
+
+            searchRoot = searchRoot.parent;
+        }
+
+        return null;
+    }
+
+    private DialogueIconIndicator FindClosestIcon(DialogueIconIndicator[] candidates)
+    {
+        DialogueIconIndicator closest = null;
+        float closestDistance = float.PositiveInfinity;
+        Vector3 origin = transform.position;
+
+        foreach (DialogueIconIndicator candidate in candidates)
+        {
+            if (candidate == null) continue;
+
+            float distance = (candidate.transform.position - origin).sqrMagnitude;
+            if (distance >= closestDistance) continue;
+
+            closest = candidate;
+            closestDistance = distance;
+        }
+
+        return closest;
+    }
+
+    private GameObject FindClosestNamedDialogueIcon(Transform searchRoot)
+    {
+        Transform closest = null;
+        float closestDistance = float.PositiveInfinity;
+        Vector3 origin = transform.position;
+
+        foreach (Transform candidate in searchRoot.GetComponentsInChildren<Transform>(true))
+        {
+            if (candidate == transform) continue;
+
+            string candidateName = candidate.name.ToLowerInvariant();
+            bool isDialogueIcon =
+                candidateName.Contains("dialogue_icon") ||
+                candidateName.Contains("dialogue_story") ||
+                candidateName.Contains("dialogue_quest");
+
+            if (!isDialogueIcon) continue;
+
+            float distance = (candidate.position - origin).sqrMagnitude;
+            if (distance >= closestDistance) continue;
+
+            closest = candidate;
+            closestDistance = distance;
+        }
+
+        return closest == null ? null : closest.gameObject;
     }
 }
