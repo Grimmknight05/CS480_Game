@@ -30716,6 +30716,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df38fcb5d4c441c4582cf3a43dd306cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  resetChannel: {fileID: 0}
+  area: {fileID: 0}
   Rotations:
   - ObjectToRotate: {fileID: 1373391210}
     LocalRotation: {x: 0, y: -166.701, z: 0}
