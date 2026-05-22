@@ -10,17 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e77206a52ab94f2ba951b2670e9efed, type: 3}
-  m_Name: Area_2_Robot(mom)_Lines
+  m_Name: Area_4_Robot(good)_Lines(
   m_EditorClassIdentifier: Assembly-CSharp::DialogueSO
   lines:
   - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
-    text: Warning. Unregistered entity detected.
+    text: "No... no, that\u2019s not him anymore."
     autoAdvanceDelay: 0
   - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
-    text: To your left is a nursery. Be careful.
+    text: He used to help protect this part of the planet. Now he just watches with
+      those red eyes.
     autoAdvanceDelay: 0
   - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
-    text: Watch out for those rambunctious little fellas...
+    text: Something is spreading through the machines. Through the forest. Through
+      everything.
+    autoAdvanceDelay: 0
+  - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
+    text: 'Please be careful. If you can still think for yourself... then maybe you
+      can still stop this.
+
+
+
+
+'
     autoAdvanceDelay: 0
   playOnce: 0
   retriggerCooldown: 0

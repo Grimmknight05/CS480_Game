@@ -10,17 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e77206a52ab94f2ba951b2670e9efed, type: 3}
-  m_Name: Area_2_Robot(mom)_Lines
+  m_Name: Area_3_Robot_Lines
   m_EditorClassIdentifier: Assembly-CSharp::DialogueSO
   lines:
   - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
-    text: Warning. Unregistered entity detected.
-    autoAdvanceDelay: 0
-  - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
-    text: To your left is a nursery. Be careful.
-    autoAdvanceDelay: 0
-  - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
-    text: Watch out for those rambunctious little fellas...
+    text: "You\u2019ve been learning the rules one puzzle at a time. I hope you remember
+      them now."
     autoAdvanceDelay: 0
   playOnce: 0
   retriggerCooldown: 0

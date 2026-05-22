@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c3312b626ba4f7ba0c61a109761c5c, type: 3}
   m_Name: Dialogue_Robot
   m_EditorClassIdentifier: Assembly-CSharp::NPCSpeakerSO
-  displayName: Robot
+  displayName: 'Watcher Bot '
   portrait: {fileID: 0}
-  nameColor: {r: 0.46264577, g: 0.24705882, b: 0.83137256, a: 1}
+  nameColor: {r: 0, g: 0.3921569, b: 0, a: 1}
   typingBlip: {fileID: 0}
   typingBlipVolume: 0.5
