@@ -9,6 +9,10 @@ public class SimpleBoss : Boss
     [Header("Enemy Spawn")]
     [SerializeField] private GameObject enemySpawnPrefab;
 
+    [Header("Environmental Hazards")]
+    [SerializeField] private MeteorShower meteorShower;
+    [SerializeField] private bool enableMeteors = true;
+
     private bool encounterStarted = false;
 
     protected override void Start()
@@ -24,12 +28,27 @@ public class SimpleBoss : Boss
             encounterStarted = true;
             entranceDoor?.Open();
             BeginFight();
+
+            if (enableMeteors && meteorShower != null)
+                meteorShower.StartMeteorShower();
         }
     }
 
     protected override void DefeatBoss()
     {
+        if (meteorShower != null)
+            meteorShower.StopMeteorShower();
         exitDoor?.Close();
         base.DefeatBoss();
+        
+    }
+    protected override void ResetInternal()
+    {
+        base.ResetInternal();
+        
+        if (meteorShower != null)
+            meteorShower.StopMeteorShower();
+            
+        encounterStarted = false;
     }
 }
