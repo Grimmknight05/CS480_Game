@@ -168,7 +168,7 @@ public class DialogueUI : MonoBehaviour
             if (speaker != null)
             {
                 speakerNameText.text = speaker.DisplayName;
-                speakerNameText.color = speaker.NameColor;
+                speakerNameText.color = useSpeakerGradient ? Color.white : speaker.NameColor;
             }
             else
             {

@@ -10,27 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e77206a52ab94f2ba951b2670e9efed, type: 3}
-  m_Name: Dialogue_Robot_Intro
+  m_Name: Area_2_Robot(baby1)_Lines
   m_EditorClassIdentifier: Assembly-CSharp::DialogueSO
   lines:
-  - speaker: {fileID: 0}
-    text: 'Diagnostics complete. Motor functions optimal. Assessing terrain damage...
-
-      (Press
-      E to continue)'
-    autoAdvanceDelay: 0
-  - speaker: {fileID: 0}
-    text: "Are you a\u2026 human? I haven\u2019t seen one on this world in a very
-      long time.\n"
-    autoAdvanceDelay: 0
-  - speaker: {fileID: 0}
-    text: Use [W][A][S][D] to navigate the ruins.
+  - speaker: {fileID: 11400000, guid: 4cdbb108d96b74cf9a63502c1a651df2, type: 2}
+    text: Can't you see I'm busy reading?!
     autoAdvanceDelay: 0
   - speaker: {fileID: 11400000, guid: 4cdbb108d96b74cf9a63502c1a651df2, type: 2}
-    text: Press [SPACE] to jump and [E] to interact with terminals like me.
+    text: ...
     autoAdvanceDelay: 0
-  - speaker: {fileID: 0}
-    text: Good Luck out there, astronout.
+  - speaker: {fileID: 11400000, guid: 4cdbb108d96b74cf9a63502c1a651df2, type: 2}
+    text: It's about the stone robots that glow red and watch over us.
+    autoAdvanceDelay: 0
+  - speaker: {fileID: 11400000, guid: 4cdbb108d96b74cf9a63502c1a651df2, type: 2}
+    text: There's something wrong around here, but Mom and Dad don't believe me...
+    autoAdvanceDelay: 0
+  - speaker: {fileID: 11400000, guid: 4cdbb108d96b74cf9a63502c1a651df2, type: 2}
+    text: Do you believe me?
     autoAdvanceDelay: 0
   playOnce: 1
   retriggerCooldown: 5
