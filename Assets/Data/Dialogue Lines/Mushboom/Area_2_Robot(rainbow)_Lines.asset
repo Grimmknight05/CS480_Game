@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: Area_2_Robot(rainbow)_Lines
   m_EditorClassIdentifier: Assembly-CSharp::DialogueSO
   lines:
-  - speaker: {fileID: 11400000, guid: c4760c532a38645deb38bba307f31e9c, type: 2}
+  - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
     text: The grove ahead responds to color patterns.
     autoAdvanceDelay: 0
-  - speaker: {fileID: 11400000, guid: c4760c532a38645deb38bba307f31e9c, type: 2}
+  - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
     text: Jump on the rainbow mushrooms to activate their glow.
     autoAdvanceDelay: 0
-  - speaker: {fileID: 11400000, guid: c4760c532a38645deb38bba307f31e9c, type: 2}
+  - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
     text: If you restore the correct sequence, something you need should rise from
       the mud.
     autoAdvanceDelay: 0
-  - speaker: {fileID: 11400000, guid: c4760c532a38645deb38bba307f31e9c, type: 2}
+  - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
     text: And with luck, the restless green ones will finally quiet down.
     autoAdvanceDelay: 0
   playOnce: 0

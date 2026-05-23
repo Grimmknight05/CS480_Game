@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Area_2_Robot(mom)_Lines
   m_EditorClassIdentifier: Assembly-CSharp::DialogueSO
   lines:
-  - speaker: {fileID: 11400000, guid: c4760c532a38645deb38bba307f31e9c, type: 2}
+  - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
     text: Warning. Unregistered entity detected.
     autoAdvanceDelay: 0
-  - speaker: {fileID: 11400000, guid: c4760c532a38645deb38bba307f31e9c, type: 2}
+  - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
     text: To your left is a nursery. Be careful.
     autoAdvanceDelay: 0
-  - speaker: {fileID: 11400000, guid: c4760c532a38645deb38bba307f31e9c, type: 2}
+  - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
     text: Watch out for those rambunctious little fellas...
     autoAdvanceDelay: 0
   playOnce: 0

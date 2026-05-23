@@ -243,12 +243,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c6e2d9a18d8a3d47863b84c02c2b604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyControllerTest
-  detectionRange: 30
+  detectionRange: 50
   fieldOfViewAngle: 180
+  detectPlayerImmediately: 1
+  lungeFirstOnDetection: 1
   attackData: {fileID: 11400000, guid: 62c1dff24d941a24bb9febf37d2630fd, type: 2}
   patrolPoints: []
   patrolSpeed: 2
   chaseSpeed: 2.5
+  useTacticalCombat: 1
+  tacticalEngageRange: 50
+  circleDistance: 4.5
+  circleSpeed: 3
+  circlePointTolerance: 0.6
+  minCircleTimeBeforeLunge: 0.9
+  maxCircleTimeBeforeLunge: 1.8
+  lungeDistance: 5
+  lungeDuration: 0.45
+  lungeArcHeight: 0.8
+  lungeDamageTime: 0.6
+  retreatDistance: 4
+  retreatSpeed: 4
+  retreatDuration: 0.8
+  navMeshSampleDistance: 2
   audioSource: {fileID: 6348148679018864065}
   enemySFX:
   - {fileID: 8300000, guid: 5788a0e24a89d1048836bedb038bac6a, type: 3}

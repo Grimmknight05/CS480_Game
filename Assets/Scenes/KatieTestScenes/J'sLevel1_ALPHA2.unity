@@ -1529,6 +1529,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e84e10f8ca75d438fbf41df442af118d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorLerp
+  resetChannel: {fileID: 0}
+  area: {fileID: 0}
   openOffset: {x: 0, y: 5, z: 0}
   duration: 3
   ease:
@@ -2239,6 +2241,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e84e10f8ca75d438fbf41df442af118d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorLerp
+  resetChannel: {fileID: 0}
+  area: {fileID: 0}
   openOffset: {x: 0, y: 5, z: 0}
   duration: 3
   ease:
@@ -2394,7 +2398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe22f4d4ad88d7459ccc5a484e97e42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  spawnPointGroup: Level1_Boss_Arena_2
+  spawnSO: {fileID: 0}
 --- !u!4 &235055205 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5719520922627312922, guid: 263f665f6f27edc47898f10548c63b7a, type: 3}
@@ -3236,6 +3240,7 @@ MonoBehaviour:
   deathChannel: {fileID: 11400000, guid: a8ab8d34aaeb44856a2a14452e7ef2ad, type: 2}
   resetChannel: {fileID: 11400000, guid: 7b03292574597408a8eb335901f5c93c, type: 2}
   playerHealth: {fileID: 5458128841615741340}
+  gameOverUI: {fileID: 0}
 --- !u!4 &293802074
 Transform:
   m_ObjectHideFlags: 0
@@ -3469,7 +3474,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe22f4d4ad88d7459ccc5a484e97e42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  spawnPointGroup: Level1_Boss_Arena_1
+  spawnSO: {fileID: 0}
 --- !u!1001 &307091943
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4717,7 +4722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe22f4d4ad88d7459ccc5a484e97e42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  spawnPointGroup: Level1_Boss_Arena_2
+  spawnSO: {fileID: 0}
 --- !u!114 &412725053 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3580995838141405878, guid: 849a2953bd45e6641b5949533b662758, type: 3}
@@ -5351,9 +5356,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d64ff1f843239164babfa5b85b29b128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  resetChannel: {fileID: 0}
+  area: {fileID: 0}
   objectToRotate: {fileID: 447136939}
   autoFindPlayer: 1
   playerTransform: {fileID: 0}
+  playerSearchInterval: 0.5
   rotationSpeed: 180
   resetOnDeactivate: 1
   activationVFX: {fileID: 1338661597}
@@ -5808,6 +5816,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e84e10f8ca75d438fbf41df442af118d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorLerp
+  resetChannel: {fileID: 0}
+  area: {fileID: 0}
   openOffset: {x: 0, y: 5, z: 0}
   duration: 3
   ease:
@@ -7708,7 +7718,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe22f4d4ad88d7459ccc5a484e97e42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  spawnPointGroup: Level1_Boss_Arena_2
+  spawnSO: {fileID: 0}
 --- !u!1 &572023087
 GameObject:
   m_ObjectHideFlags: 0
@@ -10095,7 +10105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe22f4d4ad88d7459ccc5a484e97e42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  spawnPointGroup: Level1_Boss_Arena_1
+  spawnSO: {fileID: 0}
 --- !u!1001 &722668020
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11719,7 +11729,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe22f4d4ad88d7459ccc5a484e97e42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnPoint
-  spawnPointGroup: Level1_Boss_Arena_1
+  spawnSO: {fileID: 0}
 --- !u!4 &840791095 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8438612211718903345, guid: 3f7581cbd2092e346913e7ce498e9aa3, type: 3}
@@ -12917,7 +12927,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CheckpointVolume
   sessionData: {fileID: 11400000, guid: 993da1493da4b4972ac31d4842ffec31, type: 2}
-  safeSpawnPoint: {fileID: 1204234538}
+  checkpointSpawn: {fileID: 0}
+  area: {fileID: 0}
   playerTag: Player
   oneShot: 0
 --- !u!114 &892699973 stripped
@@ -14355,6 +14366,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df38fcb5d4c441c4582cf3a43dd306cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  resetChannel: {fileID: 0}
+  area: {fileID: 0}
   Rotations:
   - ObjectToRotate: {fileID: 985259298}
     LocalRotation: {x: 0, y: -166.701, z: 0}
@@ -25501,6 +25514,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e84e10f8ca75d438fbf41df442af118d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorLerp
+  resetChannel: {fileID: 0}
+  area: {fileID: 0}
   openOffset: {x: 0, y: 5, z: 0}
   duration: 3
   ease:
@@ -35104,7 +35119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe22f4d4ad88d7459ccc5a484e97e42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  spawnPointGroup: Level1_Boss_Arena_1
+  spawnSO: {fileID: 0}
 --- !u!1001 &1774002308
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36351,6 +36366,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e3065b62a4aaa649804d093c10109c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FactoryManagerBoss
+  resetChannel: {fileID: 0}
+  area: {fileID: 0}
   phaseEntries:
   - config: {fileID: 11400000, guid: e1b8a07d9f0508e428bd668fc2eb5522, type: 2}
     pillar: {fileID: 892699973}
@@ -36725,6 +36742,8 @@ MonoBehaviour:
   entranceDoor: {fileID: 513127007}
   exitDoor: {fileID: 513127007}
   enemySpawnPrefab: {fileID: 4697400531132460199, guid: 3edbe420fcd7b0347bd6b19e5601e841, type: 3}
+  meteorShower: {fileID: 0}
+  enableMeteors: 1
 --- !u!114 &1861495749 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 132740398598519822, guid: 849a2953bd45e6641b5949533b662758, type: 3}
@@ -41113,7 +41132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe22f4d4ad88d7459ccc5a484e97e42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  spawnPointGroup: Level1_Boss_Arena_2
+  spawnSO: {fileID: 0}
 --- !u!1001 &2127613200
 PrefabInstance:
   m_ObjectHideFlags: 0

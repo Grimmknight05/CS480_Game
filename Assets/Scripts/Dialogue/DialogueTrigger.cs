@@ -17,6 +17,7 @@
 // =====================================================================
 
 using UnityEngine;
+using UnityEngine.Events;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Collider))]
@@ -61,6 +62,13 @@ public class DialogueTrigger : MonoBehaviour
     [Tooltip("Optional icon above this NPC. It is hidden after the first successful interaction starts dialogue.")]
     [SerializeField] private GameObject iconToHideAfterFirstDialogue;
 
+    [Header("First Dialogue Completion")]
+    [Tooltip("Optional door or wall movement fired once after this trigger's first dialogue run finishes. Calls DoorLerp.Open().")]
+    [SerializeField] private DoorLerp doorToMoveAfterFirstDialogue;
+
+    [Tooltip("Extra actions fired once after this trigger's first dialogue run finishes.")]
+    [SerializeField] private UnityEvent onFirstDialogueComplete = new UnityEvent();
+
     // Runtime state
     private bool hasPlayedOnce = false;
     private bool isActive = false;
@@ -69,6 +77,7 @@ public class DialogueTrigger : MonoBehaviour
     private bool playerInRange = false;
     private Collider lastPlayerCollider;
     private bool promptShown = false;
+    private bool firstDialogueCompletionFired = false;
 
     public bool IsPlayerInRange => playerInRange;
     public bool IsDialogueActive => isActive;
@@ -195,6 +204,13 @@ public class DialogueTrigger : MonoBehaviour
         }
 
         HideFirstInteractionIcon();
+
+        if (!firstDialogueCompletionFired)
+        {
+            firstDialogueCompletionFired = true;
+            doorToMoveAfterFirstDialogue?.Open();
+            onFirstDialogueComplete?.Invoke();
+        }
 
         // Ghost-prompt fix: if the player is still inside the trigger and
         // can play again, re-show the "Press E to Talk" prompt.

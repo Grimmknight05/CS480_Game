@@ -13,23 +13,23 @@ MonoBehaviour:
   m_Name: Dialogue_Robot_Intro
   m_EditorClassIdentifier: Assembly-CSharp::DialogueSO
   lines:
-  - speaker: {fileID: 0}
+  - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
     text: 'Diagnostics complete. Motor functions optimal. Assessing terrain damage...
 
       (Press
       E to continue)'
     autoAdvanceDelay: 0
-  - speaker: {fileID: 0}
-    text: "Are you a\u2026 human? I haven\u2019t seen one on this world in a very
+  - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
+    text: "Are you a\u2026human? I haven\u2019t seen one on this world in a very
       long time.\n"
     autoAdvanceDelay: 0
-  - speaker: {fileID: 0}
+  - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
     text: Use [W][A][S][D] to navigate the ruins.
     autoAdvanceDelay: 0
-  - speaker: {fileID: 11400000, guid: 4cdbb108d96b74cf9a63502c1a651df2, type: 2}
+  - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
     text: Press [SPACE] to jump and [E] to interact with terminals like me.
     autoAdvanceDelay: 0
-  - speaker: {fileID: 0}
+  - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
     text: Good Luck out there, astronout.
     autoAdvanceDelay: 0
   playOnce: 1
