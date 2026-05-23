@@ -1,6 +1,6 @@
 # Wiring a crystal (or any) Simon Says — step by step
 
-Scripts live under **`Assets/Systems/TestingSOChannels/`** (`MusicalPuzzleStep`, `MusicalSequencePuzzleValidator`, `InteractableTrigger`). This doc sits in **`Assets/Systems/MusicalPuzzle/`** next to melody / mushroom orchestration systems.
+Scripts live under **`Assets/Systems/TestingSOChannels/`** (`MusicalPuzzleStep`, `MusicalSequencePuzzleValidator`, `MusicalStepMaterialCue`, `InteractableTrigger`). This doc sits in **`Assets/Systems/MusicalPuzzle/`** next to melody / mushroom orchestration systems.
 
 This flow uses **`MusicalPuzzleStep`** (per candle/crystal/pad) + **`MusicalSequencePuzzleValidator`** (order + failure replay). Everything shares one **`BoolActivatorChannel`** ScriptableObject asset.
 
@@ -51,8 +51,26 @@ For **each** crystal (or bell, pad):
    - **`On Reset Presentation`**: idle / dim emissive — also used **between replay steps** after each flash.
 4. Add **`InteractableTrigger`** on the crystal (same object or child — must have **`Collider`** with **Is Trigger** if you rely on proximity).
    - Under **`Interactable Trigger`→`On Interacted`** **(+)** → drag the **`MusicalPuzzleStep`** object → choose **`MusicalPuzzleStep` → `Interact()`**.
+   - **Proximity behavior**: enable **`Activate On Player Trigger Enter`** for **touch** activation (runs **`On Interacted`** as soon as the Player enters — no **E**). Leave it off when you want **walk in + Interact/E** instead (shows optional prompt UI if you assigned a **`Interaction Prompt Channel SO`**).
 
 Important: **`Interact()`** is what raises the bool channel to the validator. Do **not** call **`PlayLocalInteractFeedbackOnly()`** from the trigger — that skips validation.
+
+### Material swap (dim ↔ bright)
+
+`MusicalPuzzleStep` events are **no-argument** UnityEvents, so they cannot call `MaterialController.SetAllMaterials(bool)` by name alone. Use the bridge **`MusicalStepMaterialCue`** (same folder as **`MusicalPuzzleStep`**).
+
+1. Add **`MaterialController`** on the crystal (often same GameObject as the mesh).
+   - **`Object`** size ≥ 1: assign the crystal **`Renderer`** (or parent that owns all renderers you care about).
+   - **`Start Material`** = idle / dim look.
+   - **`Target Material`** = pressed / glowing look (`SetAllMaterials(true)` swaps to target).
+   - Leave initial **`State`** unchecked (false = start material on `Init`).
+2. Add **`MusicalStepMaterialCue`** on the **same GameObject or a convenient child**.
+   - **`Material Controller`** → drag that **`MaterialController`** reference.
+3. On **`MusicalPuzzleStep`**:
+   - **`On Player Step Highlighted`** (+) → object with **`MusicalStepMaterialCue`** → **`MusicalStepMaterialCue → ApplyHighlightedMaterials()`**.
+   - **`On Reset Presentation`** (+) → same component → **`ApplyIdleMaterials()`**.
+
+That covers real taps, tutor replay flashes, and bulk reset after a mistake (all use the same events). If you hit **“locked”** warnings from **`MaterialController`**, unlock it in Inspector or avoid **`SetAllMaterialsAndLock`** on those crystals.
 
 ---
 
