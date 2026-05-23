@@ -751,6 +751,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 5e03bc85a9ca04f649a10541b94cfb10, type: 2}
     - target: {fileID: 7164217870033558233, guid: bc0484ce9fa5e43e4a1aa1e8d0730593, type: 3}
+      propertyPath: interactClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 479ab97fe6ec74b6abaf3f81b8417f4a, type: 3}
+    - target: {fileID: 7164217870033558233, guid: bc0484ce9fa5e43e4a1aa1e8d0730593, type: 3}
       propertyPath: stepDisplayName
       value: CrystalE
       objectReference: {fileID: 0}
@@ -831,6 +835,10 @@ PrefabInstance:
       propertyPath: activatorID
       value: 
       objectReference: {fileID: 11400000, guid: e82f546bd155349b68448ce175f64176, type: 2}
+    - target: {fileID: 7164217870033558233, guid: bc0484ce9fa5e43e4a1aa1e8d0730593, type: 3}
+      propertyPath: interactClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 55073bbe96a0b4f3caf09c0399e8625e, type: 3}
     - target: {fileID: 7164217870033558233, guid: bc0484ce9fa5e43e4a1aa1e8d0730593, type: 3}
       propertyPath: stepDisplayName
       value: CrystalB
@@ -7097,6 +7105,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 0204122b59d4f420b981c60879ea57ec, type: 2}
     - target: {fileID: 7164217870033558233, guid: bc0484ce9fa5e43e4a1aa1e8d0730593, type: 3}
+      propertyPath: interactClip
+      value: 
+      objectReference: {fileID: 8300000, guid: fe46a8153b8dc48a3b3d24ea9423319c, type: 3}
+    - target: {fileID: 7164217870033558233, guid: bc0484ce9fa5e43e4a1aa1e8d0730593, type: 3}
       propertyPath: stepDisplayName
       value: CrystalF
       objectReference: {fileID: 0}
@@ -7355,6 +7367,10 @@ PrefabInstance:
       propertyPath: activatorID
       value: 
       objectReference: {fileID: 11400000, guid: b1be42dded32248ee9a1434b0a3d2c88, type: 2}
+    - target: {fileID: 7164217870033558233, guid: bc0484ce9fa5e43e4a1aa1e8d0730593, type: 3}
+      propertyPath: interactClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2678024d29d6144719553cbd7dd19526, type: 3}
     - target: {fileID: 7164217870033558233, guid: bc0484ce9fa5e43e4a1aa1e8d0730593, type: 3}
       propertyPath: stepDisplayName
       value: CrystalC
@@ -10748,7 +10764,19 @@ MonoBehaviour:
   disableAfterSolve: 1
   onSequenceSolved:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1060934691}
+        m_TargetAssemblyTypeName: DoorLerp, Assembly-CSharp
+        m_MethodName: Open
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onSequenceReset:
     m_PersistentCalls:
       m_Calls: []
@@ -13359,6 +13387,10 @@ PrefabInstance:
       propertyPath: activatorID
       value: 
       objectReference: {fileID: 11400000, guid: 92f35153c468746c7bd3b9442ac9ebb0, type: 2}
+    - target: {fileID: 7164217870033558233, guid: bc0484ce9fa5e43e4a1aa1e8d0730593, type: 3}
+      propertyPath: interactClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 5583979e81d4e4f54a4e8f8e30b1a4dd, type: 3}
     - target: {fileID: 7164217870033558233, guid: bc0484ce9fa5e43e4a1aa1e8d0730593, type: 3}
       propertyPath: stepDisplayName
       value: CrystalD
