@@ -67,7 +67,7 @@ All configuration types live under `Assets/Systems/Puzzle/Configurations/`.
 
 - **[`MushroomConfiguration`](../Assets/Systems/Puzzle/Configurations/MushroomConfiguration.cs)** — `MushroomRequirement : IActivatorRequirement<MushroomColor>`. Fields: `mushroomID (ActivatorID)`, `requireSpecificColor`, `expectedColor`. State queried via `TryGetMushroomColor`.
 
-- **[`MusicalSequenceConfiguration`](../Assets/Systems/MushroomPuzzle/Validation/MusicalSequenceConfiguration.cs)** — `SequenceRequirement : IActivatorRequirement<MushroomColor[]>`. Fields: `sequenceID (ActivatorID)`, `expectedSequence[]`, `logComparisonChecks`. State queried via `TryGetMushroomColorArray`. Matches a sliding-window suffix of the live history against the expected sequence. Also exposes `ExpectedSequence` for the `MushroomSequenceTracker` to drive wrong-note detection.
+- **[`MusicalSequenceConfiguration`](../Assets/Systems/MusicalPuzzle/Validation/MusicalSequenceConfiguration.cs)** — `SequenceRequirement : IActivatorRequirement<MushroomColor[]>`. Fields: `sequenceID (ActivatorID)`, `expectedSequence[]`, `logComparisonChecks`. State queried via `TryGetMushroomColorArray`. Matches a sliding-window suffix of the live history against the expected sequence. Also exposes `ExpectedSequence` for the `MushroomSequenceTracker` to drive wrong-note detection.
 
 ### Validator (the consumer)
 
@@ -86,9 +86,9 @@ All configuration types live under `Assets/Systems/Puzzle/Configurations/`.
 
 - **[`TurnableStone`](../Assets/Systems/TestingSOChannels/TurnableStone.cs)** — float publisher. Fields: `stateChannel (FloatActivatorChannel)`, `stoneID (ActivatorID)`. Raises `stateChannel.RaiseEvent(stoneID, rotation)` on rotation change.
 
-- **[`Mushroom`](../Assets/Systems/MushroomPuzzle/Mushroom/Mushroom.cs)** — single-color publisher (via state machine). Fields: `puzzleChannel (MushroomColorChannel)`, `puzzleActivatorID (ActivatorID)`. `ActiveState.Enter` raises `puzzleChannel.RaiseEvent(puzzleActivatorID, assignedColor)`. The `mushroomChannel (MushroomEventChannelSO)` is a separate, richer broadcast used by critters and audio — not the puzzle channel.
+- **[`Mushroom`](../Assets/Systems/MusicalPuzzle/Mushroom/Mushroom.cs)** — single-color publisher (via state machine). Fields: `puzzleChannel (MushroomColorChannel)`, `puzzleActivatorID (ActivatorID)`. `ActiveState.Enter` raises `puzzleChannel.RaiseEvent(puzzleActivatorID, assignedColor)`. The `mushroomChannel (MushroomEventChannelSO)` is a separate, richer broadcast used by critters and audio — not the puzzle channel.
 
-- **[`MushroomSequenceTracker`](../Assets/Systems/MushroomPuzzle/Validation/MushroomSequenceTracker.cs)** — sequence publisher. Fields: `puzzleChannel (MushroomColorArrayChannel)`, `melodyConfiguration (MusicalSequenceConfiguration)`. Accumulates a bounded `List<MushroomColor>` of activations, applies wrong-note prefix detection, and re-raises the running snapshot via `puzzleChannel.RaiseEvent(melodyConfiguration.SequenceActivatorID, snapshot)`. The sequence ID SO comes from the config asset — same asset wired into both tracker and validator is the single source of truth.
+- **[`MushroomSequenceTracker`](../Assets/Systems/MusicalPuzzle/Validation/MushroomSequenceTracker.cs)** — sequence publisher. Fields: `puzzleChannel (MushroomColorArrayChannel)`, `melodyConfiguration (MusicalSequenceConfiguration)`. Accumulates a bounded `List<MushroomColor>` of activations, applies wrong-note prefix detection, and re-raises the running snapshot via `puzzleChannel.RaiseEvent(melodyConfiguration.SequenceActivatorID, snapshot)`. The sequence ID SO comes from the config asset — same asset wired into both tracker and validator is the single source of truth.
 
 ---
 
@@ -334,7 +334,7 @@ Assets/Systems/Puzzle/Configurations/
 
 Assets/Systems/Puzzle/Activators/PressurePlateConfig1.asset
 Assets/Systems/Puzzle/Configurations/Assets/Boss/  BossWave1.asset, BossWave2.asset, BossWave3.asset
-Assets/Systems/MushroomPuzzle/Events/BasicMusicalSequence.asset
+Assets/Systems/MusicalPuzzle/Events/BasicMusicalSequence.asset
 ```
 
 ---
