@@ -1,8 +1,8 @@
 using UnityEngine;
 
-// Author: David Haddad - CS480 design-patterns mushroom puzzle (May 2026)
-// Configuration asset PuzzleValidator reads to know which color sequence solves a
-// musical-mushroom puzzle. Pairs with MushroomSequenceTracker which re-raises the
+// Author: David Haddad - CS480 design-patterns musical puzzle (May 2026)
+// Configuration asset PuzzleValidator reads to know which color/note sequence solves a
+// Simon-style musical puzzle (mushrooms, crystals, etc.). Pairs with MushroomSequenceTracker which re-raises the
 // running sequence onto MushroomColorArrayChannel under sequenceID.
 
 [CreateAssetMenu(fileName = "MusicalSequenceConfig", menuName = "Puzzle/Musical Sequence Configuration")]
