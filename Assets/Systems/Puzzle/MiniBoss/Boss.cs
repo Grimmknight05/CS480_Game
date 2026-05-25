@@ -16,7 +16,7 @@ public abstract class Boss : ResettableBehaviour
         public ActivatorConfiguration puzzleRequirement;
         public UnityEvent onPillarLowered;
     }
-
+    
     [Header("Phases")]
     [SerializeField] protected List<PhaseEntry> phaseEntries;
 
@@ -68,13 +68,28 @@ public abstract class Boss : ResettableBehaviour
             switch (entry.config.phaseType)
             {
                 case PhaseType.WaveSpawn:
-                    // entry.config is PhaseConfig, but we need WavePhaseConfig – cast safely
                     if (entry.config is WavePhaseConfig waveConfig)
                         phase = new WaveSpawnPhase(entry, waveConfig, this);
-                    else
-                        Debug.LogError($"Phase {entry.config.phaseName} is marked WaveSpawn but config is not WavePhaseConfig!");
                     break;
-                // other phase types
+                    
+                case PhaseType.NodeDestruction:
+                    if (entry.config is NodeDestructionPhaseConfig nodeConfig)
+                    {
+                        // Cast entry to NodeDestructionPhaseEntry
+                        var nodeEntry = entry as NodeDestructionPhaseEntry;
+                        if (nodeEntry == null)
+                        {
+                            Debug.LogError($"Phase {entry.config.phaseName} is NodeDestruction but entry is not NodeDestructionPhaseEntry!");
+                            break;
+                        }
+                        phase = new NodeDestructionPhase(nodeEntry, nodeConfig, this);
+                    }
+                    break;
+                    
+                case PhaseType.FinalBoss:
+                    if (entry.config is BossFinalPhaseConfig finalConfig)
+                        phase = new BossFinalPhase(entry, finalConfig, this);
+                    break;
             }
             if (phase != null)
             {

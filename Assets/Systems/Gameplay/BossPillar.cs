@@ -20,7 +20,7 @@ public class BossPillar : ResettableBehaviour
         maxLocalPos = startLocalPos + maxOffset;
     }
 
-    public void MaxHight()
+    public void MaxHeight()
     {
         if (isMax) return;
         isMax = true;

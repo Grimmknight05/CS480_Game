@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6305318901628915737}
   - component: {fileID: 1882491010051803036}
   - component: {fileID: 2255508764702107542}
+  - component: {fileID: 5380220621238101907}
   m_Layer: 0
   m_Name: BossPillar
   m_TagString: Untagged
@@ -112,6 +113,47 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5380220621238101907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358068697655944535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2203d090af2d9df4e84ddc2fcda9b07c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossPillar
+  resetChannel: {fileID: 11400000, guid: 7b03292574597408a8eb335901f5c93c, type: 2}
+  area: {fileID: 11400000, guid: 4a959ba2d2be16e429480fffafd5f8fe, type: 2}
+  maxOffset: {x: 0, y: 15, z: 0}
+  duration: 1.5
+  ease:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  moveVFX: {fileID: 0}
 --- !u!1001 &3931572503148029364
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -174,12 +216,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7238228836690965909, guid: 5bb1d2fecb92c9b499e5aef00479bde0, type: 3}
       propertyPath: m_Name
-      value: BossPillar (1) Variant 1
+      value: BossPillar2
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 705151064099266145, guid: 5bb1d2fecb92c9b499e5aef00479bde0, type: 3}
     - {fileID: 8358472570943805939, guid: 5bb1d2fecb92c9b499e5aef00479bde0, type: 3}
     - {fileID: 2973100963893979977, guid: 5bb1d2fecb92c9b499e5aef00479bde0, type: 3}
+    - {fileID: 5907481398144539394, guid: 5bb1d2fecb92c9b499e5aef00479bde0, type: 3}
     m_RemovedGameObjects:
     - {fileID: 8581959397195224527, guid: 5bb1d2fecb92c9b499e5aef00479bde0, type: 3}
     - {fileID: 6759476603924944929, guid: 5bb1d2fecb92c9b499e5aef00479bde0, type: 3}
@@ -249,7 +292,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss Core
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7618460821073220838, guid: a7be4ebdbbcda9d4eb45d4bb771fda9e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

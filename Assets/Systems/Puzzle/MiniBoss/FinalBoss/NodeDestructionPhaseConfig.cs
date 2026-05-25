@@ -1,29 +1,42 @@
 using UnityEngine;
-using System;
 
 [CreateAssetMenu(fileName = "NodeDestructionPhase", menuName = "Boss/Phases/Node Destruction Phase")]
 public class NodeDestructionPhaseConfig : PhaseConfig
 {
-    [Header("Node Configuration")]
-    public NodeTarget[] nodes;
+    [Header("Scene References (Assign in Inspector with scene open)")]
+    public CentralBoss centralBoss;
+    public BossPillar[] pillars = new BossPillar[3];
+    public FloatingNode[] nodes = new FloatingNode[3];
     
-    [Header("Wave Configuration")]
+    [Header("Puzzle Stones")]
+    public StoneRequirement[] requiredStones;
+    public FloatActivatorChannel stoneStateChannel;
+    
+    [Header("Enemy Waves")]
+    public SpawnSO spawnPointGroup;
     public int enemiesPerWave = 5;
-    public Transform[] spawnPoints;
+    public float enemyRespawnDelay = 3f;
+    
+    [Header("Boss Damage")]
+    public float bossHealthPerPhase = 100f;
     
     [Header("Temporary Weapon")]
-    public GameObject tempWeaponPickupPrefab;
-    public int weaponUses = 3;
+    public TempNodeWeapon tempNodeWeapon;
     
-    [Header("Visual Effects")]
+    [Header("Effects")]
     public GameObject nodeDestroyEffect;
     
-    [Serializable]
-    public struct NodeTarget
+    [System.Serializable]
+    public class StoneRequirement
     {
-        public GameObject nodeObject;
-        public BossPillar pillar;
-        public FloatActivatorChannel healthChannel;
-        public ActivatorID id;
+        public ActivatorID stoneID;
+        [SerializeField] private float activationRotation = 0f;
+        [SerializeField] private float rotationTolerance = 1f;
+        
+        public bool IsSatisfied(float currentRotation)
+        {
+            float diff = Mathf.Abs(Mathf.DeltaAngle(currentRotation, activationRotation));
+            return diff <= rotationTolerance;
+        }
     }
 }

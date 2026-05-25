@@ -15,20 +15,17 @@ public class TempNodeWeapon : Weapon
 
     public override void Use(Transform usePoint, AudioSource audioSource, LayerMask layerMask)
     {
-        if (currentPhase == null) return;
-
+        var phase = NodeDestructionPhase.Instance;
+        if (phase == null) return;
+        
         Ray ray = new Ray(usePoint.position, usePoint.forward);
-        if (Physics.Raycast(ray, out RaycastHit hit, range, targetLayer))
+        if (Physics.Raycast(ray, out RaycastHit hit, range, layerMask))
         {
-            var nodeObject = hit.collider.gameObject;
-            if (currentPhase.TryDamageNode(nodeObject))
+            if (phase.TryDamageNode(hit.collider.gameObject))
             {
                 PlayUseSound(audioSource);
-
                 if (hitEffect != null)
                     Instantiate(hitEffect, hit.point, Quaternion.identity);
-
-                Debug.Log("Node damaged!");
             }
         }
     }

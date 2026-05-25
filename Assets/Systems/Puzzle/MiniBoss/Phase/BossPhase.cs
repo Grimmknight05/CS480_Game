@@ -24,7 +24,7 @@ public abstract class BossPhase
     {
         isActive = true;
         pillar = entry.pillar;
-        pillar?.MaxHight();
+        pillar?.MaxHeight();
         entry.onPhaseStart?.Invoke();
         OnPhaseStart();
     }

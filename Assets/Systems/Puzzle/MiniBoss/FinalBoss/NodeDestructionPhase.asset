@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1979a785c50c4c84584a30b7283b9891, type: 3}
-  m_Name: NodeDestructionPhase1
+  m_Script: {fileID: 11500000, guid: ccc35f596b88778488e6befc8d5733ff, type: 3}
+  m_Name: NodeDestructionPhase
   m_EditorClassIdentifier: Assembly-CSharp::NodeDestructionPhaseConfig
-  phaseType: 0
+  phaseType: 2
   phaseName: 
   onPhaseStart:
     m_PersistentCalls:
@@ -20,9 +20,19 @@ MonoBehaviour:
   onPhaseComplete:
     m_PersistentCalls:
       m_Calls: []
-  nodes: []
+  centralBoss: {fileID: 0}
+  nodeTargets:
+  - node: {fileID: 0}
+    pillar: {fileID: 0}
+  - node: {fileID: 0}
+    pillar: {fileID: 0}
+  - node: {fileID: 0}
+    pillar: {fileID: 0}
+  requiredStones: []
+  stoneStateChannel: {fileID: 0}
+  spawnPointGroup: {fileID: 0}
   enemiesPerWave: 5
-  spawnPoints: []
-  tempWeaponPickupPrefab: {fileID: 0}
-  weaponUses: 3
+  enemyRespawnDelay: 3
+  bossHealthPerPhase: 100
+  tempNodeWeapon: {fileID: 0}
   nodeDestroyEffect: {fileID: 0}

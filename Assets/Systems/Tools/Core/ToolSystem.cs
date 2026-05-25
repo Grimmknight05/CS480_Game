@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
-
+using System.Collections.Generic;
+using System.Linq;
 
 
 // Manages tool usage and switching for the player.
@@ -22,6 +23,8 @@ public class ToolSystem : MonoBehaviour, IAimContext
     public Transform VisualFirePoint => visualFirePoint != null ? visualFirePoint : transform;
     
     [SerializeField] private Tool[] tools;
+    private List<Tool> originalTools;
+    private int tempWeaponSlot = -1;
     [SerializeField] private Transform usePoint;
     [SerializeField] private AudioSource audioSource;
 
@@ -66,6 +69,7 @@ public class ToolSystem : MonoBehaviour, IAimContext
         {
             lastUseTimes[i] = -999f;
         }
+        originalTools = new List<Tool>(tools);
     }
 
     private void Start()
@@ -202,5 +206,39 @@ public class ToolSystem : MonoBehaviour, IAimContext
     {
         if (index >= 0 && index < lastUseTimes.Length)
             lastUseTimes[index] = -999f;
+    }
+    public void AddTemporaryWeapon(Tool tempWeapon)
+    {
+        // If we already have a temp weapon, remove it first
+        RemoveTemporaryWeapon();
+
+        // Create new array with one extra slot
+        Tool[] newTools = new Tool[tools.Length + 1];
+        for (int i = 0; i < tools.Length; i++)
+            newTools[i] = tools[i];
+        newTools[tools.Length] = tempWeapon;
+        tools = newTools;
+
+        tempWeaponSlot = tools.Length - 1;
+
+        // Optionally auto-switch to the new weapon
+        currentToolIndex = tempWeaponSlot;
+        Debug.Log($"[ToolSystem] Temporary weapon '{tempWeapon.toolName}' added.");
+    }
+
+    public void RemoveTemporaryWeapon()
+    {
+        if (tempWeaponSlot == -1) return;
+
+        // Restore original tools
+        tools = originalTools.ToArray();
+        tempWeaponSlot = -1;
+
+        // Reset current index if it was pointing to the removed slot
+        if (currentToolIndex >= tools.Length)
+            currentToolIndex = tools.Length - 1;
+        if (currentToolIndex < 0) currentToolIndex = 0;
+
+        Debug.Log("[ToolSystem] Temporary weapon removed.");
     }
 }
