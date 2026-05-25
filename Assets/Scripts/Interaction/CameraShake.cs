@@ -112,6 +112,15 @@ public class CameraShake : MonoBehaviour
         StartShake(0.25f);
     }
 
+    // Back-compat shim: scenes/prefabs (e.g. Level1_POC PuzzleValidator.onSolved)
+    // still hold serialized UnityEvent calls to the pre-rename method name "ShakeEvent".
+    // UnityEvents resolve method names via reflection and silently no-op on a miss,
+    // so removing this would re-break every shake event in those scenes.
+    public void ShakeEvent()
+    {
+        StartShake(0.25f, 0.4f);
+    }
+
     public void StartShakeWithDuration(float duration)
     {
         StartShake(0.25f, duration);
