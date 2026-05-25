@@ -2,56 +2,41 @@ using UnityEngine;
 
 public class Meteor : MonoBehaviour
 {
-    private Vector3 targetPosition;
-    private float speed;
-    private float damage;
-    private bool isFlying = true;
-    
-    [SerializeField] private GameObject explosionEffect;
-    [SerializeField] private float explosionRadius = 3f;
-    
-    public void Initialize(Vector3 target, float moveSpeed, float meteorDamage)
+    public float fallSpeed = 10f;
+    public int damageAmount = 25;
+    private ObjectPool<Meteor> myPool;   // reference to the pool that owns this meteor
+
+    private Vector3 targetGroundPoint;
+    private bool isFalling;
+
+    public void Initialize(ObjectPool<Meteor> pool, Vector3 startPos)
     {
-        targetPosition = target;
-        speed = moveSpeed;
-        damage = meteorDamage;
-        
-        // Look at target
-        Vector3 direction = (targetPosition - transform.position).normalized;
-        transform.rotation = Quaternion.LookRotation(direction);
+        myPool = pool;
+        transform.position = startPos;
+        targetGroundPoint = new Vector3(startPos.x, 0, startPos.z);
+        isFalling = true;
     }
-    
+
     void Update()
     {
-        if (!isFlying) return;
-        
-        transform.position += transform.forward * speed * Time.deltaTime;
-        
-        if (Vector3.Distance(transform.position, targetPosition) < 0.5f)
-        {
-            Explode();
-        }
+        if (!isFalling) return;
+        transform.position += Vector3.down * fallSpeed * Time.deltaTime;
+        if (transform.position.y <= targetGroundPoint.y)
+            ReturnToPool();
     }
-    
-    private void Explode()
+
+    void OnTriggerEnter(Collider other)
     {
-        isFlying = false;
+        IDamageable damageable = other.GetComponent<IDamageable>();
+        if (damageable != null)
+            damageable.TakeDamage(damageAmount);
         
-        // Damage in radius
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius);
-        foreach (var hit in hitColliders)
-        {
-            if (hit.CompareTag("Player"))
-            {
-                var health = hit.GetComponent<PlayerHealth>();
-                health?.TakeDamage(Mathf.RoundToInt(damage));
-            }
-        }
-        
-        // Visual effect
-        if (explosionEffect != null)
-            Instantiate(explosionEffect, transform.position, Quaternion.identity);
-        
-        Destroy(gameObject);
+        ReturnToPool();
+    }
+
+    void ReturnToPool()
+    {
+        isFalling = false;
+        myPool?.Return(this);
     }
 }

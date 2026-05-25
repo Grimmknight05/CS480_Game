@@ -147,7 +147,7 @@ private Camera cam;
         Vector3 directionToCamera = (desiredPosition - targetPosition).normalized;
 
         // Shoot a thick laser (SphereCast) from the player to the camera
-        if (Physics.SphereCast(targetPosition, cameraRadius, directionToCamera, out RaycastHit hit, distance, collisionLayers))
+        if (Physics.SphereCast(targetPosition, cameraRadius, directionToCamera, out RaycastHit hit, distance, collisionLayers, QueryTriggerInteraction.Ignore))
         {
             // If the laser hits a wall, snap the camera to just in front of that wall
             transform.position = hit.point + hit.normal * 0.1f; // The 0.1f offset prevents near-clipping the wall texture
