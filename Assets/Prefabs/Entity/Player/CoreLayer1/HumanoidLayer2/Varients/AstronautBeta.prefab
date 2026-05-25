@@ -21,9 +21,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: b161eba9421aac14caed80ad14e64fbd, type: 3}
     - target: {fileID: 422677811250833571, guid: 5207f4b59f593e64a80a21b6a9441baa, type: 3}
+      propertyPath: maxHealth
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 422677811250833571, guid: 5207f4b59f593e64a80a21b6a9441baa, type: 3}
       propertyPath: deathChannel
       value: 
       objectReference: {fileID: 11400000, guid: a8ab8d34aaeb44856a2a14452e7ef2ad, type: 2}
+    - target: {fileID: 422677811250833571, guid: 5207f4b59f593e64a80a21b6a9441baa, type: 3}
+      propertyPath: healthRegenPerSecond
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3223705743707530290, guid: 5207f4b59f593e64a80a21b6a9441baa, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -86,7 +94,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6199216321286383420, guid: 5207f4b59f593e64a80a21b6a9441baa, type: 3}
       propertyPath: m_Name
-      value: AstronautTestPoc2 Variant
+      value: AstronautBeta
       objectReference: {fileID: 0}
     - target: {fileID: 6469733361490637446, guid: 5207f4b59f593e64a80a21b6a9441baa, type: 3}
       propertyPath: playerSpeed

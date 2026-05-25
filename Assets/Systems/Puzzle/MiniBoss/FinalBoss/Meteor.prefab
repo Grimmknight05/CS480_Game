@@ -191,8 +191,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 266a2fe9cac78bb48b57d4ed4c4cf379, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Meteor
-  fallSpeed: 10
+  fallSpeed: 25
   damageAmount: 25
+  onHitEffects:
+  - {fileID: 11400000, guid: 629a7a849c143b84f8795f9eaefd0ca0, type: 2}
+  - {fileID: 11400000, guid: c35df04121022fc44a6f344c8dbbf663, type: 2}
 --- !u!33 &2493788893544235177
 MeshFilter:
   m_ObjectHideFlags: 0

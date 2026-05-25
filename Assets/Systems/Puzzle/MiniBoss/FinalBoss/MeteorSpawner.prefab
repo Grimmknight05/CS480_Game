@@ -46,12 +46,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeteorSpawner
   spawnArea: {fileID: 3988802603087289639}
-  meteorStartHeight: 8
-  warningDuration: 1.5
+  meteorStartHeight: 20
+  warningDuration: 0.5
   minSpawnDelay: 1
   maxSpawnDelay: 3
-  meteorPrefab: {fileID: 0}
-  indicatorPrefab: {fileID: 0}
+  meteorPrefab: {fileID: 1886221624473343135, guid: e885a37ec6b172547a6c06273e3af65a, type: 3}
+  indicatorPrefab: {fileID: 377513300417221689, guid: 12b4f85e435f6724caff1746c0d23c40, type: 3}
   initialMeteorPoolSize: 10
   initialIndicatorPoolSize: 5
 --- !u!65 &3988802603087289639
@@ -69,7 +69,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

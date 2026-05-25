@@ -1652,6 +1652,14 @@ PrefabInstance:
       propertyPath: indicatorPrefab
       value: 
       objectReference: {fileID: 377513300417221689, guid: 12b4f85e435f6724caff1746c0d23c40, type: 3}
+    - target: {fileID: 9165221861623412820, guid: 668feefdae156874bbd3bcd21acd7752, type: 3}
+      propertyPath: warningDuration
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9165221861623412820, guid: 668feefdae156874bbd3bcd21acd7752, type: 3}
+      propertyPath: meteorStartHeight
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
