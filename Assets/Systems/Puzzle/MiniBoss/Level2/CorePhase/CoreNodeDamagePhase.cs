@@ -31,8 +31,8 @@ public class CoreNodeDamagePhase : BossPhase
             tempWeaponSpawner = TempWeaponSpawnerRegistry.GetSpawner(config.tempWeaponSpawnerId);
             if (tempWeaponSpawner != null)
             {
-                tempWeaponSpawner.Lock();
-                Debug.Log($"[CoreNodeDamagePhase] Locked spawner: {config.tempWeaponSpawnerId.name}");
+                tempWeaponSpawner.Unlock();
+                Debug.Log($"[CoreNodeDamagePhase] Ensured spawner is unlocked: {config.tempWeaponSpawnerId.name}");
             }
         }
 
@@ -89,7 +89,6 @@ public class CoreNodeDamagePhase : BossPhase
         // When health reaches threshold, unlock spawner and complete
         if (coreNode.CurrentHealth <= requiredHealthThreshold)
         {
-            UnlockSpawner();    // make weapon available
             CompletePhase();
         }
     }
