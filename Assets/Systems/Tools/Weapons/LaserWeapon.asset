@@ -17,12 +17,14 @@ MonoBehaviour:
   cooldown: 0.5
   useSFX: {fileID: 8300000, guid: 6b75b6252e9a23a429de87ad8e495083, type: 3}
   toolIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  visualPrefab: {fileID: 3702928971869361305, guid: ea6857fc6c2ec4d408147a30ae8c2a94, type: 3}
+  isTempWeapon: 0
   targetLayer:
     serializedVersion: 2
     m_Bits: 5632
   effects:
   - {fileID: 11400000, guid: 629a7a849c143b84f8795f9eaefd0ca0, type: 2}
-  range: 50
+  range: 25
   cylinderRadius: 0.5
   assistAngle: 45
   assistStrength: 1

@@ -23,11 +23,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 6656
   effects: []
-  range: 25
+  range: 30
   cylinderRadius: 0.5
   assistAngle: 45
   assistStrength: 1
-  damagePerHit: 20
+  damagePerHit: 67
   projectilePrefab: {fileID: 3077482612016405267, guid: b9a3827d73825bd4b998180be843348c, type: 3}
   projectileSpeed: 30
   maxAmmo: 5

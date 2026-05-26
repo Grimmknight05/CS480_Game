@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BurnEffectTest
   m_EditorClassIdentifier: Assembly-CSharp::BurnEffect
   duration: 2
-  tickDamage: 20
+  tickDamage: 5
   tickRate: 0.5
   fireVFXPrefab: {fileID: 7729888427693169340, guid: c0d9c9ceff7b23640b3b19676dd6acdc, type: 3}
   vfxKey: Burn
