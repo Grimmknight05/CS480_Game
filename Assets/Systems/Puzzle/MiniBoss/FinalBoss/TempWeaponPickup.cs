@@ -9,33 +9,39 @@ public class TempWeaponPickup : MonoBehaviour
     [SerializeField] private float rotateSpeed = 180f;
     [SerializeField] private float floatAmplitude = 0.5f;
     [SerializeField] private float floatSpeed = 2f;
-    
+
+    [Header("Temp Weapon Data")]
+    public TempWeapon tempWeaponSO;
+
     private Vector3 startPosition;
     private bool isCollected = false;
-    
-    void Start()
+
+    private void Start()
     {
         startPosition = transform.position;
     }
-    
-    void Update()
+
+    private void Update()
     {
-        // Floating animation
         float newY = startPosition.y + Mathf.Sin(Time.time * floatSpeed) * floatAmplitude;
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
-        
-        // Rotation
         transform.Rotate(Vector3.up, rotateSpeed * Time.deltaTime);
     }
-    
-    void OnTriggerEnter(Collider other)
+
+    private void OnTriggerEnter(Collider other)
     {
         if (isCollected) return;
-        
         if (other.CompareTag("Player"))
         {
             isCollected = true;
+            ToolSystem ts = other.GetComponent<ToolSystem>();
+            if (ts != null && tempWeaponSO != null)
+            {
+                TempWeapon instance = Instantiate(tempWeaponSO);
+                ts.EquipTempWeapon(instance);
+            }
             OnPickup?.Invoke(this);
+            Destroy(gameObject);
         }
     }
 }

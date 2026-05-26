@@ -22,9 +22,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   enemySpawnGroup: {fileID: 11400000, guid: a5c253f0138d3734d982eb7ee81f25b6, type: 2}
-  wavesToSpawn: 2
-  enemiesPerWave: 3
+  wavesToSpawn: 1
+  enemiesPerWave: 1
   nodeTag: Boss node
   requiredNodeCount: 1
   nodePrefab: {fileID: 3399868081341396305, guid: 22129b7d0a9418947b2935670257a742, type: 3}
   nodeSpawnGroup: {fileID: 11400000, guid: d884135b448462c498c270ce26520be3, type: 2}
+  tempWeaponSpawnerId: {fileID: 11400000, guid: 2b4732b4799fe2440b02465aad4e2e98, type: 2}

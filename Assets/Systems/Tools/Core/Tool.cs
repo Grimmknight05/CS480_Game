@@ -8,6 +8,10 @@ public abstract class Tool : ScriptableObject
     [SerializeField] public float cooldown = 0.5f;
     [SerializeField] public AudioClip useSFX;
     [SerializeField] public Sprite toolIcon; // For UI display
+    [Header("Visuals")]
+    public GameObject visualPrefab;   // model to attach to player's weapon mount
+    [Header("Temp Weapon")]
+    public bool isTempWeapon = false; // if true, equipping hides all other tools
     [Header("Targeting")]
     [SerializeField] protected LayerMask targetLayer;
     [Header("Status Effects")]

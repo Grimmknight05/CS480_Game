@@ -11,4 +11,6 @@ public class CoreNodeDamagePhaseConfig : PhaseConfig
 
     [Header("Meteor Spawners")]
     public MeteorSpawnerGroupSO meteorSpawnerGroup;   // only spawners with this group will activate
+    [Header("Temporary Weapon Spawners")]
+    public SpawnerSO tempWeaponSpawnerId;
 }

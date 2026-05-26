@@ -6,6 +6,7 @@ public class CoreNodeDamagePhase : BossPhase
     private DamageableObject coreNode;
     private int requiredHealthThreshold;
     private MeteorSpawner[] meteorSpawners;
+    private BossTempWeaponSpawner tempWeaponSpawner;   // cache reference
 
     public CoreNodeDamagePhase(Boss.PhaseEntry entry, CoreNodeDamagePhaseConfig config, Boss boss)
         : base(entry, boss)
@@ -15,9 +16,8 @@ public class CoreNodeDamagePhase : BossPhase
 
     protected override void OnPhaseStart()
     {
-        // Get core node from registry using identifier
         Debug.Log($"[CoreNodeDamagePhase] Phase started: {entry.config.phaseName}");
-                // 1. Validate config
+
         if (config == null)
         {
             Debug.LogError("[CoreNodeDamagePhase] Config is null!");
@@ -25,60 +25,55 @@ public class CoreNodeDamagePhase : BossPhase
             return;
         }
 
-        // 2. Get core node from registry
+        // Lock spawner at start (no pickup yet)
+        if (config.tempWeaponSpawnerId != null)
+        {
+            tempWeaponSpawner = TempWeaponSpawnerRegistry.GetSpawner(config.tempWeaponSpawnerId);
+            if (tempWeaponSpawner != null)
+            {
+                tempWeaponSpawner.Lock();
+                Debug.Log($"[CoreNodeDamagePhase] Locked spawner: {config.tempWeaponSpawnerId.name}");
+            }
+        }
+
+        // Get core node
         if (config.coreNodeIdentifier == null)
         {
-            Debug.LogError("[CoreNodeDamagePhase] coreNodeIdentifier is null in config!");
+            Debug.LogError("[CoreNodeDamagePhase] coreNodeIdentifier is null!");
             CompletePhase();
             return;
         }
-
-        Debug.Log($"[CoreNodeDamagePhase] Looking for core node with identifier: {config.coreNodeIdentifier.name}");
 
         CoreNode coreNodeComponent = CoreNodeRegistry.GetNode(config.coreNodeIdentifier);
         if (coreNodeComponent == null)
         {
-            Debug.LogError($"[CoreNodeDamagePhase] No CoreNode registered with identifier '{config.coreNodeIdentifier.name}'. Make sure the CoreNode component in the scene has this identifier assigned and is active.");
+            Debug.LogError($"[CoreNodeDamagePhase] No CoreNode found with identifier '{config.coreNodeIdentifier.name}'");
             CompletePhase();
             return;
         }
-        Debug.Log($"[CoreNodeDamagePhase] Found CoreNode: {coreNodeComponent.name}");
+
         coreNode = coreNodeComponent.Damageable;
         if (coreNode == null)
         {
-            Debug.LogError($"[CoreNodeDamagePhase] CoreNode '{coreNodeComponent.name}' has no DamageableObject component!");
+            Debug.LogError($"[CoreNodeDamagePhase] CoreNode '{coreNodeComponent.name}' has no DamageableObject!");
             CompletePhase();
             return;
         }
-        Debug.Log($"[CoreNodeDamagePhase] Core node max health: {coreNode.MaxHealth}, current health: {coreNode.CurrentHealth}");
+
         requiredHealthThreshold = Mathf.FloorToInt(coreNode.MaxHealth * (1f - config.damageFraction));
-        Debug.Log($"[CoreNodeDamagePhase] Damage fraction: {config.damageFraction}, threshold health: {requiredHealthThreshold} (health must be ≤ {requiredHealthThreshold} to complete)");
-        Debug.Log($"[CoreNodeDamagePhase] Removing shield on core node");
         coreNode.SetShieldActive(false);
-         Debug.Log($"[CoreNodeDamagePhase] Shield active status: {coreNode.IsShielded}");
         coreNode.SetDamageFloor(requiredHealthThreshold);
-        // Activate meteor spawners by group
+
+        // Activate meteor spawners (unchanged)
         if (config.meteorSpawnerGroup != null)
         {
-            Debug.Log($"[CoreNodeDamagePhase] Activating meteor spawners with group: {config.meteorSpawnerGroup.name}");
             meteorSpawners = Object.FindObjectsByType<MeteorSpawner>(FindObjectsSortMode.None);
-            int activatedCount = 0;
             foreach (var spawner in meteorSpawners)
-            {
                 if (spawner != null && spawner.spawnerGroup == config.meteorSpawnerGroup)
-                {
                     spawner.enabled = true;
-                    activatedCount++;
-                    Debug.Log($"[CoreNodeDamagePhase] Activated MeteorSpawner: {spawner.name}");
-                }
-            }
-            Debug.Log($"[CoreNodeDamagePhase] Activated {activatedCount} meteor spawners out of {meteorSpawners.Length} total found.");
         }
-        else
-        {
-            Debug.LogWarning("[CoreNodeDamagePhase] meteorSpawnerGroup is null in config – no meteor spawners will be activated.");
-        }
-        Debug.Log("[CoreNodeDamagePhase] Initialization complete. Waiting for player to damage core node.");
+
+        Debug.Log("[CoreNodeDamagePhase] Waiting for player to damage core node.");
     }
 
     public override void Update()
@@ -91,36 +86,56 @@ public class CoreNodeDamagePhase : BossPhase
             return;
         }
 
-        // When health reaches exactly the floor (or below), complete phase
+        // When health reaches threshold, unlock spawner and complete
         if (coreNode.CurrentHealth <= requiredHealthThreshold)
         {
+            UnlockSpawner();    // make weapon available
             CompletePhase();
         }
     }
-    protected override void CompletePhase()
+
+    private void UnlockSpawner()
     {
-        // Re-enable shield and clear damage floor before completing
-        if (coreNode != null)
+        if (tempWeaponSpawner != null)
         {
-            // Only re-enable shield if the node is not dead
-            if (coreNode.CurrentHealth > 0)
-            {
-                coreNode.SetShieldActive(true);
-            }
-            coreNode.ClearDamageFloor();
+            tempWeaponSpawner.Unlock();
+            Debug.Log($"[CoreNodeDamagePhase] Unlocked spawner: {config.tempWeaponSpawnerId.name}");
         }
-        // Deactivate meteor spawners (existing cleanup)
-        // Then call base CompletePhase
-        base.CompletePhase();
     }
 
-    public override void Cleanup()
+    protected override void CompletePhase()
     {
+        // Re-enable shield and clear damage floor
+        if (coreNode != null)
+        {
+            if (coreNode.CurrentHealth > 0)
+                coreNode.SetShieldActive(true);
+            coreNode.ClearDamageFloor();
+        }
+
+        // Deactivate meteor spawners
         if (meteorSpawners != null)
         {
             foreach (var spawner in meteorSpawners)
                 if (spawner != null) spawner.enabled = false;
         }
+
+        base.CompletePhase();
+    }
+
+    public override void Cleanup()
+    {
+        // Lock spawner again to destroy any leftover pickup
+        if (tempWeaponSpawner != null)
+            tempWeaponSpawner.Lock();
+
+        // Deactivate meteor spawners
+        if (meteorSpawners != null)
+        {
+            foreach (var spawner in meteorSpawners)
+                if (spawner != null) spawner.enabled = false;
+        }
+
         base.Cleanup();
     }
 }

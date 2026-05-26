@@ -24,7 +24,12 @@ public class NodeDestructionPhase : BossPhase
         waveInProgress = false;
         enemiesCleared = false;
         activeNodes.Clear();
-
+        // Ensure spawner is locked at the start (no pickup available)
+        if (nodeConfig.tempWeaponSpawnerId != null)
+        {
+            var spawner = TempWeaponSpawnerRegistry.GetSpawner(nodeConfig.tempWeaponSpawnerId);
+            if (spawner != null) spawner.Lock();
+        }
         SpawnNodes();   // nodes are created and added to activeNodes
 
         var allSpawnPoints = Object.FindObjectsByType<SpawnPoint>(FindObjectsSortMode.None);
@@ -35,6 +40,7 @@ public class NodeDestructionPhase : BossPhase
         {
             Debug.LogWarning($"[NodeDestructionPhase] No enemy spawn points found. Skipping enemies.");
             enemiesCleared = true;
+            UnlockSpawner();
             if (activeNodes.Count == 0)
                 CompletePhase();
         }
@@ -42,6 +48,13 @@ public class NodeDestructionPhase : BossPhase
         {
             StartNextWave();
         }
+    }
+
+    private void UnlockSpawner()
+    {
+        if (nodeConfig.tempWeaponSpawnerId == null) return;
+        var spawner = TempWeaponSpawnerRegistry.GetSpawner(nodeConfig.tempWeaponSpawnerId);
+        if (spawner != null) spawner.Unlock();
     }
 
     private void SpawnNodes()
@@ -123,7 +136,7 @@ public class NodeDestructionPhase : BossPhase
                                 damageable.SetShieldActive(false);
                         }
                     }
-
+                    UnlockSpawner();
                     if (activeNodes.Count == 0)
                         CompletePhase();
                 }
@@ -154,6 +167,12 @@ public class NodeDestructionPhase : BossPhase
 
     public override void Cleanup()
     {
+        // Lock spawner (destroys any remaining pickup) and clean up nodes
+        if (nodeConfig.tempWeaponSpawnerId != null)
+        {
+            var spawner = TempWeaponSpawnerRegistry.GetSpawner(nodeConfig.tempWeaponSpawnerId);
+            if (spawner != null) spawner.Lock();
+        }
         activeNodes.Clear();
         base.Cleanup();
     }

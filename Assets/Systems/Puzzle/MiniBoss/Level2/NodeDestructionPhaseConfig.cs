@@ -17,4 +17,6 @@ public class NodeDestructionPhaseConfig : PhaseConfig
 
     [Tooltip("If nodes are spawned dynamically, provide a SpawnSO group (optional)")]
     public SpawnSO nodeSpawnGroup;
+    [Header("Temp Weapon")]
+    public SpawnerSO tempWeaponSpawnerId;
 }

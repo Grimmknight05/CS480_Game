@@ -3,14 +3,14 @@ using UnityEngine;
 public class UseToolCommand : ICommand
 {
     private ToolSystem toolSystem;
-    private int toolSlotIndex;
+    private Tool tool;
     private float timeIssued;
-    private float expiryDelay = 0.2f; // buffer window in seconds, matches JumpCommand
+    private float expiryDelay = 0.2f;
 
-    public UseToolCommand(ToolSystem toolSystem, int toolSlotIndex)
+    public UseToolCommand(ToolSystem toolSystem, Tool tool)
     {
         this.toolSystem = toolSystem;
-        this.toolSlotIndex = toolSlotIndex;
+        this.tool = tool;
         timeIssued = Time.time;
     }
 
@@ -18,11 +18,11 @@ public class UseToolCommand : ICommand
 
     public bool CanExecute(PlayerControllerRefactored player)
     {
-        return toolSystem.IsToolReady(toolSlotIndex);
+        return toolSystem != null && toolSystem.IsToolReady(tool);
     }
 
     public void Execute(PlayerControllerRefactored player)
     {
-        toolSystem.UseToolBySlot(toolSlotIndex);
+        toolSystem.UseTool(tool);
     }
 }
