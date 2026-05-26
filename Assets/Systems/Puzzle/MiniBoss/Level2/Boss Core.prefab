@@ -15,7 +15,9 @@ GameObject:
   - component: {fileID: 7904155602417564597}
   - component: {fileID: 5570526300398086463}
   - component: {fileID: 7456508450979059495}
-  m_Layer: 11
+  - component: {fileID: -7302930561825429276}
+  - component: {fileID: 5135268911885146068}
+  m_Layer: 12
   m_Name: Boss Core
   m_TagString: PickUp
   m_Icon: {fileID: 0}
@@ -252,6 +254,50 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-7302930561825429276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6992145738910113433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b57f6e261f316444694ef60bc3fb2812, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DamageableObject
+  resetChannel: {fileID: 11400000, guid: 7b03292574597408a8eb335901f5c93c, type: 2}
+  area: {fileID: 11400000, guid: 4a959ba2d2be16e429480fffafd5f8fe, type: 2}
+  maxHealth: 100
+  destroyOnDeath: 1
+  destroyDelay: 0.5
+  disableColliderOnDeath: 1
+  disableRendererOnDeath: 1
+  deathVFX: {fileID: 0}
+  deathSFX: {fileID: 8300000, guid: 17c7821ac5f397148a0af72489863452, type: 3}
+  damageSFX: {fileID: 8300000, guid: c82a4205644ad7546a42449a7af8ff95, type: 3}
+  startWithShield: 1
+  shieldVisual: {fileID: 6096533190280432831}
+  shieldRotationSpeed: 90
+  OnDamaged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &5135268911885146068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6992145738910113433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 897b72e111b188d45a67d317808d865c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CoreNode
+  identifier: {fileID: 11400000, guid: 76109977b575f7a4cafcaf0168c315b5, type: 2}
 --- !u!1001 &7074187724640835619
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -263,6 +309,10 @@ PrefabInstance:
     - target: {fileID: 3942810091919381660, guid: 7d606b6c909977c46984f1757452a2ba, type: 3}
       propertyPath: m_Name
       value: Shield 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3942810091919381660, guid: 7d606b6c909977c46984f1757452a2ba, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4466581609643920934, guid: 7d606b6c909977c46984f1757452a2ba, type: 3}
       propertyPath: m_LocalPosition.x
@@ -309,6 +359,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d606b6c909977c46984f1757452a2ba, type: 3}
+--- !u!1 &6096533190280432831 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3942810091919381660, guid: 7d606b6c909977c46984f1757452a2ba, type: 3}
+  m_PrefabInstance: {fileID: 7074187724640835619}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6904277775154877957 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4466581609643920934, guid: 7d606b6c909977c46984f1757452a2ba, type: 3}

@@ -5,5 +5,6 @@ public enum PhaseType
 {
     WaveSpawn,
     Platformer,
-    DestroyNodes
+    DestroyNodes,
+    CoreNodeDamage
 }

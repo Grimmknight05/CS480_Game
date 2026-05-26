@@ -5,7 +5,8 @@ public class NodeBoss : Boss
     [Header("Arena")]
     [SerializeField] private DoorLerp entranceDoor;
     [SerializeField] private DoorLerp exitDoor;
-
+    
+    private DamageableObject coreNode;
     [Header("Enemy Spawn")]
     [SerializeField] private GameObject enemySpawnPrefab;
 

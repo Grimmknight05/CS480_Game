@@ -29,7 +29,7 @@ public class DamageableObject : ResettableBehaviour, IDamageable
     [Header("Events")]
     public UnityEvent<int> OnDamaged;
     public UnityEvent OnDeath;
-
+    private int damageFloor = -1;  // -1 means no floor
     private bool isInvulnerable = false;
     private bool isShielded = false;
     private int currentHealth;
@@ -77,7 +77,17 @@ public class DamageableObject : ResettableBehaviour, IDamageable
     {
         isInvulnerable = invulnerable;
     }
+    public void SetDamageFloor(int floor)
+    {
+        damageFloor = floor;
+        Debug.Log($"[DamageableObject] Damage floor set to {floor}");
+    }
 
+    public void ClearDamageFloor()
+    {
+        damageFloor = -1;
+        Debug.Log($"[DamageableObject] Damage floor cleared");
+    }
     public void SetShieldActive(bool active)
     {
         isShielded = active;
@@ -97,6 +107,15 @@ public class DamageableObject : ResettableBehaviour, IDamageable
         if (amount <= 0) return;
 
         currentHealth -= amount;
+
+        if (damageFloor >= 0 && currentHealth < damageFloor)
+        {
+            currentHealth = damageFloor;
+            Debug.Log($"[DamageableObject] Damage clamped to floor {damageFloor}");
+        }
+
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
         OnDamaged?.Invoke(amount);
 
         if (damageSFX != null)
@@ -183,5 +202,6 @@ public class DamageableObject : ResettableBehaviour, IDamageable
 
     public bool IsDead => isDead;
     public int CurrentHealth => currentHealth;
+    public bool IsShielded => isShielded;
     public int MaxHealth => maxHealth;
 }   

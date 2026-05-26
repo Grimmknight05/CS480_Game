@@ -76,11 +76,17 @@ public abstract class Boss : ResettableBehaviour
                     break;
 
                 case PhaseType.DestroyNodes:   // <-- new case
-                if (entry.config is NodeDestructionPhaseConfig nodeConfig)
-                    phase = new NodeDestructionPhase(entry, nodeConfig, this);
-                else
-                    Debug.LogError($"Phase {entry.config.phaseName} is marked DestroyNodes but config is not NodeDestructionPhaseConfig!");
-                break;
+                    if (entry.config is NodeDestructionPhaseConfig nodeConfig)
+                        phase = new NodeDestructionPhase(entry, nodeConfig, this);
+                    else
+                        Debug.LogError($"Phase {entry.config.phaseName} is marked DestroyNodes but config is not NodeDestructionPhaseConfig!");
+                    break;
+                case PhaseType.CoreNodeDamage:
+                    if (entry.config is CoreNodeDamagePhaseConfig coreConfig)
+                        phase = new CoreNodeDamagePhase(entry, coreConfig, this);
+                    else
+                        Debug.LogError($"Phase {entry.config.phaseName} is marked CoreNodeDamage but config is not CoreNodeDamagePhaseConfig!");
+                    break;
                 // other phase types
             }
             if (phase != null)
