@@ -9,7 +9,7 @@ public class PhaseConfig : ScriptableObject
 
     // Optional: you could keep pillarIndex, but we'll use direct reference in PhaseEntry instead
     // public int pillarIndex = -1;
-
+    public PillarSO pillarIdentifier;
     public UnityEvent onPhaseStart;
     public UnityEvent onPhaseComplete;
 }

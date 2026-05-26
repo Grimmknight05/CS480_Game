@@ -2749,6 +2749,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 4a959ba2d2be16e429480fffafd5f8fe, type: 2}
     - target: {fileID: 5907481398144539394, guid: 5bb1d2fecb92c9b499e5aef00479bde0, type: 3}
+      propertyPath: identifier
+      value: 
+      objectReference: {fileID: 11400000, guid: 2294ec5c32a41e7418676940b3da1e1e, type: 2}
+    - target: {fileID: 5907481398144539394, guid: 5bb1d2fecb92c9b499e5aef00479bde0, type: 3}
       propertyPath: resetChannel
       value: 
       objectReference: {fileID: 0}
@@ -7187,17 +7191,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7060759569015407617, guid: 849a2953bd45e6641b5949533b662758, type: 3}
   m_PrefabInstance: {fileID: 109224958}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &434659671 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9041326506122016239, guid: 8d3a24fe4d041614fa400be6b281d161, type: 3}
-  m_PrefabInstance: {fileID: 1467009953}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2203d090af2d9df4e84ddc2fcda9b07c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BossPillar
 --- !u!4 &434659672 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 288928609643491937, guid: 8d3a24fe4d041614fa400be6b281d161, type: 3}
@@ -9423,6 +9416,10 @@ PrefabInstance:
       propertyPath: area
       value: 
       objectReference: {fileID: 11400000, guid: 4a959ba2d2be16e429480fffafd5f8fe, type: 2}
+    - target: {fileID: 6593147885525815821, guid: e2fffec703ebf60438fb06210b782fa5, type: 3}
+      propertyPath: identifier
+      value: 
+      objectReference: {fileID: 11400000, guid: 30bcbd012072caf4c9ddbdabad1801ec, type: 2}
     - target: {fileID: 6593147885525815821, guid: e2fffec703ebf60438fb06210b782fa5, type: 3}
       propertyPath: resetChannel
       value: 
@@ -16095,17 +16092,6 @@ MonoBehaviour:
   area: {fileID: 11400000, guid: bb2367ea15063d84ba1e1390f74c56d4, type: 2}
   playerTag: Player
   oneShot: 0
---- !u!114 &892699973 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5907481398144539394, guid: 5bb1d2fecb92c9b499e5aef00479bde0, type: 3}
-  m_PrefabInstance: {fileID: 185684530}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2203d090af2d9df4e84ddc2fcda9b07c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BossPillar
 --- !u!4 &892699974 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2918564072526224524, guid: 5bb1d2fecb92c9b499e5aef00479bde0, type: 3}
@@ -33503,6 +33489,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 4a959ba2d2be16e429480fffafd5f8fe, type: 2}
     - target: {fileID: 9041326506122016239, guid: 8d3a24fe4d041614fa400be6b281d161, type: 3}
+      propertyPath: identifier
+      value: 
+      objectReference: {fileID: 11400000, guid: 18f5c16a4f695f54d83ec1f27a7d8200, type: 2}
+    - target: {fileID: 9041326506122016239, guid: 8d3a24fe4d041614fa400be6b281d161, type: 3}
       propertyPath: resetChannel
       value: 
       objectReference: {fileID: 0}
@@ -35506,17 +35496,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5719520922627312922, guid: 263f665f6f27edc47898f10548c63b7a, type: 3}
   m_PrefabInstance: {fileID: 1539606299}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1545422147 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6593147885525815821, guid: e2fffec703ebf60438fb06210b782fa5, type: 3}
-  m_PrefabInstance: {fileID: 524906684}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2203d090af2d9df4e84ddc2fcda9b07c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BossPillar
 --- !u!4 &1545422148 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2451317838525552003, guid: e2fffec703ebf60438fb06210b782fa5, type: 3}
@@ -45747,10 +45726,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FactoryManagerBoss
   resetChannel: {fileID: 0}
-  area: {fileID: 0}
+  area: {fileID: 11400000, guid: 4a959ba2d2be16e429480fffafd5f8fe, type: 2}
   phaseEntries:
   - config: {fileID: 11400000, guid: e1b8a07d9f0508e428bd668fc2eb5522, type: 2}
-    pillar: {fileID: 892699973}
     stateChannel: {fileID: 11400000, guid: 6bcd56738ddba419b9196956e8be63e1, type: 2}
     onPhaseStart:
       m_PersistentCalls:
@@ -45847,7 +45825,6 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   - config: {fileID: 11400000, guid: c2b5733233f49f64892a902e0b4f3e91, type: 2}
-    pillar: {fileID: 1545422147}
     stateChannel: {fileID: 11400000, guid: 6bcd56738ddba419b9196956e8be63e1, type: 2}
     onPhaseStart:
       m_PersistentCalls:
@@ -45932,7 +45909,6 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   - config: {fileID: 11400000, guid: 661e8ee04b5389446b455f3aac5b12f7, type: 2}
-    pillar: {fileID: 434659671}
     stateChannel: {fileID: 11400000, guid: 6bcd56738ddba419b9196956e8be63e1, type: 2}
     onPhaseStart:
       m_PersistentCalls:
@@ -46158,7 +46134,6 @@ MonoBehaviour:
   entranceDoor: {fileID: 513127007}
   exitDoor: {fileID: 513127007}
   enemySpawnPrefab: {fileID: 4697400531132460199, guid: 3edbe420fcd7b0347bd6b19e5601e841, type: 3}
-  meteorShower: {fileID: 0}
   enableMeteors: 1
 --- !u!114 &1861495749 stripped
 MonoBehaviour:

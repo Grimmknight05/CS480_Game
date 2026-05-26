@@ -21,15 +21,15 @@ public class TempNodeWeapon : Weapon
         if (Physics.Raycast(ray, out RaycastHit hit, range, targetLayer))
         {
             var nodeObject = hit.collider.gameObject;
-            if (currentPhase.TryDamageNode(nodeObject))
-            {
-                PlayUseSound(audioSource);
-
-                if (hitEffect != null)
-                    Instantiate(hitEffect, hit.point, Quaternion.identity);
-
-                Debug.Log("Node damaged!");
-            }
+            //if (currentPhase.TryDamageNode(nodeObject))
+            //{
+            //    PlayUseSound(audioSource);
+//
+             //   if (hitEffect != null)
+             //       Instantiate(hitEffect, hit.point, Quaternion.identity);
+//
+             //   Debug.Log("Node damaged!");
+          //  }
         }
     }
 

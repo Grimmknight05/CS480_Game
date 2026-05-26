@@ -9,7 +9,7 @@ public abstract class Boss : ResettableBehaviour
     public class PhaseEntry
     {
         public PhaseConfig config;           // can be WavePhaseConfig, DoorLockConfig, etc.
-        public BossPillar pillar;            // direct scene reference
+        //public BossPillar pillar;            // direct scene reference
         public FloatActivatorChannel stateChannel;
         public UnityEvent onPhaseStart;      // Inspector events that can reference scene objects
         public UnityEvent onPhaseComplete;
@@ -74,6 +74,13 @@ public abstract class Boss : ResettableBehaviour
                     else
                         Debug.LogError($"Phase {entry.config.phaseName} is marked WaveSpawn but config is not WavePhaseConfig!");
                     break;
+
+                case PhaseType.DestroyNodes:   // <-- new case
+                if (entry.config is NodeDestructionPhaseConfig nodeConfig)
+                    phase = new NodeDestructionPhase(entry, nodeConfig, this);
+                else
+                    Debug.LogError($"Phase {entry.config.phaseName} is marked DestroyNodes but config is not NodeDestructionPhaseConfig!");
+                break;
                 // other phase types
             }
             if (phase != null)

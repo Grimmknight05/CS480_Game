@@ -3,6 +3,7 @@ using UnityEngine;
 public class BossPillar : ResettableBehaviour
 {
     //Adapted from David's door code
+    [SerializeField] private PillarSO identifier;
     [SerializeField] private Vector3 maxOffset = new Vector3(0f, 15f, 0f);
     [SerializeField] private float duration = 1.5f;
     [SerializeField] private AnimationCurve ease = AnimationCurve.EaseInOut(0, 0, 1, 1);
@@ -19,7 +20,21 @@ public class BossPillar : ResettableBehaviour
         startLocalPos = transform.localPosition;
         maxLocalPos = startLocalPos + maxOffset;
     }
+        protected override void OnEnable()
+    {
+        base.OnEnable();  // ← this subscribes to resetChannel
 
+        if (identifier != null)
+            PillarRegistry.Register(identifier, this);
+    }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable(); // ← this unsubscribes from resetChannel
+
+        if (identifier != null)
+            PillarRegistry.Unregister(identifier);
+    }
     public void MaxHight()
     {
         if (isMax) return;

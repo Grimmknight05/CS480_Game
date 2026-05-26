@@ -18,12 +18,21 @@ public abstract class BossPhase
         this.entry = entry;
         this.boss = boss;
         this.requiredPuzzle = entry.puzzleRequirement;
+
+        // Resolve pillar from the config (if any)
+        var config = entry.config;
+        if (config != null && config.pillarIdentifier != null)
+        {
+            pillar = PillarRegistry.GetPillar(config.pillarIdentifier);
+            if (pillar == null)
+                Debug.LogWarning($"Pillar with identifier {config.pillarIdentifier.name} not found in scene.");
+        }
     }
 
     public void Initialize()
     {
         isActive = true;
-        pillar = entry.pillar;
+        //pillar = entry.pillar;
         pillar?.MaxHight();
         entry.onPhaseStart?.Invoke();
         OnPhaseStart();

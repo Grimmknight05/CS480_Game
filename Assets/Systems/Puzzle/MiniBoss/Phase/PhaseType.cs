@@ -4,5 +4,6 @@ using UnityEngine.Events;
 public enum PhaseType
 {
     WaveSpawn,
-    Platformer
+    Platformer,
+    DestroyNodes
 }

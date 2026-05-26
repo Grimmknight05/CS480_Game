@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8def5aa894a0cbe4f89b3a5f0c51bf7e, type: 3}
-  m_Name: WAve2
-  m_EditorClassIdentifier: Assembly-CSharp::WavePhaseConfig
-  phaseType: 0
-  phaseName: Phase 2
+  m_Script: {fileID: 11500000, guid: 1979a785c50c4c84584a30b7283b9891, type: 3}
+  m_Name: FinalBossPhase2
+  m_EditorClassIdentifier: Assembly-CSharp::NodeDestructionPhaseConfig
+  phaseType: 2
+  phaseName: Final Boss Phase 2
   pillarIdentifier: {fileID: 11400000, guid: 30bcbd012072caf4c9ddbdabad1801ec, type: 2}
   onPhaseStart:
     m_PersistentCalls:
@@ -21,7 +21,7 @@ MonoBehaviour:
   onPhaseComplete:
     m_PersistentCalls:
       m_Calls: []
-  spawnPointGroup: {fileID: 11400000, guid: a7d290e95ba8acc41bf93f4b80faf2d5, type: 2}
-  wavesToSpawn: 2
-  enemiesPerWave: 2
-  spawnInterval: 2
+  nodeTag: Boss node
+  requiredNodeCount: 1
+  nodePrefab: {fileID: 3399868081341396305, guid: 22129b7d0a9418947b2935670257a742, type: 3}
+  nodeSpawnGroup: {fileID: 11400000, guid: 33661b4f8372824439b36756f787beda, type: 2}
