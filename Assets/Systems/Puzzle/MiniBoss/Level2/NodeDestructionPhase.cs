@@ -6,6 +6,11 @@ public class NodeDestructionPhase : BossPhase
 {
     private NodeDestructionPhaseConfig nodeConfig;
     private List<GameObject> activeNodes = new List<GameObject>();
+    
+    private int wavesCompleted;
+    private bool waveInProgress;
+    private Vector3[] enemySpawnPositions;
+    private bool enemiesCleared = false;
 
     public NodeDestructionPhase(Boss.PhaseEntry entry, NodeDestructionPhaseConfig config, Boss boss)
         : base(entry, boss)
@@ -15,28 +20,50 @@ public class NodeDestructionPhase : BossPhase
 
     protected override void OnPhaseStart()
     {
-        // Clear any previous nodes (safety)
-        DestroyAllNodes();
+        wavesCompleted = 0;
+        waveInProgress = false;
+        enemiesCleared = false;
+        activeNodes.Clear();
 
-        // Find all spawn points for this group
-        var allSpawnPoints = UnityEngine.Object.FindObjectsByType<SpawnPoint>(FindObjectsSortMode.None);
-        var mySpawnPoints = allSpawnPoints.Where(sp => sp.SpawnSO == nodeConfig.nodeSpawnGroup).ToArray();
+        SpawnNodes();   // nodes are created and added to activeNodes
 
-        if (mySpawnPoints.Length == 0)
+        var allSpawnPoints = Object.FindObjectsByType<SpawnPoint>(FindObjectsSortMode.None);
+        var enemyPoints = allSpawnPoints.Where(sp => sp.SpawnSO == nodeConfig.enemySpawnGroup).ToArray();
+        enemySpawnPositions = enemyPoints.Select(sp => sp.Position).ToArray();
+
+        if (enemySpawnPositions.Length == 0)
         {
-            Debug.LogWarning($"[NodeDestructionPhase] No spawn points found for group {nodeConfig.nodeSpawnGroup}. Falling back to static tag search.");
-            // Fallback: find existing nodes with the tag
+            Debug.LogWarning($"[NodeDestructionPhase] No enemy spawn points found. Skipping enemies.");
+            enemiesCleared = true;
+            if (activeNodes.Count == 0)
+                CompletePhase();
+        }
+        else
+        {
+            StartNextWave();
+        }
+    }
+
+    private void SpawnNodes()
+    {
+        var allSpawnPoints = Object.FindObjectsByType<SpawnPoint>(FindObjectsSortMode.None);
+        var nodePoints = allSpawnPoints.Where(sp => sp.SpawnSO == nodeConfig.nodeSpawnGroup).ToArray();
+
+        if (nodePoints.Length == 0)
+        {
+            // Fallback: find existing nodes with tag (these are still "spawned" as far as phase is concerned)
             var existingNodes = GameObject.FindGameObjectsWithTag(nodeConfig.nodeTag);
             activeNodes.AddRange(existingNodes);
         }
         else
         {
-            // Spawn a node at each spawn point position
-            foreach (var spawnPoint in mySpawnPoints)
+            foreach (var spawnPoint in nodePoints)
             {
                 if (nodeConfig.nodePrefab != null)
                 {
-                    var node = Object.Instantiate(nodeConfig.nodePrefab, spawnPoint.Position, Quaternion.identity);
+                    var node = Object.Instantiate(nodeConfig.nodePrefab);
+                    node.transform.SetParent(spawnPoint.transform.parent);
+                    node.transform.localPosition = spawnPoint.transform.localPosition;
                     activeNodes.Add(node);
                 }
                 else
@@ -47,38 +74,89 @@ public class NodeDestructionPhase : BossPhase
         }
 
         if (activeNodes.Count == 0)
+            Debug.LogWarning("[NodeDestructionPhase] No nodes spawned – objective may be unclear.");
+    }
+
+    private void StartNextWave()
+    {
+        if (wavesCompleted >= nodeConfig.wavesToSpawn)
+            return;
+
+        waveInProgress = true;
+        SpawnWave();
+    }
+
+    private void SpawnWave()
+    {
+        for (int i = 0; i < nodeConfig.enemiesPerWave; i++)
         {
-            Debug.LogWarning("[NodeDestructionPhase] No nodes to destroy – completing immediately.");
-            CompletePhase();
+            var pos = enemySpawnPositions[Random.Range(0, enemySpawnPositions.Length)];
+            boss.SpawnEnemyAt(pos);
         }
     }
 
     public override void Update()
     {
         if (!isActive) return;
-        activeNodes.RemoveAll(node => node == null);
-        if (activeNodes.Count == 0)
+
+        // Enemy wave handling
+        if (!enemiesCleared && enemySpawnPositions.Length > 0)
         {
-            CompletePhase();
+            if (waveInProgress && boss.GetEnemiesAliveCount() == 0)
+            {
+                waveInProgress = false;
+                wavesCompleted++;
+
+                if (wavesCompleted >= nodeConfig.wavesToSpawn)
+                {
+                    enemiesCleared = true;
+                    pillar?.PercentHeight(0.333f);
+                    entry.onPillarLowered?.Invoke();
+
+                    // Disable shield ONLY on nodes that this phase spawned
+                    foreach (var node in activeNodes)
+                    {
+                        if (node != null)
+                        {
+                            var damageable = node.GetComponent<DamageableObject>();
+                            if (damageable != null)
+                                damageable.SetShieldActive(false);
+                        }
+                    }
+
+                    if (activeNodes.Count == 0)
+                        CompletePhase();
+                }
+                else
+                {
+                    StartNextWave();
+                }
+            }
+        }
+
+        // Node destruction check
+        if (enemiesCleared)
+        {
+            activeNodes.RemoveAll(node => node == null);
+            if (activeNodes.Count == 0)
+            {
+                CompletePhase();
+            }
         }
     }
 
     private void DestroyAllNodes()
     {
         foreach (var node in activeNodes)
-        {
             if (node != null) Object.Destroy(node);
-        }
         activeNodes.Clear();
     }
 
     public override void Cleanup()
     {
-        // Do not destroy nodes here – they remain destroyed after phase ends
-        // But we clear the list to avoid reference leaks
         activeNodes.Clear();
         base.Cleanup();
     }
 
-    protected override bool ShouldLowerPillarOnComplete() => true;
+    protected override bool ShouldLowerPillarOnComplete() => false;
 }

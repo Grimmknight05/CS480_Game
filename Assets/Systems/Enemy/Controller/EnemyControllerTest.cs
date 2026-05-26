@@ -815,7 +815,7 @@ public class EnemyControllerTest : MonoBehaviour //Take in Interface damage for 
         
         // Hide visuals after a delay so the death is readable, but keep the
         // GameObject alive so a level reset can revive this enemy.
-        Invoke(nameof(HideOnDeath), 2f);
+        Invoke(nameof(HideOnDeath), 0.2f);
         
     }
 

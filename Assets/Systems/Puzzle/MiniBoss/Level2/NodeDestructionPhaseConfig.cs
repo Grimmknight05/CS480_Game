@@ -3,6 +3,10 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewNodeDestructionPhaseConfig", menuName = "Boss/Node Destruction Phase Config")]
 public class NodeDestructionPhaseConfig : PhaseConfig
 {
+    [Header("Enemy Waves")]
+    public SpawnSO enemySpawnGroup;          // Spawn point group for enemies
+    public int wavesToSpawn = 2;
+    public int enemiesPerWave = 3;
     [Tooltip("Tag that identifies destroyable boss nodes")]
     public string nodeTag = "Boss node";
 

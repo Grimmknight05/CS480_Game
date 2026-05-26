@@ -21,15 +21,27 @@ public class DamageableObject : ResettableBehaviour, IDamageable
     [SerializeField] private AudioClip deathSFX;
     [SerializeField] private AudioClip damageSFX;
 
-    [Header("Events")]
-    public UnityEvent<int> OnDamaged;       // amount of damage taken
-    public UnityEvent OnDeath;              // called when health reaches 0
+    [Header("Shield")]
+    [SerializeField] private bool startWithShield = true;
+    [SerializeField] private GameObject shieldVisual;
+    [SerializeField] private float shieldRotationSpeed = 90f;
 
+    [Header("Events")]
+    public UnityEvent<int> OnDamaged;
+    public UnityEvent OnDeath;
+
+    private bool isInvulnerable = false;
+    private bool isShielded = false;
     private int currentHealth;
     private bool isDead = false;
+
+    // Reset state
     private Vector3 initialPosition;
     private Quaternion initialRotation;
     private bool wasDestroyed;
+    private bool wasInvulnerable;
+    private bool wasShielded;
+
     private Collider objectCollider;
     private Renderer objectRenderer;
     private AudioSource audioSource;
@@ -41,21 +53,52 @@ public class DamageableObject : ResettableBehaviour, IDamageable
         objectRenderer = GetComponent<Renderer>();
         audioSource = GetComponent<AudioSource>();
     }
+
     private void Start()
     {
         initialPosition = transform.position;
         initialRotation = transform.rotation;
+        wasInvulnerable = isInvulnerable;
+        wasShielded = startWithShield;
+
+        if (startWithShield)
+            SetShieldActive(true);
     }
-    
+
+    private void Update()
+    {
+        if (isShielded && shieldVisual != null)
+        {
+            shieldVisual.transform.Rotate(Vector3.up, shieldRotationSpeed * Time.deltaTime);
+        }
+    }
+
+    public void SetInvulnerable(bool invulnerable)
+    {
+        isInvulnerable = invulnerable;
+    }
+
+    public void SetShieldActive(bool active)
+    {
+        isShielded = active;
+        if (shieldVisual != null)
+            shieldVisual.SetActive(active);
+    }
+    public void ResetForPool()
+    {
+        ResetHealth();
+        wasDestroyed = false;
+        SetShieldActive(startWithShield);
+    }
     public void TakeDamage(int amount)
     {
-        if (isDead) return;
+        if (isDead || isInvulnerable) return;
+        if (isShielded) return;  // Shield blocks all damage
         if (amount <= 0) return;
 
         currentHealth -= amount;
         OnDamaged?.Invoke(amount);
 
-        // Play damage SFX
         if (damageSFX != null)
         {
             if (audioSource != null)
@@ -84,13 +127,12 @@ public class DamageableObject : ResettableBehaviour, IDamageable
     {
         isDead = true;
         wasDestroyed = true;
-        // Disable components to prevent further interactions
+
         if (disableColliderOnDeath && objectCollider != null)
             objectCollider.enabled = false;
         if (disableRendererOnDeath && objectRenderer != null)
             objectRenderer.enabled = false;
 
-        // Effects
         if (deathVFX != null)
             Instantiate(deathVFX, transform.position, Quaternion.identity);
         if (deathSFX != null)
@@ -107,7 +149,6 @@ public class DamageableObject : ResettableBehaviour, IDamageable
             Destroy(gameObject, destroyDelay);
     }
 
-    // Optional: reset the object for respawning (e.g., if used with ResettableBehaviour)
     public void ResetHealth()
     {
         isDead = false;
@@ -117,10 +158,11 @@ public class DamageableObject : ResettableBehaviour, IDamageable
         if (disableRendererOnDeath && objectRenderer != null)
             objectRenderer.enabled = true;
     }
+
     protected override void ResetInternal()
     {
-        // If the object was destroyed, reactivate it
-        if (wasDestroyed || gameObject == null)
+        // Reactivate if destroyed
+        if (wasDestroyed)
         {
             gameObject.SetActive(true);
             if (objectCollider != null) objectCollider.enabled = true;
@@ -128,10 +170,18 @@ public class DamageableObject : ResettableBehaviour, IDamageable
             transform.SetPositionAndRotation(initialPosition, initialRotation);
             wasDestroyed = false;
         }
+
+        // Restore invulnerability and shield states
+        isInvulnerable = wasInvulnerable;
+        if (wasShielded)
+            SetShieldActive(true);
+        else
+            SetShieldActive(false);
+
         ResetHealth();
     }
 
     public bool IsDead => isDead;
     public int CurrentHealth => currentHealth;
     public int MaxHealth => maxHealth;
-}
+}   

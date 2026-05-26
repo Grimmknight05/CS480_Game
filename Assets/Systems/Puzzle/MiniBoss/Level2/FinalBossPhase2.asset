@@ -21,6 +21,9 @@ MonoBehaviour:
   onPhaseComplete:
     m_PersistentCalls:
       m_Calls: []
+  enemySpawnGroup: {fileID: 11400000, guid: a7d290e95ba8acc41bf93f4b80faf2d5, type: 2}
+  wavesToSpawn: 2
+  enemiesPerWave: 3
   nodeTag: Boss node
   requiredNodeCount: 1
   nodePrefab: {fileID: 3399868081341396305, guid: 22129b7d0a9418947b2935670257a742, type: 3}
