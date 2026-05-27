@@ -1013,6 +1013,68 @@ MonoBehaviour:
     onInvoke:
       m_PersistentCalls:
         m_Calls: []
+  - type: 11
+    targetTransform: {fileID: 0}
+    targetPosition: {x: 0, y: 0, z: 0}
+    targetRotation: {x: 0, y: 0, z: 0}
+    duration: 0
+    easeCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 2
+        outSlope: 2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.10095215
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.19778086
+        value: 1.0000004
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    waypoints: []
+    useSpline: 0
+    lookAtTarget: {fileID: 0}
+    targetFOV: 0
+    targetDistance: 0
+    waitSeconds: 0
+    waitForChannel: {fileID: 0}
+    raiseChannel: {fileID: 0}
+    targetGameObject: {fileID: 0}
+    onInvoke:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1057990129}
+          m_TargetAssemblyTypeName: LevelEndTrigger, Assembly-CSharp
+          m_MethodName: callEndGame
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &170553453
 GameObject:
   m_ObjectHideFlags: 0
@@ -7709,6 +7771,7 @@ MonoBehaviour:
   playerTag: Player
   oneShot: 1
   fallbackHubScene: J'sSpaceHub
+  isTriggerable: 0
 --- !u!1001 &1060934690
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8362,84 +8425,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 13b69eb9482cb9249a15b01e479432dd, type: 3}
---- !u!1 &1155180514
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1155180515}
-  - component: {fileID: 1155180518}
-  - component: {fileID: 1155180517}
-  - component: {fileID: 1155180516}
-  m_Layer: 6
-  m_Name: Trigger
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1155180515
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1155180514}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.73, y: 0, z: 34.93}
-  m_LocalScale: {x: -45, y: -27, z: -9}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1508867574}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1155180516
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1155180514}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f2640f6e0e6ee34688b95972780031a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CutsceneTrigger
-  cutsceneRunner: {fileID: 1508867575}
-  playerTag: Player
-  triggerOnce: 1
---- !u!65 &1155180517
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1155180514}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.38042215, y: 1, z: 1.6481603}
-  m_Center: {x: 0.20908415, y: 0, z: 3.0876622}
---- !u!33 &1155180518
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1155180514}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &1157928098
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9107,8 +9092,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1221632992}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.23848541, y: -0.32486352, z: 0.08948322, w: -0.9108135}
-  m_LocalPosition: {x: 5.3648834, y: 6.621544, z: -43.18753}
+  m_LocalRotation: {x: -0.119369335, y: -0.3034525, z: 0.04262131, w: -0.9443786}
+  m_LocalPosition: {x: -3.4546738, y: 3.7848206, z: -55.83603}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12272,7 +12257,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 156812091}
-  - {fileID: 1155180515}
   - {fileID: 591712564}
   - {fileID: 1638283325}
   - {fileID: 1221632993}
@@ -12294,10 +12278,92 @@ MonoBehaviour:
   orbitalCamera: {fileID: 0}
   commands:
   - type: 0
-    targetTransform: {fileID: 591712564}
+    targetTransform: {fileID: 1638283325}
     targetPosition: {x: 0, y: 0, z: 0}
     targetRotation: {x: 0, y: 0, z: 0}
-    duration: 1.5
+    duration: 0
+    easeCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    waypoints: []
+    useSpline: 0
+    lookAtTarget: {fileID: 3089053360858889339}
+    targetFOV: 0
+    targetDistance: 0
+    waitSeconds: 0
+    waitForChannel: {fileID: 0}
+    raiseChannel: {fileID: 0}
+    targetGameObject: {fileID: 0}
+    onInvoke:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 4
+    targetTransform: {fileID: 0}
+    targetPosition: {x: 0, y: 0, z: 0}
+    targetRotation: {x: 0, y: 0, z: 0}
+    duration: 5
+    easeCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    waypoints: []
+    useSpline: 0
+    lookAtTarget: {fileID: 0}
+    targetFOV: 30
+    targetDistance: 0
+    waitSeconds: 0
+    waitForChannel: {fileID: 0}
+    raiseChannel: {fileID: 0}
+    targetGameObject: {fileID: 0}
+    onInvoke:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 3
+    targetTransform: {fileID: 1638283325}
+    targetPosition: {x: 0, y: 0, z: 0}
+    targetRotation: {x: 0, y: 0, z: 0}
+    duration: 5
     easeCurve:
       serializedVersion: 2
       m_Curve:
@@ -12333,8 +12399,49 @@ MonoBehaviour:
       m_RotationOrder: 4
     waypoints: []
     useSpline: 0
-    lookAtTarget: {fileID: 0}
+    lookAtTarget: {fileID: 3089053360858889339}
     targetFOV: 0
+    targetDistance: 0
+    waitSeconds: 0
+    waitForChannel: {fileID: 0}
+    raiseChannel: {fileID: 0}
+    targetGameObject: {fileID: 0}
+    onInvoke:
+      m_PersistentCalls:
+        m_Calls: []
+  - type: 4
+    targetTransform: {fileID: 0}
+    targetPosition: {x: 0, y: 0, z: 0}
+    targetRotation: {x: 0, y: 0, z: 0}
+    duration: 0
+    easeCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 1
+        outSlope: 1
+        tangentMode: 34
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    waypoints: []
+    useSpline: 0
+    lookAtTarget: {fileID: 0}
+    targetFOV: 60
     targetDistance: 0
     waitSeconds: 0
     waitForChannel: {fileID: 0}
@@ -12347,60 +12454,28 @@ MonoBehaviour:
     targetTransform: {fileID: 1221632993}
     targetPosition: {x: 0, y: 0, z: 0}
     targetRotation: {x: 0, y: 0, z: 0}
-    duration: 2
-    easeCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      - serializedVersion: 3
-        time: 1
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 34
-        weightedMode: 0
-        inWeight: 0
-        outWeight: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    waypoints: []
-    useSpline: 0
-    lookAtTarget: {fileID: 0}
-    targetFOV: 0
-    targetDistance: 0
-    waitSeconds: 0
-    waitForChannel: {fileID: 0}
-    raiseChannel: {fileID: 0}
-    targetGameObject: {fileID: 0}
-    onInvoke:
-      m_PersistentCalls:
-        m_Calls: []
-  - type: 0
-    targetTransform: {fileID: 1638283325}
-    targetPosition: {x: 0, y: 0, z: 0}
-    targetRotation: {x: 0, y: 0, z: 0}
-    duration: 2
+    duration: 3
     easeCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 0
-        outSlope: 0
+        inSlope: 2
+        outSlope: 2
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
+      - serializedVersion: 3
+        time: 0.33492365
+        value: 0.99871564
+        inSlope: 0.000598925
+        outSlope: 0.000598925
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.23567672
       - serializedVersion: 3
         time: 1
         value: 1
@@ -12539,7 +12614,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 18.934998, y: 11, z: 16.375122}
-  m_Center: {x: 1.9674988, y: -1, z: -3.312439}
+  m_Center: {x: -4.8, y: -1, z: -22.19}
 --- !u!114 &1546117813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12629,10 +12704,46 @@ MonoBehaviour:
         m_Calls: []
   OnBossStartEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1508867575}
+        m_TargetAssemblyTypeName: CutsceneCommandRunner, Assembly-CSharp
+        m_MethodName: StartCutscene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnBossDefeatedEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1297328997}
+        m_TargetAssemblyTypeName: CompleteAreaOnEvent, Assembly-CSharp
+        m_MethodName: CompleteThisArea
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 156812092}
+        m_TargetAssemblyTypeName: CutsceneCommandRunner, Assembly-CSharp
+        m_MethodName: StartCutscene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   deathChannel: {fileID: 11400000, guid: 3bad0aff43bbf734c81ac68a3d2f0f09, type: 2}
   entranceDoor: {fileID: 1074033033}
   exitDoor: {fileID: 1074033033}
@@ -14618,8 +14729,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1638283324}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.023485437, y: -0.61014277, z: -0.013291717, w: -0.7918318}
-  m_LocalPosition: {x: -33.11418, y: 0.23271942, z: -58.41562}
+  m_LocalRotation: {x: 0.011443428, y: -0.52772564, z: -0.0023687077, w: -0.8493345}
+  m_LocalPosition: {x: -30.735207, y: -0.7491379, z: -68.727875}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
