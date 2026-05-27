@@ -21,8 +21,8 @@ public class DialogueUI : MonoBehaviour
     [SerializeField] private GameObject root;
 
     [Header("Text")]
-    [SerializeField] private TextMeshProUGUI speakerNameText;
-    [SerializeField] private TextMeshProUGUI bodyText;
+    [SerializeField] private TMP_Text  speakerNameText;
+    [SerializeField] private TMP_Text  bodyText;
 
     [Header("Optional")]
     [Tooltip("Optional portrait image. Hidden if the speaker has no portrait.")]
@@ -66,6 +66,7 @@ public class DialogueUI : MonoBehaviour
     [Tooltip("If true, gives both texts a colored outline (helps readability over busy backgrounds).")]
     [SerializeField] private bool useOutline = true;
     [SerializeField] private Color outlineColor = Color.black;
+    [SerializeField] private Material outlineMaterial;
     [Range(0f, 1f)]
     [SerializeField] private float outlineWidth = 0.2f;
 
@@ -101,9 +102,14 @@ public class DialogueUI : MonoBehaviour
         ApplyStyleTo(bodyText, isSpeaker: false);
     }
 
-    private void ApplyStyleTo(TextMeshProUGUI text, bool isSpeaker)
+    private void ApplyStyleTo(TMP_Text  text, bool isSpeaker)
     {
         if (text == null) return;
+        if (text.font == null)
+        {
+            Debug.LogWarning($"{text.name} has no font asset – skipping style", text);
+            return;
+        }
 
         if (font != null) text.font = font;
 
@@ -130,17 +136,20 @@ public class DialogueUI : MonoBehaviour
 
         // outlineColor / outlineWidth instance the font material so each text
         // can have its own outline. Safe for a single UI panel.
-        if (useOutline)
+        if (useOutline && outlineMaterial != null)
         {
-            text.outlineColor = outlineColor;
-            text.outlineWidth = outlineWidth;
+            // Create a unique instance for this text so we can adjust color/width per text
+            Material mat = new Material(outlineMaterial);
+            mat.SetColor("_OutlineColor", outlineColor);
+            mat.SetFloat("_OutlineWidth", outlineWidth);
+            text.fontMaterial = mat;
         }
-        else
+        else if (!useOutline)
         {
-            text.outlineWidth = 0f;
+            // Revert to the font's default material (no outline)
+            text.fontMaterial = text.font.material;
         }
 
-        // Force TMP to rebuild its mesh now. Without this, font/material
         text.SetAllDirty();
         text.ForceMeshUpdate(true, true);
     }
