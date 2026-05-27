@@ -20,8 +20,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PlanetHolo
-  m_Shader: {fileID: -6465566751694194690, guid: c10a338406d91c84fa52683a41653502, type: 3}
+  m_Name: PlanetHolo 1
+  m_Shader: {fileID: -6465566751694194690, guid: fa2c22fcbc2df05479d6629096dcf09c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -42,7 +42,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _PlanetTexture:
-        m_Texture: {fileID: 2800000, guid: 4a3b5a24d14673e42bcea564726be6aa, type: 3}
+        m_Texture: {fileID: 2800000, guid: be59a57c76672d247af7fce57eaba1a5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -60,20 +60,21 @@ Material:
     m_Ints: []
     m_Floats:
     - _AtmosphereIntensity: 0.5
-    - _BaseAlpha: 0.84
+    - _BaseAlpha: 0
     - _FresnalAlpha: 0.2
     - _FresnalBorderIntensity: 0.1
     - _FresnelIntensity: 1.5
     - _FresnelPower: 2
-    - _GridDensity: 10
-    - _GridWidth: 0.07
+    - _GridDensity: 29.91
+    - _GridWidth: 0.17
     - _PlanetRotationSpeed: 0.05
     - _QueueControl: 0
     - _QueueOffset: 0
     - _RimIntensity: 6
     m_Colors:
+    - _AlphaColor: {r: 0.18039206, g: 0.29025477, b: 0.772549, a: 1}
     - _AtmosphereColor: {r: 0.4145603, g: 0.4768601, b: 0.6415094, a: 1}
-    - _GridScrollSpeed: {r: 0, g: 0.02, b: 0, a: 0}
+    - _GridScrollSpeed: {r: 0, g: -1, b: 0, a: 0}
     - _HoloColor: {r: 0.13143015, g: 0.49041086, b: 0.8443396, a: 1}
     - _PlanetRotation: {r: 0.4, g: 0.1, b: 0, a: 0}
     - _PlanetRotation_1: {r: 0, g: 1, b: 0, a: 0}
