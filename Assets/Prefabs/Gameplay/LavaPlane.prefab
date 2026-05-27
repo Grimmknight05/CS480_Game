@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5367473598785273804}
   - component: {fileID: 7656767925378625911}
   - component: {fileID: 9031398657958917379}
+  - component: {fileID: 40861685194826587}
   m_Layer: 0
   m_Name: LavaPlane
   m_TagString: Untagged
@@ -112,3 +113,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 10.000001, y: 2.2204459e-16, z: 10.000001}
   m_Center: {x: -0.00000047683716, y: 0, z: 0}
+--- !u!114 &40861685194826587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5406599983743297512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7448e9060442d4357bff4e4a060ba729, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaterHazard
+  damagePerSecond: 80
+  submergePlayerThreshold: 0.2
+  damageTickInterval: 0.5
+  submergePushableThreshold: 0.1
+  resetChannel: {fileID: 11400000, guid: 7b03292574597408a8eb335901f5c93c, type: 2}
