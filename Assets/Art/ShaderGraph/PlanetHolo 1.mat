@@ -61,6 +61,7 @@ Material:
     m_Floats:
     - _AtmosphereIntensity: 0.5
     - _BaseAlpha: 0
+    - _ColorAlpha: 0.38
     - _FresnalAlpha: 0.2
     - _FresnalBorderIntensity: 0.1
     - _FresnelIntensity: 1.5
@@ -75,7 +76,7 @@ Material:
     - _AlphaColor: {r: 0.18039206, g: 0.29025477, b: 0.772549, a: 1}
     - _AtmosphereColor: {r: 0.4145603, g: 0.4768601, b: 0.6415094, a: 1}
     - _GridScrollSpeed: {r: 0, g: -1, b: 0, a: 0}
-    - _HoloColor: {r: 0.13143015, g: 0.49041086, b: 0.8443396, a: 1}
+    - _HoloColor: {r: 0.13143012, g: 0.49041086, b: 0.8443396, a: 1}
     - _PlanetRotation: {r: 0.4, g: 0.1, b: 0, a: 0}
     - _PlanetRotation_1: {r: 0, g: 1, b: 0, a: 0}
     - _RimDirrection: {r: -6.2, g: 3.57, b: 0, a: 0}
