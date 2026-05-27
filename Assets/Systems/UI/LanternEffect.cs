@@ -81,6 +81,11 @@ public class OminousLanternEffect : MonoBehaviour
             embers = emberTransform.gameObject.AddComponent<ParticleSystem>();
         }
 
+        if (embers.isPlaying || embers.isEmitting)
+        {
+            embers.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
+
         ParticleSystemRenderer particleRenderer = emberTransform.GetComponent<ParticleSystemRenderer>();
         if (particleRenderer != null)
         {
@@ -122,7 +127,9 @@ public class OminousLanternEffect : MonoBehaviour
         ParticleSystem.VelocityOverLifetimeModule velocity = embers.velocityOverLifetime;
         velocity.enabled = true;
         velocity.space = ParticleSystemSimulationSpace.Local;
+        velocity.x = new ParticleSystem.MinMaxCurve(0f, 0f);
         velocity.y = new ParticleSystem.MinMaxCurve(emberRiseSpeed * 0.45f, emberRiseSpeed);
+        velocity.z = new ParticleSystem.MinMaxCurve(0f, 0f);
 
         ParticleSystem.ColorOverLifetimeModule colorOverLifetime = embers.colorOverLifetime;
         colorOverLifetime.enabled = true;

@@ -40,6 +40,9 @@ public class TurnableStone : ResettableBehaviour
     private bool hasRaisedEventForCurrentTarget = true;
     public float TargetRotation => targetRotation;
     public float CurrentRotation => currentRotation;
+    public float NormalizedRotation => Mathf.Repeat(currentRotation, 360f);
+    public bool IsRotating => isRotating;
+    public ActivatorID ActivatorID => activatorID;
     public string StoneID => stoneID;
     private bool initialPlayerLock;
     private bool initialInputLock;
@@ -151,7 +154,14 @@ public class TurnableStone : ResettableBehaviour
                 // Normalize for the broadcast (e.g. 360 becomes 0) so the Puzzle Validator understands it
                 float normalizedRotation = Mathf.Repeat(currentRotation, 360f);
                 if (stateChannel != null && activatorID != null)
+                {
                     stateChannel.RaiseEvent(activatorID, normalizedRotation);
+                    if (debugMode) Debug.Log($"[TurnableStone] {stoneID} completed turn. Raised {activatorID.name} = {normalizedRotation} on {stateChannel.name}.", this);
+                }
+                else if (debugMode)
+                {
+                    Debug.LogWarning($"[TurnableStone] {stoneID} completed turn but is missing a state channel or ActivatorID.", this);
+                }
             }
 
             // We finished one turn. Remove it from the queue.
