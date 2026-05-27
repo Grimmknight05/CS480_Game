@@ -62,7 +62,7 @@ GameObject:
   - component: {fileID: 3493289055087155639}
   - component: {fileID: 6077482920720494391}
   - component: {fileID: 6858017044401950489}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: MushroomActivator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +116,7 @@ MonoBehaviour:
   glowColor: {r: 0, g: 1, b: 0, a: 1}
   noteClip: {fileID: 8300000, guid: f77151109c4b947eca1ff4406c7239cb, type: 3}
   mushroomChannel: {fileID: 11400000, guid: 62d28254fe4604c24944f3e29bb7bc37, type: 2}
-  puzzleChannel: {fileID: 11400000, guid: 2e08666b09ea646d5b7d4881db24462b, type: 2}
+  puzzleActivatorID: {fileID: 0}
   audioComp: {fileID: 3994410790209615617}
   lightComp: {fileID: 3850671766084964232}
   timerComp: {fileID: 0}
