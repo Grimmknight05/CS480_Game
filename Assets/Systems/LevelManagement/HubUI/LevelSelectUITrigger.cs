@@ -12,6 +12,14 @@ public class LevelSelectUITrigger : MonoBehaviour
             activated = true;
         }
     }
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            UIToTrigger.SetActive(false);
+            activated = false;   // allow re‑triggering
+        }
+    }
     void ResetActivation()
     {
         activated = false;
