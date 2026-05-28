@@ -15,8 +15,9 @@ MonoBehaviour:
   toolName: Disruptor
   toolDescription: A generic tool
   cooldown: 0.5
-  useSFX: {fileID: 8300000, guid: 07c7bc4b92a26f0439ff51ee39aa0cd7, type: 3}
   toolIcon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  useSFX: {fileID: 8300000, guid: 07c7bc4b92a26f0439ff51ee39aa0cd7, type: 3}
+  changeToolSFX: {fileID: 8300000, guid: 4ef2def0912935e4182b168c7b70a7ad, type: 3}
   visualPrefab: {fileID: 4518492352098071963, guid: bc7639bd72bc68541b22c1e6c21cf4dd, type: 3}
   isTempWeapon: 1
   targetLayer:

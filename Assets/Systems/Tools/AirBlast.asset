@@ -15,8 +15,9 @@ MonoBehaviour:
   toolName: Push Tool?
   toolDescription: A generic tool
   cooldown: 0.5
-  useSFX: {fileID: 8300000, guid: bc18fe1a807ecc04fab7d60e3e616add, type: 3}
   toolIcon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  useSFX: {fileID: 8300000, guid: bc18fe1a807ecc04fab7d60e3e616add, type: 3}
+  changeToolSFX: {fileID: 8300000, guid: ed358424143fd3e4f8a337b31ccaadbc, type: 3}
   visualPrefab: {fileID: 2303238674853305632, guid: b7acf4519c51f174b8bac84f90292360, type: 3}
   isTempWeapon: 0
   targetLayer:
