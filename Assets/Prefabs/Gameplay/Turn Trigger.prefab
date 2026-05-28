@@ -305,6 +305,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  activateOnPlayerTriggerEnter: 0
+  diagnostics: 0
   promptChannel: {fileID: 0}
   promptMessage: Press E to Interact
 --- !u!1 &5793265984128807537
@@ -356,6 +358,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a80ae07b0d20ef9438c2354872ca6dbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  resetChannel: {fileID: 0}
+  area: {fileID: 0}
   stateChannel: {fileID: 11400000, guid: 7e45909d0e56544439bbf6f81a226562, type: 2}
   activatorID: {fileID: 0}
   rotationSpeed: 40
@@ -612,22 +616,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EmissionController
   resetChannel: {fileID: 0}
+  area: {fileID: 0}
   Object:
   - ObjectToChange: {fileID: 2606265241936903544}
     startMaterial: {fileID: 2100000, guid: 42dee58d74b78e743a18758be86050c4, type: 2}
-    targetMaterial: {fileID: 2100000, guid: f00dc7289f38d054b97879d3603ec2e0, type: 2}
+    targetMaterial: {fileID: 2100000, guid: c60371428080ad84981b8dbb86ee63fa, type: 2}
     state: 0
   - ObjectToChange: {fileID: 304216316710764661}
     startMaterial: {fileID: 2100000, guid: 42dee58d74b78e743a18758be86050c4, type: 2}
-    targetMaterial: {fileID: 2100000, guid: f00dc7289f38d054b97879d3603ec2e0, type: 2}
+    targetMaterial: {fileID: 2100000, guid: c60371428080ad84981b8dbb86ee63fa, type: 2}
     state: 0
   - ObjectToChange: {fileID: 4729688450614122306}
     startMaterial: {fileID: 2100000, guid: 42dee58d74b78e743a18758be86050c4, type: 2}
-    targetMaterial: {fileID: 2100000, guid: f00dc7289f38d054b97879d3603ec2e0, type: 2}
+    targetMaterial: {fileID: 2100000, guid: c60371428080ad84981b8dbb86ee63fa, type: 2}
     state: 0
   - ObjectToChange: {fileID: 600583168540568833}
     startMaterial: {fileID: 2100000, guid: 42dee58d74b78e743a18758be86050c4, type: 2}
-    targetMaterial: {fileID: 2100000, guid: f00dc7289f38d054b97879d3603ec2e0, type: 2}
+    targetMaterial: {fileID: 2100000, guid: c60371428080ad84981b8dbb86ee63fa, type: 2}
     state: 0
 --- !u!1001 &2381443974608357081
 PrefabInstance:

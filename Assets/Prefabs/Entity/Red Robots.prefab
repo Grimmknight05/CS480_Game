@@ -74,6 +74,11 @@ MonoBehaviour:
   requireInteract: 1
   promptChannel: {fileID: 11400000, guid: d5462cb4227154ee6aa7b0b45b986882, type: 2}
   promptMessage: Press E to Talk
+  iconToHideAfterFirstDialogue: {fileID: 0}
+  doorToMoveAfterFirstDialogue: {fileID: 0}
+  onFirstDialogueComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &1857761482982538373
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -141,7 +146,7 @@ PrefabInstance:
     - target: {fileID: 1850203545226012804, guid: e5897448b2b6a4a09939be782960d867, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: f00dc7289f38d054b97879d3603ec2e0, type: 2}
+      objectReference: {fileID: 2100000, guid: c60371428080ad84981b8dbb86ee63fa, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -267,7 +272,7 @@ PrefabInstance:
     - target: {fileID: 8520955406060492622, guid: fb81eb2b2d485d24dbf5cce826afa62c, type: 3}
       propertyPath: 'm_Materials.Array.data[2]'
       value: 
-      objectReference: {fileID: 2100000, guid: f00dc7289f38d054b97879d3603ec2e0, type: 2}
+      objectReference: {fileID: 2100000, guid: c60371428080ad84981b8dbb86ee63fa, type: 2}
     - target: {fileID: 9084198186205895951, guid: fb81eb2b2d485d24dbf5cce826afa62c, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
