@@ -24,6 +24,7 @@ public class ToolSystem : MonoBehaviour, IAimContext
     //[SerializeField] private TempWeaponUI tempWeaponUI;
     [SerializeField] private TempWeaponDropChannelSO tempWeaponDropChannel;
 
+
     private List<Tool> runtimeTools;
     private TempWeapon currentTempWeapon;    // separate slot
     private GameObject currentVisual;
@@ -123,8 +124,10 @@ public class ToolSystem : MonoBehaviour, IAimContext
 
         if (runtimeTools.Count == 0) return;
         currentToolIndex = (currentToolIndex + 1) % runtimeTools.Count;
-        UpdateToolVisual(runtimeTools[currentToolIndex]);
-        Debug.Log($"[ToolSystem] Switched to: {runtimeTools[currentToolIndex].toolName}");
+        Tool currentTool = runtimeTools[currentToolIndex];
+        UpdateToolVisual(currentTool);
+        currentTool.PlayChangeToolSound(audioSource);
+        Debug.Log($"[ToolSystem] Switched to: {currentTool.toolName}");
     }
 
     // ----- Cooldown and usage (public for commands) -----

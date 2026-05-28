@@ -6,8 +6,11 @@ public abstract class Tool : ScriptableObject
     [SerializeField] public string toolName = "Tool";
     [SerializeField] public string toolDescription = "A generic tool";
     [SerializeField] public float cooldown = 0.5f;
-    [SerializeField] public AudioClip useSFX;
+    
     [SerializeField] public Sprite toolIcon; // For UI display
+    [Header("Audio")]
+    [SerializeField] public AudioClip useSFX;
+    [SerializeField] private AudioClip changeToolSFX;
     [Header("Visuals")]
     public GameObject visualPrefab;   // model to attach to player's weapon mount
     [Header("Temp Weapon")]
@@ -29,6 +32,13 @@ public abstract class Tool : ScriptableObject
         if (useSFX != null && audioSource != null)
         {
             audioSource.PlayOneShot(useSFX);
+        }
+    }
+    public void PlayChangeToolSound(AudioSource audioSource)
+    {
+        if (changeToolSFX != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(changeToolSFX);
         }
     }
     /// <summary>

@@ -20,6 +20,9 @@ public class DamageableObject : ResettableBehaviour, IDamageable
     [SerializeField] private GameObject deathVFX;
     [SerializeField] private AudioClip deathSFX;
     [SerializeField] private AudioClip damageSFX;
+    [SerializeField] private AudioClip shieldUpSFX;
+    [SerializeField] private AudioClip shieldDownSFX;
+    [SerializeField] private AudioClip shieldDamageSFX;
 
     [Header("Shield")]
     [SerializeField] private bool startWithShield = true;
@@ -91,6 +94,21 @@ public class DamageableObject : ResettableBehaviour, IDamageable
     public void SetShieldActive(bool active)
     {
         isShielded = active;
+        if (damageSFX != null)
+            {
+                if (audioSource != null)
+                {
+                    if (active == true)
+                    {
+                        audioSource.PlayOneShot(shieldUpSFX);
+                    }
+                    else
+                    {
+                        audioSource.PlayOneShot(shieldDownSFX);
+                    }
+                }
+                    
+            }
         if (shieldVisual != null)
             shieldVisual.SetActive(active);
     }
@@ -103,7 +121,15 @@ public class DamageableObject : ResettableBehaviour, IDamageable
     public void TakeDamage(int amount)
     {
         if (isDead || isInvulnerable) return;
-        if (isShielded) return;  // Shield blocks all damage
+        if (isShielded) // Shield blocks all damage
+        {
+            if (damageSFX != null)
+            {
+                if (audioSource != null)
+                    audioSource.PlayOneShot(shieldDamageSFX);
+            }
+            return;  
+        }
         if (amount <= 0) return;
 
         currentHealth -= amount;

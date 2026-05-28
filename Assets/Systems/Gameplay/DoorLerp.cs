@@ -9,6 +9,11 @@ public class DoorLerp : ResettableBehaviour
     [SerializeField] private ParticleSystem openVFX;
     [SerializeField] private bool debugMode;
     [SerializeField] private DoorLerp[] linkedDoorsToForceOpenOnForceClose;
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip openSound;
+    [SerializeField] private AudioClip closeSound; 
+    [SerializeField] private AudioClip atPosSound; 
     private Vector3 closedLocalPos;
     private Vector3 openLocalPos;
     private Coroutine running;
@@ -19,6 +24,16 @@ public class DoorLerp : ResettableBehaviour
         closedLocalPos = transform.localPosition;
         openLocalPos = closedLocalPos + openOffset;
         Log($"Awake closedLocalPos={closedLocalPos} openLocalPos={openLocalPos} openOffset={openOffset}");
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null && (openSound != null || closeSound != null))
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+                audioSource.playOnAwake = false;
+                audioSource.spatialBlend = 1f; // 3D sound by default, adjust as needed
+            }
+        }
     }
     
     public void Open()
@@ -31,6 +46,7 @@ public class DoorLerp : ResettableBehaviour
 
         isOpen = true;
         if (openVFX != null) openVFX.Play();
+        PlaySound(openSound);
         Log($"Open -> {openLocalPos}");
         StartLerp(openLocalPos);
     }
@@ -44,6 +60,7 @@ public class DoorLerp : ResettableBehaviour
         }
 
         isOpen = false;
+        PlaySound(closeSound);
         Log($"Close -> {closedLocalPos}");
         StartLerp(closedLocalPos);
     }
@@ -83,6 +100,7 @@ public class DoorLerp : ResettableBehaviour
         transform.localPosition = target;
         running = null;
         Log($"Reached target {target}");
+        PlaySound(atPosSound);
         onComplete?.Invoke();
     }
 
@@ -103,6 +121,14 @@ public class DoorLerp : ResettableBehaviour
     {
         if (!debugMode) return;
         Debug.Log($"[DoorLerp:{name}] {message}", this);
+    }
+    private void PlaySound(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+        {
+            audioSource.Stop();
+            audioSource.PlayOneShot(clip);
+        }
     }
 
     protected override void ResetInternal()
