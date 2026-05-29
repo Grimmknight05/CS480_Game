@@ -43,6 +43,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gate (1) Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 4084424973812241390, guid: 2561f99ef13d58f4b9d739049521f0c9, type: 3}
+      propertyPath: lowpassLevelCustomCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084424973812241390, guid: 2561f99ef13d58f4b9d739049521f0c9, type: 3}
+      propertyPath: lowpassLevelCustomCurve.m_Curve.Array.data[1].time
+      value: 0.15365751
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084424973812241390, guid: 2561f99ef13d58f4b9d739049521f0c9, type: 3}
+      propertyPath: lowpassLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1.0002626
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084424973812241390, guid: 2561f99ef13d58f4b9d739049521f0c9, type: 3}
+      propertyPath: lowpassLevelCustomCurve.m_Curve.Array.data[1].value
+      value: 0.16268477
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084424973812241390, guid: 2561f99ef13d58f4b9d739049521f0c9, type: 3}
+      propertyPath: lowpassLevelCustomCurve.m_Curve.Array.data[1].inSlope
+      value: -0.8974086
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084424973812241390, guid: 2561f99ef13d58f4b9d739049521f0c9, type: 3}
+      propertyPath: lowpassLevelCustomCurve.m_Curve.Array.data[1].inWeight
+      value: 0.8297858
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084424973812241390, guid: 2561f99ef13d58f4b9d739049521f0c9, type: 3}
+      propertyPath: lowpassLevelCustomCurve.m_Curve.Array.data[1].outSlope
+      value: -0.8974086
+      objectReference: {fileID: 0}
+    - target: {fileID: 4084424973812241390, guid: 2561f99ef13d58f4b9d739049521f0c9, type: 3}
+      propertyPath: lowpassLevelCustomCurve.m_Curve.Array.data[1].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
     - target: {fileID: 6897501463697714147, guid: 2561f99ef13d58f4b9d739049521f0c9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -72.98172
