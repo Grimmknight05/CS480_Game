@@ -19,6 +19,10 @@ public abstract class Boss : ResettableBehaviour
 
     [Header("Phases")]
     [SerializeField] protected List<PhaseEntry> phaseEntries;
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip enemySpawnSFX;
+   [SerializeField] private AudioClip  BossDefeatedSFX;
 
     protected List<BossPhase> phases = new List<BossPhase>();
     protected int currentPhaseIndex = 0;
@@ -140,8 +144,15 @@ public abstract class Boss : ResettableBehaviour
         if (enemyPrefab == null) return;
         var enemy = Instantiate(enemyPrefab, position, Quaternion.identity);
         activeEnemies.Add(enemy);
+        PlaySound(enemySpawnSFX);
     }
-
+    private void PlaySound(AudioClip sound)
+    {
+        if (sound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(sound);
+        }
+    }
     public int GetEnemiesAliveCount()
     {
         activeEnemies.RemoveAll(e => e == null);
@@ -156,6 +167,7 @@ public abstract class Boss : ResettableBehaviour
 
     protected virtual void DefeatBoss()
     {
+        PlaySound(BossDefeatedSFX);
         OnBossDefeated?.Invoke();
         OnBossDefeatedEvent?.Invoke();
     } 

@@ -8,7 +8,10 @@ public class BossPillar : ResettableBehaviour
     [SerializeField] private float duration = 1.5f;
     [SerializeField] private AnimationCurve ease = AnimationCurve.EaseInOut(0, 0, 1, 1);
     [SerializeField] private ParticleSystem moveVFX;
-
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip moveLoopSound;
+    [SerializeField] private AudioClip destinationSound;
     private Vector3 startLocalPos;
     private Vector3 maxLocalPos;
     private Coroutine running;
@@ -63,12 +66,23 @@ public class BossPillar : ResettableBehaviour
 
     void StartLerp(Vector3 target)
     {
-        if (running != null) StopCoroutine(running);
+        if (running != null)
+        {
+            StopCoroutine(running);
+            if (audioSource != null && audioSource.isPlaying)
+                audioSource.Stop();
+        }
         running = StartCoroutine(LerpTo(target));
     }
 
     IEnumerator LerpTo(Vector3 target)
     {
+        if (audioSource != null && moveLoopSound != null)
+        {
+            audioSource.clip = moveLoopSound;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
         Vector3 start = transform.localPosition;
         float t = 0f;
         while (t < duration)
@@ -81,6 +95,14 @@ public class BossPillar : ResettableBehaviour
         
         transform.localPosition = target;
         running = null;
+
+        // Stop looping movement sound
+        if (audioSource != null && audioSource.isPlaying && audioSource.clip == moveLoopSound)
+            audioSource.Stop();
+
+        // Play destination reached sound
+        if (audioSource != null && destinationSound != null)
+            audioSource.PlayOneShot(destinationSound);
     }
     protected override void ResetInternal()
     {

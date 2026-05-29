@@ -15,7 +15,10 @@ public class BossTempWeaponSpawner : MonoBehaviour
 
     [Header("Events")]
     [SerializeField] private TempWeaponDropChannelSO tempWeaponDropChannel;
-
+    [Header("Audio")]
+    [SerializeField] private AudioClip spawnSFX;
+    [SerializeField] private AudioClip pickupSFX;
+    [SerializeField] private AudioSource audioSource;
     private GameObject currentPickup;
     private bool isLocked = true;
     private bool isRespawning = false;
@@ -78,12 +81,19 @@ public class BossTempWeaponSpawner : MonoBehaviour
         if (!isLocked && currentPickup == null && tempWeaponPickupPrefab != null && spawnPoint != null)
         {
             currentPickup = Instantiate(tempWeaponPickupPrefab, spawnPoint.position, spawnPoint.rotation);
+            PlaySound(spawnSFX);
             var pickup = currentPickup.GetComponent<TempWeaponPickup>();
             if (pickup != null)
                 pickup.OnPickup += HandlePickupTaken;
         }
     }
-
+    private void PlaySound(AudioClip sound)
+    {
+        if (sound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(sound);
+        }
+    }
     private void HandlePickupTaken(TempWeaponPickup pickup)
     {
         pickup.OnPickup -= HandlePickupTaken;

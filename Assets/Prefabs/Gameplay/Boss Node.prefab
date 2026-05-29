@@ -139,6 +139,9 @@ MonoBehaviour:
   deathVFX: {fileID: 0}
   deathSFX: {fileID: 8300000, guid: 17c7821ac5f397148a0af72489863452, type: 3}
   damageSFX: {fileID: 8300000, guid: fdfec6e9f6da42642926b8b9194930d2, type: 3}
+  shieldUpSFX: {fileID: 8300000, guid: 4b3f4376d77a3354f9c16d1ee84da53b, type: 3}
+  shieldDownSFX: {fileID: 8300000, guid: 39b1777acef804f449aecc9eb7ec7480, type: 3}
+  shieldDamageSFX: {fileID: 8300000, guid: db567db063db2b54fa2b80d7a1c29fcf, type: 3}
   startWithShield: 1
   shieldVisual: {fileID: 9167750552371761144}
   shieldRotationSpeed: 90

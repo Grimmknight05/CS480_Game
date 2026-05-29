@@ -53,7 +53,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 7.04
   MaxDistance: 502.31
   Pan2D: 0
   rolloffMode: 0
@@ -344,7 +344,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -408,7 +408,7 @@ MonoBehaviour:
   damageSFX: {fileID: 8300000, guid: c82a4205644ad7546a42449a7af8ff95, type: 3}
   shieldUpSFX: {fileID: 8300000, guid: 2db90622744dc6941bdf40a1658d7b03, type: 3}
   shieldDownSFX: {fileID: 8300000, guid: 043c7891b5a7fc845bea6d64b23b1126, type: 3}
-  shieldDamageSFX: {fileID: 0}
+  shieldDamageSFX: {fileID: 8300000, guid: db567db063db2b54fa2b80d7a1c29fcf, type: 3}
   startWithShield: 1
   shieldVisual: {fileID: 6096533190280432831}
   shieldRotationSpeed: 90

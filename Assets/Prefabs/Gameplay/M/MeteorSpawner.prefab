@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1273522578055019131}
   - component: {fileID: 9165221861623412820}
   - component: {fileID: 3988802603087289639}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: MeteorSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,6 +54,7 @@ MonoBehaviour:
   indicatorPrefab: {fileID: 377513300417221689, guid: 12b4f85e435f6724caff1746c0d23c40, type: 3}
   initialMeteorPoolSize: 10
   initialIndicatorPoolSize: 5
+  spawnerGroup: {fileID: 0}
 --- !u!65 &3988802603087289639
 BoxCollider:
   m_ObjectHideFlags: 0
