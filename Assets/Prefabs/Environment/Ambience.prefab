@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 9194005620507825549}
   - component: {fileID: 1746792786674580046}
+  - component: {fileID: 178750212908519011}
+  - component: {fileID: 2321647499334910688}
   m_Layer: 0
   m_Name: Ambience
   m_TagString: Untagged
@@ -115,6 +117,46 @@ AudioSource:
     m_PostInfinity: 2
     m_RotationOrder: 4
   reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &178750212908519011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2570244737477526701}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 006244eec6180d7488db9a4c54f447d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  muffledCutoff: 500
+  normalCutoff: 22000
+  channel: {fileID: 11400000, guid: 17ca540ecbc3e4a438b882830fb979f2, type: 2}
+--- !u!169 &2321647499334910688
+AudioLowPassFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2570244737477526701}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_LowpassResonanceQ: 1
+  lowpassLevelCustomCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
