@@ -16,6 +16,12 @@ public class WallLaserEmitter : MonoBehaviour
 
     [Header("Debug")]
     [SerializeField] private bool drawDebugRay;
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip laserStartSFX;
+    [SerializeField] private AudioClip laserStopSFX;
+    [SerializeField] private AudioClip laserLoopSFX;
+    private bool laserLoop = false;
 
     private readonly List<Vector3> beamPoints = new();
     private LineRenderer lineRenderer;
@@ -32,6 +38,13 @@ public class WallLaserEmitter : MonoBehaviour
         if (!isActive)
         {
             lineRenderer.positionCount = 0;
+            if (laserLoop)
+            {
+                if (audioSource != null && audioSource.isPlaying && audioSource.clip == laserLoopSFX)
+                    audioSource.Stop();
+                PlaySound(laserStopSFX);
+                laserLoop = false;
+            }
             return;
         }
 
@@ -48,7 +61,17 @@ public class WallLaserEmitter : MonoBehaviour
             lineRenderer.positionCount = 0;
             return;
         }
-
+        if (isActive)
+        {
+        PlaySound(laserStartSFX);
+            if (audioSource != null && laserLoopSFX != null)
+            {
+                audioSource.clip = laserLoopSFX;
+                audioSource.loop = true;
+                audioSource.Play();
+            }
+        }
+        laserLoop = active;
         TraceBeam();
     }
 
@@ -60,7 +83,13 @@ public class WallLaserEmitter : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.useWorldSpace = true;
     }
-
+    private void PlaySound(AudioClip sound)
+    {
+        if (sound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(sound);
+        }
+    }
     private void TraceBeam()
     {
         beamPoints.Clear();
