@@ -339,8 +339,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72ceff76c6ea4bce94628e00a28a1339, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LaserActivatorAfterEnemiesDefeated
-  resetChannel: {fileID: 0}
-  area: {fileID: 0}
+  resetChannel: {fileID: 11400000, guid: 7b03292574597408a8eb335901f5c93c, type: 2}
+  area: {fileID: 11400000, guid: cd6a4ded4f6a12544964a762a62af577, type: 2}
   enemyDeathChannel: {fileID: 11400000, guid: 3bad0aff43bbf734c81ac68a3d2f0f09, type: 2}
   enemiesToDefeat:
   - {fileID: 0}

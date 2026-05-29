@@ -28,7 +28,7 @@ public class Meteor : MonoBehaviour
     {
         if (!isFalling) return;
         transform.position += Vector3.down * fallSpeed * Time.deltaTime;
-        Debug.Log($"Position Y: {transform.position.y}");
+        //Debug.Log($"Position Y: {transform.position.y}");
         if (transform.position.y <= targetGroundPoint.y)
             ReturnToPool();
     }
@@ -36,7 +36,7 @@ public class Meteor : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Trigger")|| other.gameObject.layer == LayerMask.NameToLayer("Liquid")) return;
 
-        Debug.Log($"OnTriggerEnter with: {other.name}, layer: {other.gameObject.layer} ({LayerMask.LayerToName(other.gameObject.layer)})");
+        //Debug.Log($"OnTriggerEnter with: {other.name}, layer: {other.gameObject.layer} ({LayerMask.LayerToName(other.gameObject.layer)})");
         if (!other.CompareTag("Player"))
         {
             if (hitSFX != null && audioSource != null)
