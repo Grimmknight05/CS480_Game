@@ -7,7 +7,7 @@ public class WallLaserEmitter : MonoBehaviour
 {
     [Header("Beam")]
     [SerializeField] private Transform laserOrigin;
-    [SerializeField] private bool isActive = true;
+    [SerializeField] private bool isActive = false;
     [SerializeField] private float maxDistance = 60f;
     [SerializeField] private int maxRedirects = 4;
     [SerializeField] private LayerMask hitMask = ~0;
@@ -21,8 +21,8 @@ public class WallLaserEmitter : MonoBehaviour
     [SerializeField] private AudioClip laserStartSFX;
     [SerializeField] private AudioClip laserStopSFX;
     [SerializeField] private AudioClip laserLoopSFX;
-    private bool laserLoop = false;
-
+    //private bool laserLoop = false;
+    private bool wasActiveLastFrame;
     private readonly List<Vector3> beamPoints = new();
     private LineRenderer lineRenderer;
 
@@ -31,48 +31,87 @@ public class WallLaserEmitter : MonoBehaviour
     private void Awake()
     {
         EnsureLineRenderer();
+        wasActiveLastFrame = isActive;
+    }
+    private void Start()
+    {
+        // Apply initial state
+        if (isActive)
+            ActivateLaser();
+        else
+            DeactivateLaser();
     }
 
     private void Update()
     {
+        if (isActive != wasActiveLastFrame)
+        {
+            if (isActive)
+                ActivateLaser();
+            else
+                DeactivateLaser();
+            wasActiveLastFrame = isActive;
+        }
+
         if (!isActive)
         {
             lineRenderer.positionCount = 0;
-            if (laserLoop)
-            {
-                if (audioSource != null && audioSource.isPlaying && audioSource.clip == laserLoopSFX)
-                    audioSource.Stop();
-                PlaySound(laserStopSFX);
-                laserLoop = false;
-            }
             return;
         }
 
         TraceBeam();
     }
+    private void ActivateLaser()
+    {
+        // Stop any leftover loop before starting a new one
+        StopLoopSound();
+        
+        // Play start one-shot
+        PlayOneShot(laserStartSFX);
+        
+        // Start the looping sound
+        if (audioSource != null && laserLoopSFX != null)
+        {
+            Debug.Log("Laserloop");
+            audioSource.clip = laserLoopSFX;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+        
+        // Immediately trace the beam so the laser appears
+        TraceBeam();
+    }
+
+    private void DeactivateLaser()
+    {
+        // Stop the loop sound
+        StopLoopSound();
+        
+        // Play stop one-shot
+        PlayOneShot(laserStopSFX);
+        
+        // Clear the line renderer
+        lineRenderer.positionCount = 0;
+    }
+    private void StopLoopSound()
+    {
+        if (audioSource == null) return;
+        if (audioSource.isPlaying && audioSource.loop)
+            audioSource.Stop();
+        audioSource.clip = null;
+        audioSource.loop = false;
+    }
+
+    private void PlayOneShot(AudioClip clip)
+    {
+        if (clip != null && audioSource != null)
+            audioSource.PlayOneShot(clip);
+    }
 
     public void SetActive(bool active)
     {
-        isActive = active;
-        EnsureLineRenderer();
-
-        if (!isActive)
-        {
-            lineRenderer.positionCount = 0;
-            return;
-        }
-        if (isActive)
-        {
-        PlaySound(laserStartSFX);
-            if (audioSource != null && laserLoopSFX != null)
-            {
-                audioSource.clip = laserLoopSFX;
-                audioSource.loop = true;
-                audioSource.Play();
-            }
-        }
-        laserLoop = active;
-        TraceBeam();
+        if (isActive == active) return;   // no change
+            isActive = active;
     }
 
     private void EnsureLineRenderer()
@@ -82,13 +121,6 @@ public class WallLaserEmitter : MonoBehaviour
 
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.useWorldSpace = true;
-    }
-    private void PlaySound(AudioClip sound)
-    {
-        if (sound != null && audioSource != null)
-        {
-            audioSource.PlayOneShot(sound);
-        }
     }
     private void TraceBeam()
     {

@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 33823310613707312}
   - component: {fileID: 23730838014588458}
   - component: {fileID: 8638590893653304716}
-  - component: {fileID: 483267409808245590}
-  - component: {fileID: 1404071043421198565}
-  - component: {fileID: 7481715705433892116}
+  - component: {fileID: 3609113552416172356}
+  - component: {fileID: 237376042800378822}
+  - component: {fileID: 6266142973386364422}
   m_Layer: 0
   m_Name: BlockSpike01D
   m_TagString: Untagged
@@ -191,7 +191,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!120 &483267409808245590
+--- !u!120 &3609113552416172356
 LineRenderer:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -301,7 +301,7 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
---- !u!114 &1404071043421198565
+--- !u!114 &237376042800378822
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -327,7 +327,7 @@ MonoBehaviour:
   laserStartSFX: {fileID: 8300000, guid: 898e3597438829f48987b7d8506c6796, type: 3}
   laserStopSFX: {fileID: 8300000, guid: 9ed17a99bbbc53e46843e8207bf1c3a3, type: 3}
   laserLoopSFX: {fileID: 8300000, guid: aadcefc0cc554c84cb0e36d2426bfffc, type: 3}
---- !u!114 &7481715705433892116
+--- !u!114 &6266142973386364422
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -348,6 +348,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  laserToActivate: {fileID: 1404071043421198565}
+  laserToActivate: {fileID: 237376042800378822}
   objectsToEnableWithLaser: []
   deactivateLaserOnStart: 1
