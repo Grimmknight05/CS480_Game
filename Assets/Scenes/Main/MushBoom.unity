@@ -1337,6 +1337,7 @@ MonoBehaviour:
   dialogue: {fileID: 11400000, guid: f6f9fb09afb0742b59f141322941b96e, type: 2}
   startChannel: {fileID: 11400000, guid: 63eb2f358c2644f718e1bbb1b8dc25fa, type: 2}
   endedChannel: {fileID: 11400000, guid: b5e30c45ee0c145d48f736706cdf110f, type: 2}
+  resetChannel: {fileID: 0}
   playerTag: Player
   requireEnter: 1
   requireInteract: 0
@@ -1379,7 +1380,7 @@ PrefabInstance:
     - target: {fileID: 3081970182308503126, guid: c5bde39afbf164476865332a750c5fb0, type: 3}
       propertyPath: dialogue
       value: 
-      objectReference: {fileID: 11400000, guid: 260931e0d340a4118b7b894e780688b4, type: 2}
+      objectReference: {fileID: 11400000, guid: f3ddaa0dc118c4e60a7007140a54f358, type: 2}
     - target: {fileID: 3081970182308503126, guid: c5bde39afbf164476865332a750c5fb0, type: 3}
       propertyPath: requireInteract
       value: 0
@@ -2206,6 +2207,12 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   openVFX: {fileID: 0}
+  debugMode: 0
+  linkedDoorsToForceOpenOnForceClose: []
+  audioSource: {fileID: 0}
+  openSound: {fileID: 0}
+  closeSound: {fileID: 0}
+  atPosSound: {fileID: 0}
 --- !u!1 &136903018
 GameObject:
   m_ObjectHideFlags: 0
@@ -3729,6 +3736,12 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   openVFX: {fileID: 0}
+  debugMode: 0
+  linkedDoorsToForceOpenOnForceClose: []
+  audioSource: {fileID: 0}
+  openSound: {fileID: 0}
+  closeSound: {fileID: 0}
+  atPosSound: {fileID: 0}
 --- !u!4 &210941308 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5719520922627312922, guid: 263f665f6f27edc47898f10548c63b7a, type: 3}
@@ -8282,6 +8295,12 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   openVFX: {fileID: 0}
+  debugMode: 0
+  linkedDoorsToForceOpenOnForceClose: []
+  audioSource: {fileID: 0}
+  openSound: {fileID: 0}
+  closeSound: {fileID: 0}
+  atPosSound: {fileID: 0}
 --- !u!1001 &490970607
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24162,6 +24181,7 @@ MonoBehaviour:
   bodyLineSpacing: 0
   useOutline: 1
   outlineColor: {r: 0.101960786, g: 0.12156863, b: 0.3019608, a: 1}
+  outlineMaterial: {fileID: 0}
   outlineWidth: 0.18
   useSpeakerGradient: 1
   speakerGradientTop: {r: 1, g: 1, b: 1, a: 1}
@@ -33557,6 +33577,12 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   openVFX: {fileID: 0}
+  debugMode: 0
+  linkedDoorsToForceOpenOnForceClose: []
+  audioSource: {fileID: 0}
+  openSound: {fileID: 0}
+  closeSound: {fileID: 0}
+  atPosSound: {fileID: 0}
 --- !u!1 &1410066674
 GameObject:
   m_ObjectHideFlags: 0
@@ -47133,6 +47159,9 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  audioSource: {fileID: 0}
+  enemySpawnSFX: {fileID: 0}
+  BossDefeatedSFX: {fileID: 0}
   OnBossStartEvent:
     m_PersistentCalls:
       m_Calls:

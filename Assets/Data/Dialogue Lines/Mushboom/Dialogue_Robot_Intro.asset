@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DialogueSO
   lines:
   - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
-    text: 'Diagnostics complete. Motor functions optimal. Assessing terrain damage...
+    text: 'Diagnostics complete.  Assessing terrain damage...
 
-      (Press
-      E to continue)'
+      (Press E to
+      continue)'
     autoAdvanceDelay: 0
   - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
     text: "Are you a\u2026human? I haven\u2019t seen one on this world in a very
@@ -30,7 +30,10 @@ MonoBehaviour:
     text: Press [SPACE] to jump and [E] to interact with terminals like me.
     autoAdvanceDelay: 0
   - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
-    text: Good Luck out there, astronout.
+    text: Finally, press [Q] to switch your active tool. They'll both come in handy.
+    autoAdvanceDelay: 0
+  - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
+    text: Good luck out there Astronaut.
     autoAdvanceDelay: 0
   playOnce: 1
   retriggerCooldown: 5
