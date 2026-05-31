@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e77206a52ab94f2ba951b2670e9efed, type: 3}
+  m_Name: SecondAreaRobot2
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueSO
+  lines:
+  - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
+    text: 'We know not what we do. '
+    autoAdvanceDelay: 0
+  - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
+    text: 'The haze of the red light blinds us.. '
+    autoAdvanceDelay: 0
+  - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
+    text: 'Yet, you must not continue forward. It is not safe. '
+    autoAdvanceDelay: 0
+  playOnce: 1
+  retriggerCooldown: 5

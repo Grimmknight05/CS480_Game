@@ -35,6 +35,10 @@ public class DialogueTrigger : MonoBehaviour
              "starts when the conversation finishes.")]
     [SerializeField] private DialogueEndedChannelSO endedChannel;
 
+    [Tooltip("Level reset channel. On raise (death → Continue), this NPC's one-shot " +
+             "dialogue state is re-armed so it can be talked to again after respawn.")]
+    [SerializeField] private LevelResetChannelSO resetChannel;
+
     [Header("Detection")]
     [Tooltip("Tag of the player collider that should activate this trigger.")]
     [SerializeField] private string playerTag = "Player";
@@ -89,6 +93,10 @@ public class DialogueTrigger : MonoBehaviour
         {
             endedChannel.OnRaised += HandleDialogueEnded;
         }
+        if (resetChannel != null)
+        {
+            resetChannel.OnRaised += HandleLevelReset;
+        }
         InteractionInputBridge.OnInteractPressed += HandleInteractPressed;
     }
 
@@ -97,6 +105,10 @@ public class DialogueTrigger : MonoBehaviour
         if (endedChannel != null)
         {
             endedChannel.OnRaised -= HandleDialogueEnded;
+        }
+        if (resetChannel != null)
+        {
+            resetChannel.OnRaised -= HandleLevelReset;
         }
         InteractionInputBridge.OnInteractPressed -= HandleInteractPressed;
         HidePrompt();
@@ -220,6 +232,30 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 
+    // Re-arm one-shot state on a level reset (death → Continue) so this NPC can be
+    // talked to again. Any door it opens after its first dialogue (e.g. the L2_A1 trap
+    // door) will reopen once the conversation is replayed and completed.
+    private void HandleLevelReset()
+    {
+        hasPlayedOnce = false;
+        firstDialogueCompletionFired = false;
+        isActive = false;            // defensive: cleared if the player died mid-dialogue
+        cooldownEndsAt = 0f;
+
+        // Return the door this NPC opens (e.g. the L2_A1 trap door) to its closed state.
+        // Without this, the door's isOpen stays true and the re-played dialogue's Open()
+        // call short-circuits, so the door would never reopen on Continue.
+        doorToMoveAfterFirstDialogue?.ResetToClosed();
+
+        ShowFirstInteractionIcon();  // restore the icon hidden after the first run
+
+        // If interact-gated and the player is still standing in the trigger, re-show prompt.
+        if (requireInteract && playerInRange && CanPlay())
+        {
+            ShowPrompt();
+        }
+    }
+
     private void ShowPrompt()
     {
         if (promptChannel == null) return;
@@ -243,6 +279,15 @@ public class DialogueTrigger : MonoBehaviour
             return;
 
         icon.SetActive(false);
+    }
+
+    private void ShowFirstInteractionIcon()
+    {
+        GameObject icon = ResolveFirstInteractionIcon();
+        if (icon == null)
+            return;
+
+        icon.SetActive(true);
     }
 
     private GameObject ResolveFirstInteractionIcon()

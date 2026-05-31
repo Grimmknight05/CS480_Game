@@ -135,4 +135,15 @@ public class DoorLerp : ResettableBehaviour
     {
         if (isOpen) Close();
     }
+
+    // Unconditionally return the door to its closed state and clear isOpen, with no
+    // linked-door side effects. Used by the controller that opened it (e.g. a
+    // DialogueTrigger) to guarantee a clean pre-trigger state on level reset, even if
+    // isOpen has desynced or this door's own reset channel/area gate skipped it.
+    public void ResetToClosed()
+    {
+        isOpen = false;
+        Log($"ResetToClosed -> {closedLocalPos}");
+        StartLerp(closedLocalPos);
+    }
 }
