@@ -7,6 +7,7 @@ public class LevelSelectUI : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private LevelManager levelManager;
+    [SerializeField] private PlayerSessionData sessionData;
     [SerializeField] private GameObject buttonPrefab;
     [SerializeField] private Transform buttonContainer;
 
@@ -68,8 +69,13 @@ public class LevelSelectUI : MonoBehaviour
                 continue;
             }
 
-            // Set button text
+            // Determine whether this world's prerequisites are met
+            bool unlocked = world.IsUnlocked(sessionData);
+
+            // Set button text (append a lock hint when locked)
             string displayText = string.Format(buttonTextFormat, world.displayName);
+            if (!unlocked)
+                displayText += " 🔒";
             Debug.Log($"Setting text for {world.displayName} to '{displayText}'");
 
             // Find all TMP components in the button hierarchy
@@ -87,14 +93,20 @@ public class LevelSelectUI : MonoBehaviour
                 Debug.LogError($"No TextMeshProUGUI found in button prefab '{btnObj.name}'. Check prefab hierarchy.");
             }
 
-            // CRITICAL: capture the variable inside the loop
-            WorldSO capturedWorld = world;
-            btn.onClick.AddListener(() =>
+            // Greyed out / non-interactable when locked (Unity's disabled tint handles visuals)
+            btn.interactable = unlocked;
+
+            if (unlocked)
             {
-                Debug.Log($"Loading world: {capturedWorld.displayName}");
-                CursorHelper.Lock();
-                levelManager.LoadWorld(capturedWorld, false);
-            });
+                // CRITICAL: capture the variable inside the loop
+                WorldSO capturedWorld = world;
+                btn.onClick.AddListener(() =>
+                {
+                    Debug.Log($"Loading world: {capturedWorld.displayName}");
+                    CursorHelper.Lock();
+                    levelManager.LoadWorld(capturedWorld, false);
+                });
+            }
 
             buttonCount++;
         }

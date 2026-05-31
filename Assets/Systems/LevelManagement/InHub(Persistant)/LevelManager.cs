@@ -72,6 +72,13 @@ public class LevelManager : MonoBehaviour
         if (world == null) return;
         if (isLoading) { Debug.Log("Already loading, queueing"); return; }
 
+        // Defense-in-depth: refuse to load a locked non-hub world even if a caller bypasses the UI.
+        if (!world.isHubWorld && !world.IsUnlocked(playerSession))
+        {
+            Debug.Log($"LevelManager: '{world.displayName}' is locked.");
+            return;
+        }
+
         if (!keepCheckpoint)
             Session.ClearCheckpoint();
 

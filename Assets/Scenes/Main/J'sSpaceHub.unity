@@ -3637,6 +3637,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelSelectUI
   levelManager: {fileID: 971033212}
+  sessionData: {fileID: 11400000, guid: 993da1493da4b4972ac31d4842ffec31, type: 2}
   buttonPrefab: {fileID: 6515696698273465393, guid: 53f526b9c7083a44a808b4db9f003d8c, type: 3}
   buttonContainer: {fileID: 317638635}
   useTextMeshPro: 0

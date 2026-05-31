@@ -22,3 +22,5 @@ MonoBehaviour:
   customGravity: {x: 0, y: 0, z: 0}
   defaultMovementMode: 0
   overrideMovementMode: 0
+  prerequisiteWorlds:
+  - {fileID: 11400000, guid: 4e0989e8afabb5240978afb28af265e7, type: 2}

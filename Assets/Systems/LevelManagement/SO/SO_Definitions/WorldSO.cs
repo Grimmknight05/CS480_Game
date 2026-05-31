@@ -21,13 +21,32 @@ public class WorldSO : ScriptableObject
     public MovementMode defaultMovementMode = MovementMode.AccelerationBased;
     public bool overrideMovementMode = false; // if false, keep prefab's default
 
+    [Header("Progression")]
+    [Tooltip("This world stays locked until every world listed here is completed.")]
+    public WorldSO[] prerequisiteWorlds;
+
+    // Returns true if all prerequisite worlds have been completed in the session.
+    public bool IsUnlocked(PlayerSessionData session)
+    {
+        if (prerequisiteWorlds == null || prerequisiteWorlds.Length == 0)
+            return true;
+        if (session == null)
+            return false;
+
+        foreach (WorldSO prerequisite in prerequisiteWorlds)
+        {
+            if (prerequisite != null && !session.IsWorldCompleted(prerequisite))
+                return false;
+        }
+        return true;
+    }
+
     // Called when level is completed
     public virtual void OnLevelComplete(PlayerSessionData session)
     {
-        // Override in derived SOs for custom logic
-        // e.g., update session progress, unlock next level
-        //session.SetCheckpoint(defaultSpawnPoint); // example
-        //session.completedLevels.Add(this.sceneName);
+        // Record this world as completed so dependent worlds unlock.
+        // Override in derived SOs for additional custom logic (call base first).
+        session?.CompleteWorld(this);
     }
 
     // Called before loading this world (optional setup)
