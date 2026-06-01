@@ -160,6 +160,7 @@ MonoBehaviour:
   linkedDoorsToForceOpenOnForceClose: []
   audioSource: {fileID: 4120071761025683379}
   openSound: {fileID: 8300000, guid: d453fbd9bca7d324ba6818ef3f9ff1b1, type: 3}
+  moveLoopSound: {fileID: 8300000, guid: bca6e5c8a0ab03440bd213926f942d14, type: 3}
   closeSound: {fileID: 8300000, guid: d453fbd9bca7d324ba6818ef3f9ff1b1, type: 3}
   atPosSound: {fileID: 8300000, guid: d993ee3190a9cfc4688380080efff9b2, type: 3}
 --- !u!82 &4120071761025683379

@@ -12,6 +12,7 @@ public class DoorLerp : ResettableBehaviour
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip openSound;
+    [SerializeField] private AudioClip moveLoopSound;
     [SerializeField] private AudioClip closeSound; 
     [SerializeField] private AudioClip atPosSound; 
     private Vector3 closedLocalPos;
@@ -82,12 +83,23 @@ public class DoorLerp : ResettableBehaviour
 
     void StartLerp(Vector3 target, System.Action onComplete = null)
     {
-        if (running != null) StopCoroutine(running);
+        if (running != null)
+        {
+            StopCoroutine(running);
+            if (audioSource != null && audioSource.isPlaying)
+                audioSource.Stop();
+        }
         running = StartCoroutine(LerpTo(target, onComplete));
     }
 
     IEnumerator LerpTo(Vector3 target, System.Action onComplete)
     {
+        if (audioSource != null && moveLoopSound != null)
+        {
+            audioSource.clip = moveLoopSound;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
         Vector3 start = transform.localPosition;
         float t = 0f;
         while (t < duration)
@@ -99,6 +111,9 @@ public class DoorLerp : ResettableBehaviour
         }
         transform.localPosition = target;
         running = null;
+        // Stop looping movement sound
+        if (audioSource != null && audioSource.isPlaying && audioSource.clip == moveLoopSound)
+            audioSource.Stop();
         Log($"Reached target {target}");
         PlaySound(atPosSound);
         onComplete?.Invoke();
