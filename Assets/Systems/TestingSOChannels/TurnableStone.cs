@@ -30,6 +30,13 @@ public class TurnableStone : ResettableBehaviour
     public UnityEvent onInteract;   
     [Header("Stone Reference")]
     [SerializeField] private string stoneID;
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource loopSource;
+    [SerializeField] private AudioClip interactionSound;      // Played when Interact() is called
+    [SerializeField] private AudioClip slidingLoop;           // Played while rotating (loop)
+    [SerializeField] private AudioClip incrementSound;        // Played after each completed 90° tur
+    [SerializeField] private AudioClip lockDispelled;
     
     [Header("Debug")]
     [SerializeField] private bool debugMode = true;
@@ -46,9 +53,15 @@ public class TurnableStone : ResettableBehaviour
     public string StoneID => stoneID;
     private bool initialPlayerLock;
     private bool initialInputLock;
+
     
     private void Start()
     {
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
+        if (loopSource == null)
+            loopSource = gameObject.AddComponent<AudioSource>();
+            
         initialRotationY = transform.eulerAngles.y;//Gets the current rotation
         currentRotation = 0f;//Intialized both currentRotation and targetRotation to 0
         targetRotation = 0f;
@@ -67,6 +80,7 @@ public class TurnableStone : ResettableBehaviour
     {
         if (Inputlock || Playerlock) return; // If either lock dont let player rotate
         onInteract?.Invoke();
+        safelyPlayOneShot(interactionSound);
         setTargetRot();
     }
     public void InteractBypassPlayerLock()
@@ -77,21 +91,25 @@ public class TurnableStone : ResettableBehaviour
     public void SetPlayerLock(bool state)
     {
         Playerlock = state;
+        if (state == false){safelyPlayOneShot(lockDispelled);}
         SetLockVisablity();
     }
     public void SetInputLock(bool state)
     {
         Inputlock = state;
+        if (state == false){safelyPlayOneShot(lockDispelled);}
         SetLockVisablity();
     }
     public void ToggleInputLock()
     {
         Inputlock = !Inputlock;
+        if (Inputlock == false){safelyPlayOneShot(lockDispelled);}
         SetLockVisablity();
     }
     public void TogglePlayerLock()
     {
-        Inputlock = !Inputlock;
+        Playerlock = !Playerlock;
+        if (Playerlock == false){safelyPlayOneShot(lockDispelled);}
         SetLockVisablity();
     }
     public void SetLockVisablity()
@@ -102,6 +120,11 @@ public class TurnableStone : ResettableBehaviour
         InputlockVisual.SetActive(Inputlock);
         if (debugMode)
             Debug.Log($"[TurnableStone] {stoneID} Inputlock: {Inputlock}");
+    }
+    public void safelyPlayOneShot(AudioClip audioClip)
+    {
+        if (audioSource != null && audioClip != null)
+            audioSource.PlayOneShot(audioClip);
     }
     public void setTargetRot()
     {
@@ -122,6 +145,15 @@ public class TurnableStone : ResettableBehaviour
 
     private void SetNext90DegreeTarget()
     {
+        // Start sliding loop if not already playing
+        if (loopSource != null && slidingLoop != null && !isRotating)
+        {
+            loopSource.clip = slidingLoop;
+            loopSource.loop = true;
+            loopSource.Play();
+            if (debugMode)
+                Debug.Log($"[TurnableStone] {stoneID} started sliding loop.");
+        }
         // Safely add exactly 90 degrees to our CURRENT physical rotation
         targetRotation = currentRotation + 90f; 
         isRotating = true;
@@ -162,6 +194,8 @@ public class TurnableStone : ResettableBehaviour
                 {
                     Debug.LogWarning($"[TurnableStone] {stoneID} completed turn but is missing a state channel or ActivatorID.", this);
                 }
+                // Play the 90-degree increment sound
+                safelyPlayOneShot(incrementSound);
             }
 
             // We finished one turn. Remove it from the queue.
@@ -179,6 +213,13 @@ public class TurnableStone : ResettableBehaviour
                 // Normalize the underlying math variables so they don't climb to infinity
                 currentRotation = Mathf.Repeat(currentRotation, 360f);
                 targetRotation = currentRotation; 
+
+                if (loopSource != null && loopSource.isPlaying && loopSource.clip == slidingLoop)
+                {
+                    loopSource.Stop();
+                    if (debugMode)
+                        Debug.Log($"[TurnableStone] {stoneID} stopped sliding loop.");
+                }
             }
             
             // Apply final physical transform
@@ -205,6 +246,8 @@ public class TurnableStone : ResettableBehaviour
         // Stop any ongoing rotation
         isRotating = false;
         currentQueuedTurns = 0;
+        if (audioSource != null && audioSource.isPlaying)
+            audioSource.Stop();
         // Reset rotation offset to 0
         currentRotation = 0f;
         targetRotation = 0f;

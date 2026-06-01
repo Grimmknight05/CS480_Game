@@ -32,14 +32,13 @@ public class WallLaserEmitter : MonoBehaviour
     {
         EnsureLineRenderer();
         wasActiveLastFrame = isActive;
+        
     }
     private void Start()
     {
         // Apply initial state
         if (isActive)
             ActivateLaser();
-        else
-            DeactivateLaser();
     }
 
     private void Update()
