@@ -152,22 +152,24 @@ public class DialogueRunner : MonoBehaviour
     {
         string text = line.text ?? string.Empty;
 
-        if (ui != null) ui.SetLine(string.Empty);
+        // Set the full line once so TMP auto-sizing settles on its final point size up front,
+        // then reveal left-to-right via maxVisibleCharacters. This keeps the font size stable
+        // during the typewriter (no per-character resize jitter) and avoids per-char string
+        // allocation + mesh rebuilds.
+        if (ui != null) ui.SetLineInstant(text);
 
         if (charactersPerSecond <= 0f || text.Length == 0)
         {
-            if (ui != null) ui.SetLine(text);
+            if (ui != null) ui.SetVisibleCharacters(text.Length);
             FinishReveal();
             yield break;
         }
 
         float secondsPerChar = 1f / charactersPerSecond;
-        var sb = new System.Text.StringBuilder(text.Length);
 
         for (int i = 0; i < text.Length; i++)
         {
-            sb.Append(text[i]);
-            if (ui != null) ui.SetLine(sb.ToString());
+            if (ui != null) ui.SetVisibleCharacters(i + 1);
 
             if (speaker != null && speaker.TypingBlip != null && !char.IsWhiteSpace(text[i]))
             {
@@ -191,7 +193,11 @@ public class DialogueRunner : MonoBehaviour
         if (active != null && lineIndex >= 0 && lineIndex < active.LineCount)
         {
             string text = active.Lines[lineIndex].text ?? string.Empty;
-            if (ui != null) ui.SetLine(text);
+            if (ui != null)
+            {
+                ui.SetLineInstant(text);
+                ui.SetVisibleCharacters(text.Length);
+            }
         }
 
         FinishReveal();
