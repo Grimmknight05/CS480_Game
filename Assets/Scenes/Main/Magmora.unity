@@ -3745,9 +3745,9 @@ MonoBehaviour:
   m_fontSize: 36
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 21.6
+  m_fontSizeMax: 36
   m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
@@ -3761,7 +3761,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 3
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -5206,6 +5206,13 @@ MonoBehaviour:
     startMaterial: {fileID: 2100000, guid: f00dc7289f38d054b97879d3603ec2e0, type: 2}
     targetMaterial: {fileID: 2100000, guid: 42dee58d74b78e743a18758be86050c4, type: 2}
     state: 0
+  autoEmissionBlink: 0
+  blinkEmissionColor: {r: 0, g: 1, b: 0, a: 1}
+  minEmission: 0.1
+  maxEmission: 2.5
+  emissionBlinkSpeed: 1.25
+  includeChildRenderers: 1
+  blinkOnlyMaterials: []
 --- !u!23 &671789360 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 1850203545226012804, guid: e5897448b2b6a4a09939be782960d867, type: 3}
@@ -5690,6 +5697,13 @@ MonoBehaviour:
     startMaterial: {fileID: 2100000, guid: f00dc7289f38d054b97879d3603ec2e0, type: 2}
     targetMaterial: {fileID: 2100000, guid: 42dee58d74b78e743a18758be86050c4, type: 2}
     state: 0
+  autoEmissionBlink: 0
+  blinkEmissionColor: {r: 0, g: 1, b: 0, a: 1}
+  minEmission: 0.1
+  maxEmission: 2.5
+  emissionBlinkSpeed: 1.25
+  includeChildRenderers: 1
+  blinkOnlyMaterials: []
 --- !u!1 &719383643
 GameObject:
   m_ObjectHideFlags: 0
@@ -7197,6 +7211,7 @@ MonoBehaviour:
   linkedDoorsToForceOpenOnForceClose: []
   audioSource: {fileID: 0}
   openSound: {fileID: 0}
+  moveLoopSound: {fileID: 0}
   closeSound: {fileID: 0}
   atPosSound: {fileID: 0}
 --- !u!1001 &960786730
@@ -7975,6 +7990,13 @@ MonoBehaviour:
     startMaterial: {fileID: 0}
     targetMaterial: {fileID: 2100000, guid: 42dee58d74b78e743a18758be86050c4, type: 2}
     state: 0
+  autoEmissionBlink: 0
+  blinkEmissionColor: {r: 0, g: 1, b: 0, a: 1}
+  minEmission: 0.1
+  maxEmission: 2.5
+  emissionBlinkSpeed: 1.25
+  includeChildRenderers: 1
+  blinkOnlyMaterials: []
 --- !u!23 &1065483017 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 1437828668290411173, guid: ae0d158be0b5b374abc024e67718a92b, type: 3}
@@ -8900,7 +8922,7 @@ PrefabInstance:
     - target: {fileID: 8987297983015799239, guid: 13b69eb9482cb9249a15b01e479432dd, type: 3}
       propertyPath: defaultSpawnSO
       value: 
-      objectReference: {fileID: 11400000, guid: 04068743f80e6b7408b3a92a63bdb15e, type: 2}
+      objectReference: {fileID: 11400000, guid: 73d635ce082db2642bb0aa5dd2656fa0, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9111,6 +9133,7 @@ MonoBehaviour:
   linkedDoorsToForceOpenOnForceClose: []
   audioSource: {fileID: 0}
   openSound: {fileID: 0}
+  moveLoopSound: {fileID: 0}
   closeSound: {fileID: 0}
   atPosSound: {fileID: 0}
 --- !u!1 &1171878091
@@ -9967,6 +9990,7 @@ MonoBehaviour:
   - {fileID: 207463137}
   audioSource: {fileID: 1251254841}
   openSound: {fileID: 8300000, guid: d453fbd9bca7d324ba6818ef3f9ff1b1, type: 3}
+  moveLoopSound: {fileID: 0}
   closeSound: {fileID: 8300000, guid: d993ee3190a9cfc4688380080efff9b2, type: 3}
   atPosSound: {fileID: 8300000, guid: bb1b7c83bd9da9a4492920a1cb05005b, type: 3}
 --- !u!82 &1251254841 stripped
@@ -12165,9 +12189,9 @@ MonoBehaviour:
   m_fontSize: 25
   m_fontSizeBase: 25
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 15.000001
+  m_fontSizeMax: 25
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
@@ -12181,7 +12205,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 3
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -14368,6 +14392,7 @@ MonoBehaviour:
   linkedDoorsToForceOpenOnForceClose: []
   audioSource: {fileID: 0}
   openSound: {fileID: 0}
+  moveLoopSound: {fileID: 0}
   closeSound: {fileID: 0}
   atPosSound: {fileID: 0}
 --- !u!1001 &1812801127
@@ -14675,6 +14700,7 @@ MonoBehaviour:
   linkedDoorsToForceOpenOnForceClose: []
   audioSource: {fileID: 0}
   openSound: {fileID: 0}
+  moveLoopSound: {fileID: 0}
   closeSound: {fileID: 0}
   atPosSound: {fileID: 0}
 --- !u!1001 &1849455738
@@ -14856,6 +14882,13 @@ MonoBehaviour:
     startMaterial: {fileID: 2100000, guid: c60371428080ad84981b8dbb86ee63fa, type: 2}
     targetMaterial: {fileID: 2100000, guid: 42dee58d74b78e743a18758be86050c4, type: 2}
     state: 0
+  autoEmissionBlink: 0
+  blinkEmissionColor: {r: 0, g: 1, b: 0, a: 1}
+  minEmission: 0.1
+  maxEmission: 2.5
+  emissionBlinkSpeed: 1.25
+  includeChildRenderers: 1
+  blinkOnlyMaterials: []
 --- !u!1 &1857821024
 GameObject:
   m_ObjectHideFlags: 0
@@ -16250,6 +16283,11 @@ MonoBehaviour:
   useSpeakerGradient: 1
   speakerGradientTop: {r: 0.95, g: 0.96, b: 0.98, a: 1}
   speakerGradientBottom: {r: 0.56, g: 0.6, b: 0.66, a: 1}
+  enableAutoSize: 1
+  autoSizeMinFactor: 0.6
+  enforceCanvasScaler: 1
+  referenceResolution: {x: 1920, y: 1080}
+  matchWidthOrHeight: 0.5
 --- !u!114 &2048261278
 MonoBehaviour:
   m_ObjectHideFlags: 0
