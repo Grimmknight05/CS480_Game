@@ -81,6 +81,12 @@ public class HolographicInteractableIcon : MonoBehaviour
         RefreshVisuals();
     }
 
+    public void SetLabel(string label)
+    {
+        keyLabel = string.IsNullOrWhiteSpace(label) ? "E" : label;
+        RefreshVisuals();
+    }
+
     public void SetScaleMultiplier(float scaleMultiplier)
     {
         runtimeScaleMultiplier = Mathf.Max(0.01f, scaleMultiplier);
@@ -119,6 +125,9 @@ public class HolographicInteractableIcon : MonoBehaviour
         keyText.text = keyLabel;
         keyText.alignment = TextAlignmentOptions.Center;
         keyText.fontSize = 46f;
+        keyText.fontSizeMin = 18f;
+        keyText.fontSizeMax = 46f;
+        keyText.enableAutoSizing = true;
         keyText.fontStyle = FontStyles.Bold;
         keyText.raycastTarget = false;
 
