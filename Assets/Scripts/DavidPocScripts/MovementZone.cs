@@ -4,26 +4,58 @@ using UnityEngine;
 public class MovementZone : MonoBehaviour
 {
     [SerializeField] private MovementMode zoneMode;
-    private static Dictionary<PlayerControllerRefactored, MovementMode> previousModes = new Dictionary<PlayerControllerRefactored, MovementMode>();
+    private static readonly Dictionary<PlayerControllerRefactored, ZoneEntry> previousModes = new Dictionary<PlayerControllerRefactored, ZoneEntry>();
+
+    private struct ZoneEntry
+    {
+        public MovementMode PreviousMode;
+        public MovementMode ActiveMode;
+        public int OverlapCount;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        PlayerControllerRefactored player = other.GetComponent<PlayerControllerRefactored>();
-        if (player != null)
+        PlayerControllerRefactored player = other.GetComponentInParent<PlayerControllerRefactored>();
+        if (player == null)
+            return;
+
+        if (previousModes.TryGetValue(player, out ZoneEntry entry))
         {
-            if (!previousModes.ContainsKey(player))
-                previousModes[player] = player.CurrentMovementMode; // you'd need a getter
-            player.SetMovementMode(zoneMode);
+            entry.OverlapCount++;
+            previousModes[player] = entry;
+            return;
         }
+
+        previousModes[player] = new ZoneEntry
+        {
+            PreviousMode = player.CurrentMovementMode,
+            ActiveMode = zoneMode,
+            OverlapCount = 1
+        };
+
+        player.SetMovementMode(zoneMode);
+
+        if (zoneMode == MovementMode.ZeroGrav)
+            ZeroGInstructionHUD.Show();
     }
 
     private void OnTriggerExit(Collider other)
     {
-        PlayerControllerRefactored player = other.GetComponent<PlayerControllerRefactored>();
-        if (player != null && previousModes.TryGetValue(player, out MovementMode previous))
+        PlayerControllerRefactored player = other.GetComponentInParent<PlayerControllerRefactored>();
+        if (player == null || !previousModes.TryGetValue(player, out ZoneEntry entry))
+            return;
+
+        entry.OverlapCount--;
+        if (entry.OverlapCount > 0)
         {
-            player.SetMovementMode(previous);
-            previousModes.Remove(player);
+            previousModes[player] = entry;
+            return;
         }
+
+        player.SetMovementMode(entry.PreviousMode);
+        previousModes.Remove(player);
+
+        if (entry.ActiveMode == MovementMode.ZeroGrav)
+            ZeroGInstructionHUD.Hide();
     }
 }

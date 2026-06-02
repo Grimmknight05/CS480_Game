@@ -31,6 +31,7 @@ public class HolographicInteractableIcon : MonoBehaviour
     private TextMeshProUGUI keyText;
     private bool visible = true;
     private bool highlighted;
+    private float runtimeScaleMultiplier = 1f;
 
     private void Awake()
     {
@@ -52,7 +53,7 @@ public class HolographicInteractableIcon : MonoBehaviour
         float bob = Mathf.Sin(Time.time * bobSpeed) * bobHeight;
         float pulse = 1f + Mathf.Sin(Time.time * pulseSpeed) * pulseAmount;
         iconRoot.localPosition = localOffset + Vector3.up * bob;
-        iconRoot.localScale = Vector3.one * canvasScale * pulse;
+        iconRoot.localScale = Vector3.one * canvasScale * runtimeScaleMultiplier * pulse;
 
         if (!faceCamera)
             return;
@@ -80,6 +81,14 @@ public class HolographicInteractableIcon : MonoBehaviour
         RefreshVisuals();
     }
 
+    public void SetScaleMultiplier(float scaleMultiplier)
+    {
+        runtimeScaleMultiplier = Mathf.Max(0.01f, scaleMultiplier);
+
+        if (iconRoot != null)
+            iconRoot.localScale = Vector3.one * canvasScale * runtimeScaleMultiplier;
+    }
+
     private void BuildIconIfNeeded()
     {
         if (iconRoot != null)
@@ -95,7 +104,7 @@ public class HolographicInteractableIcon : MonoBehaviour
         iconRoot.pivot = new Vector2(0.5f, 0.5f);
         iconRoot.sizeDelta = iconSize;
         iconRoot.localPosition = localOffset;
-        iconRoot.localScale = Vector3.one * canvasScale;
+        iconRoot.localScale = Vector3.one * canvasScale * runtimeScaleMultiplier;
 
         Canvas canvas = rootObject.GetComponent<Canvas>();
         canvas.renderMode = RenderMode.WorldSpace;

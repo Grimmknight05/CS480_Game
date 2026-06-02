@@ -66,8 +66,11 @@ public class PlayerControllerRefactored : MonoBehaviour
     private Queue<ICommand> inputQueue = new Queue<ICommand>();
     private InputAction jumpAction;
     private InputAction sprintAction;
+    private InputAction crouchAction;
     public bool InputEnabled { get; private set; } = true;
     private MovementMode previousModeBeforeDialogue;
+    private bool zeroGAscendHeld;
+    private bool zeroGDescendHeld;
 
     // Abilities
     public JumpAbility jumpAbility;
@@ -130,16 +133,32 @@ public class PlayerControllerRefactored : MonoBehaviour
     }
     void OnEnable()
     {
-        var inputActions = GetComponent<PlayerInput>().actions;
-        jumpAction = inputActions.FindAction("Jump");
-        jumpAction.started += OnJumpStarted;
-        jumpAction.canceled += OnJumpCanceled;
+        if (playerInput == null)
+            playerInput = GetComponent<PlayerInput>();
 
-        sprintAction = inputActions.FindAction("Sprint");
-        if (sprintAction != null)
+        var inputActions = playerInput != null ? playerInput.actions : null;
+        if (inputActions != null)
         {
-            sprintAction.started += OnSprintStarted;
-            sprintAction.canceled += OnSprintCanceled;
+            jumpAction = inputActions.FindAction("Jump");
+            if (jumpAction != null)
+            {
+                jumpAction.started += OnJumpStarted;
+                jumpAction.canceled += OnJumpCanceled;
+            }
+
+            sprintAction = inputActions.FindAction("Sprint");
+            if (sprintAction != null)
+            {
+                sprintAction.started += OnSprintStarted;
+                sprintAction.canceled += OnSprintCanceled;
+            }
+
+            crouchAction = inputActions.FindAction("Crouch");
+            if (crouchAction != null)
+            {
+                crouchAction.started += OnCrouchStarted;
+                crouchAction.canceled += OnCrouchCanceled;
+            }
         }
 
         if (dialogueStartChannel != null) dialogueStartChannel.OnRaised += HandleDialogueStart;
@@ -148,13 +167,22 @@ public class PlayerControllerRefactored : MonoBehaviour
 
     void OnDisable()
     {
-        jumpAction.started -= OnJumpStarted;
-        jumpAction.canceled -= OnJumpCanceled;
+        if (jumpAction != null)
+        {
+            jumpAction.started -= OnJumpStarted;
+            jumpAction.canceled -= OnJumpCanceled;
+        }
 
         if (sprintAction != null)
         {
             sprintAction.started -= OnSprintStarted;
             sprintAction.canceled -= OnSprintCanceled;
+        }
+
+        if (crouchAction != null)
+        {
+            crouchAction.started -= OnCrouchStarted;
+            crouchAction.canceled -= OnCrouchCanceled;
         }
 
         if (dialogueStartChannel != null) dialogueStartChannel.OnRaised -= HandleDialogueStart;
@@ -163,10 +191,14 @@ public class PlayerControllerRefactored : MonoBehaviour
 
     void FixedUpdate()
     {
+        bool inZeroG = IsInZeroG;
+
         checkGround();
-        SnapToGroundIfClose();
+        if (!inZeroG)
+            SnapToGroundIfClose();
         currentState.FixedTick(this);
-        jumpAbility?.OnJumpHeld(this);
+        if (!inZeroG)
+            jumpAbility?.OnJumpHeld(this);
         HandleRotation();
     }
 
@@ -201,11 +233,26 @@ public class PlayerControllerRefactored : MonoBehaviour
     private void OnJumpStarted(InputAction.CallbackContext ctx)
     {
         if (!InputEnabled) return;
+
+        if (IsInZeroG)
+        {
+            zeroGAscendHeld = true;
+            UpdateZeroGVerticalInput();
+            return;
+        }
+
         QueueCommand(new JumpCommand());
     }
 
     private void OnJumpCanceled(InputAction.CallbackContext ctx)
     {
+        if (IsInZeroG)
+        {
+            zeroGAscendHeld = false;
+            UpdateZeroGVerticalInput();
+            return;
+        }
+
         jumpAbility.OnJumpReleased();
     }
 
@@ -219,6 +266,34 @@ public class PlayerControllerRefactored : MonoBehaviour
     private void OnSprintCanceled(InputAction.CallbackContext ctx)
     {
         sprintAbility.SetSprinting(false);
+    }
+
+    private void OnCrouchStarted(InputAction.CallbackContext ctx)
+    {
+        if (!InputEnabled || !IsInZeroG) return;
+
+        zeroGDescendHeld = true;
+        UpdateZeroGVerticalInput();
+    }
+
+    private void OnCrouchCanceled(InputAction.CallbackContext ctx)
+    {
+        zeroGDescendHeld = false;
+        UpdateZeroGVerticalInput();
+    }
+
+    private bool IsInZeroG => currentState is ZeroGMovementState;
+
+    private void UpdateZeroGVerticalInput()
+    {
+        moveZ = (zeroGAscendHeld ? 1f : 0f) + (zeroGDescendHeld ? -1f : 0f);
+    }
+
+    public void ClearZeroGVerticalInput()
+    {
+        zeroGAscendHeld = false;
+        zeroGDescendHeld = false;
+        moveZ = 0f;
     }
 
     public void QueueCommand(ICommand command)
@@ -250,7 +325,8 @@ public class PlayerControllerRefactored : MonoBehaviour
     {
         previousModeBeforeDialogue = (currentState is ZeroGMovementState) ? MovementMode.ZeroGrav : MovementMode.AccelerationBased;
         InputEnabled = false;
-        moveX = moveY = moveZ = 0f;
+        moveX = moveY = 0f;
+        ClearZeroGVerticalInput();
         sprintAbility?.SetSprinting(false);
         SetMovementState(new DialogueMovementState());
     }

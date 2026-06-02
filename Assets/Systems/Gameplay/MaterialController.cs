@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class MaterialController : ResettableBehaviour, ILock
 {
@@ -13,7 +13,26 @@ public class MaterialController : ResettableBehaviour, ILock
     }
 
     [SerializeField] public flipFlop[] Object;
+    [Header("Emission Blink")]
+    [SerializeField] private bool autoEmissionBlink = false;
+    [SerializeField] private Color blinkEmissionColor = Color.green;
+    [SerializeField, Min(0f)] private float minEmission = 0.1f;
+    [SerializeField, Min(0f)] private float maxEmission = 2.5f;
+    [SerializeField, Min(0.01f)] private float emissionBlinkSpeed = 1.25f;
+    [SerializeField] private bool includeChildRenderers = true;
+    [SerializeField] private Material[] blinkOnlyMaterials;
+
     private bool _lockState = false;
+    private MaterialPropertyBlock emissionPropertyBlock;
+    private EmissionTarget[] emissionTargets;
+    private static readonly int EmissionColorId = Shader.PropertyToID("_EmissionColor");
+
+    private struct EmissionTarget
+    {
+        public Renderer Renderer;
+        public int MaterialIndex;
+    }
+
     public bool LockState 
     { 
         get { return _lockState; }
@@ -38,7 +57,14 @@ public class MaterialController : ResettableBehaviour, ILock
     }
     void Start()
     {
+        BuildEmissionTargets();
         InitAllMaterials();
+    }
+
+    private void Update()
+    {
+        if (!autoEmissionBlink || LockState) return;
+        UpdateEmissionBlink();
     }
     
     public void ToggleAllMaterials()
@@ -134,6 +160,75 @@ public class MaterialController : ResettableBehaviour, ILock
             if (childRenderer == null || childRenderer == rootRenderer) continue;
             childRenderer.material = material;
         }
+    }
+
+    private void BuildEmissionTargets()
+    {
+        if (!autoEmissionBlink)
+        {
+            emissionTargets = System.Array.Empty<EmissionTarget>();
+            return;
+        }
+
+        Renderer[] renderers = includeChildRenderers
+            ? GetComponentsInChildren<Renderer>(true)
+            : GetComponents<Renderer>();
+
+        List<EmissionTarget> targets = new List<EmissionTarget>();
+        foreach (Renderer renderer in renderers)
+        {
+            if (renderer == null) continue;
+
+            Material[] materials = renderer.sharedMaterials;
+            for (int index = 0; index < materials.Length; index++)
+            {
+                Material material = materials[index];
+                if (material == null || !ShouldBlinkMaterial(material)) continue;
+
+                material.EnableKeyword("_EMISSION");
+                targets.Add(new EmissionTarget { Renderer = renderer, MaterialIndex = index });
+            }
+        }
+
+        emissionTargets = targets.ToArray();
+    }
+
+    private void UpdateEmissionBlink()
+    {
+        if (emissionTargets == null) BuildEmissionTargets();
+        if (emissionTargets == null || emissionTargets.Length == 0) return;
+
+        if (emissionPropertyBlock == null)
+            emissionPropertyBlock = new MaterialPropertyBlock();
+
+        float low = Mathf.Min(minEmission, maxEmission);
+        float high = Mathf.Max(minEmission, maxEmission);
+        float pulse = (Mathf.Sin(Time.time * emissionBlinkSpeed * Mathf.PI * 2f) + 1f) * 0.5f;
+        Color emissionColor = blinkEmissionColor * Mathf.Lerp(low, high, pulse);
+
+        foreach (EmissionTarget target in emissionTargets)
+        {
+            if (target.Renderer == null) continue;
+
+            emissionPropertyBlock.Clear();
+            target.Renderer.GetPropertyBlock(emissionPropertyBlock, target.MaterialIndex);
+            emissionPropertyBlock.SetColor(EmissionColorId, emissionColor);
+            target.Renderer.SetPropertyBlock(emissionPropertyBlock, target.MaterialIndex);
+        }
+    }
+
+    private bool ShouldBlinkMaterial(Material material)
+    {
+        if (blinkOnlyMaterials == null || blinkOnlyMaterials.Length == 0)
+            return true;
+
+        foreach (Material blinkMaterial in blinkOnlyMaterials)
+        {
+            if (material == blinkMaterial)
+                return true;
+        }
+
+        return false;
     }
 
     public void ResetAllMaterials()
