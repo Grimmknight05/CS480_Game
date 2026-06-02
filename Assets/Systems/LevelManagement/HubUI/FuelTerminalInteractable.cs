@@ -9,6 +9,11 @@ public class FuelTerminalInteractable : MonoBehaviour
     [SerializeField] private bool closeScreenOnExit = true;
     [SerializeField] private bool forceTriggerCollider = true;
 
+    [Header("Interactable Icon")]
+    [SerializeField] private bool autoCreateHolographicIcon = true;
+    [SerializeField] private bool hideIconWhileTerminalOpen = true;
+    [SerializeField] private HolographicInteractableIcon holographicIcon;
+
     private bool playerInRange;
     private bool promptShown;
 
@@ -26,6 +31,9 @@ public class FuelTerminalInteractable : MonoBehaviour
 
         if (terminalUI == null)
             terminalUI = FindFirstObjectByType<FuelTerminalUI>(FindObjectsInactive.Include);
+
+        ResolveHolographicIcon();
+        RefreshHolographicIcon();
     }
 
     private void OnEnable()
@@ -34,6 +42,8 @@ public class FuelTerminalInteractable : MonoBehaviour
 
         if (terminalUI != null)
             terminalUI.VisibilityChanged += HandleTerminalVisibilityChanged;
+
+        RefreshHolographicIcon();
     }
 
     private void OnDisable()
@@ -44,6 +54,8 @@ public class FuelTerminalInteractable : MonoBehaviour
             terminalUI.VisibilityChanged -= HandleTerminalVisibilityChanged;
 
         HidePrompt();
+        if (holographicIcon != null)
+            holographicIcon.SetHighlighted(false);
     }
 
     private void HandleInteractPressed()
@@ -66,6 +78,8 @@ public class FuelTerminalInteractable : MonoBehaviour
 
         if (terminalUI == null || !terminalUI.IsOpen)
             ShowPrompt();
+
+        RefreshHolographicIcon();
     }
 
     private void OnTriggerExit(Collider other)
@@ -78,6 +92,8 @@ public class FuelTerminalInteractable : MonoBehaviour
 
         if (closeScreenOnExit && terminalUI != null && terminalUI.IsOpen)
             terminalUI.Hide();
+
+        RefreshHolographicIcon();
     }
 
     private void HandleTerminalVisibilityChanged(bool isVisible)
@@ -89,6 +105,33 @@ public class FuelTerminalInteractable : MonoBehaviour
             HidePrompt();
         else
             ShowPrompt();
+
+        RefreshHolographicIcon();
+    }
+
+    private void ResolveHolographicIcon()
+    {
+        if (!autoCreateHolographicIcon)
+            return;
+
+        if (holographicIcon == null)
+            holographicIcon = GetComponentInChildren<HolographicInteractableIcon>(true);
+
+        if (holographicIcon == null)
+            holographicIcon = gameObject.AddComponent<HolographicInteractableIcon>();
+    }
+
+    private void RefreshHolographicIcon()
+    {
+        ResolveHolographicIcon();
+
+        if (holographicIcon == null)
+            return;
+
+        bool terminalIsOpen = terminalUI != null && terminalUI.IsOpen;
+        bool iconVisible = !terminalIsOpen || !hideIconWhileTerminalOpen;
+        holographicIcon.SetVisible(iconVisible);
+        holographicIcon.SetHighlighted(iconVisible && playerInRange);
     }
 
     private void ShowPrompt()

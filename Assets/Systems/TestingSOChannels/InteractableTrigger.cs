@@ -21,13 +21,25 @@ public class InteractableTrigger : MonoBehaviour
     [SerializeField] private InteractionPromptChannelSO promptChannel;
     [SerializeField] private string promptMessage = "Press E to Interact";
 
+    [Header("Interactable Icon (optional)")]
+    [SerializeField] private HolographicInteractableIcon holographicIcon;
+    [SerializeField] private bool highlightIconWhilePlayerInRange = true;
+
     private bool isPlayerInRange = false;
     private bool promptShown = false;
+
+    private void Awake()
+    {
+        ResolveHolographicIcon();
+        RefreshHolographicIcon();
+    }
 
     private void OnEnable()
     {
         if (!activateOnPlayerTriggerEnter)
             InteractionInputBridge.OnInteractPressed += HandleInteractPressed;
+
+        RefreshHolographicIcon();
     }
 
     private void OnDisable()
@@ -35,6 +47,9 @@ public class InteractableTrigger : MonoBehaviour
         if (!activateOnPlayerTriggerEnter)
             InteractionInputBridge.OnInteractPressed -= HandleInteractPressed;
         HidePrompt();
+
+        if (holographicIcon != null)
+            holographicIcon.SetHighlighted(false);
     }
 
     private void HandleInteractPressed()
@@ -74,6 +89,7 @@ public class InteractableTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isPlayerInRange = true;
+            RefreshHolographicIcon();
 
             if (activateOnPlayerTriggerEnter)
             {
@@ -103,6 +119,7 @@ public class InteractableTrigger : MonoBehaviour
 
             isPlayerInRange = false;
             HidePrompt();
+            RefreshHolographicIcon();
         }
     }
 
@@ -120,5 +137,21 @@ public class InteractableTrigger : MonoBehaviour
         if (!promptShown) return;
         promptChannel.Raise(new InteractionPromptData(this, false, string.Empty));
         promptShown = false;
+    }
+
+    private void ResolveHolographicIcon()
+    {
+        if (holographicIcon == null)
+            holographicIcon = GetComponentInChildren<HolographicInteractableIcon>(true);
+    }
+
+    private void RefreshHolographicIcon()
+    {
+        ResolveHolographicIcon();
+
+        if (holographicIcon == null)
+            return;
+
+        holographicIcon.SetHighlighted(highlightIconWhilePlayerInRange && isPlayerInRange);
     }
 }
