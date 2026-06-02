@@ -3746,8 +3746,8 @@ MonoBehaviour:
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 21.6
-  m_fontSizeMax: 36
+  m_fontSizeMin: 36
+  m_fontSizeMax: 60
   m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
@@ -12190,8 +12190,8 @@ MonoBehaviour:
   m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 15.000001
-  m_fontSizeMax: 25
+  m_fontSizeMin: 30.000002
+  m_fontSizeMax: 50
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
@@ -16269,8 +16269,8 @@ MonoBehaviour:
   continueIndicator: {fileID: 0}
   audioSource: {fileID: 0}
   font: {fileID: 11400000, guid: 410da9c7ff86342bb9e14ca2bf8b7b62, type: 2}
-  speakerFontSize: 36
-  bodyFontSize: 25
+  speakerFontSize: 60
+  bodyFontSize: 50
   speakerFontStyle: 1
   bodyFontStyle: 0
   bodyColor: {r: 0.88, g: 0.92, b: 0.94, a: 1}
