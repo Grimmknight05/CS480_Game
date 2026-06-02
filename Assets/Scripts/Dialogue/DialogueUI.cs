@@ -164,7 +164,7 @@ public class DialogueUI : MonoBehaviour
             text.fontSizeMax = targetSize;
             text.fontSizeMin = targetSize * autoSizeMinFactor;
             // Belt-and-suspenders: even at min size, wrap and clip rather than spill past the box.
-            text.enableWordWrapping = true;
+            text.textWrappingMode = TextWrappingModes.Normal;
             text.overflowMode = TextOverflowModes.Truncate;
         }
         else

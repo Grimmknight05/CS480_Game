@@ -212,7 +212,7 @@ public class TutorialScreenUI : MonoBehaviour
         TextMeshProUGUI body = CreateText("Intro Body", page.transform, introText, 34f, FontStyles.Normal);
         body.color = Color.white;
         body.alignment = TextAlignmentOptions.Center;
-        body.enableWordWrapping = true;
+        body.textWrappingMode = TextWrappingModes.Normal;
         body.lineSpacing = 8f;
         SetRect(body.rectTransform, new Vector2(0.22f, 0.34f), new Vector2(0.78f, 0.58f), Vector2.zero, Vector2.zero);
 
@@ -247,7 +247,7 @@ public class TutorialScreenUI : MonoBehaviour
         TextMeshProUGUI bodyLabel = CreateText("Body", page.transform, body, 34f, FontStyles.Normal);
         bodyLabel.color = Color.white;
         bodyLabel.alignment = TextAlignmentOptions.TopLeft;
-        bodyLabel.enableWordWrapping = true;
+        bodyLabel.textWrappingMode = TextWrappingModes.Normal;
         bodyLabel.lineSpacing = 8f;
         SetRect(bodyLabel.rectTransform, new Vector2(0.57f, 0.16f), new Vector2(0.94f, 0.75f), Vector2.zero, Vector2.zero);
 
@@ -399,7 +399,7 @@ public class TutorialScreenUI : MonoBehaviour
         label.fontSize = size;
         label.fontStyle = style;
         label.alignment = TextAlignmentOptions.Center;
-        label.enableWordWrapping = false;
+        label.textWrappingMode = TextWrappingModes.NoWrap;
         label.raycastTarget = false;
 
         if (fontAsset != null)

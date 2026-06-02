@@ -193,7 +193,7 @@ public class FuelTerminalUI : MonoBehaviour
         label.fontSize = size;
         label.fontStyle = style;
         label.alignment = TextAlignmentOptions.Center;
-        label.enableWordWrapping = false;
+        label.textWrappingMode = TextWrappingModes.NoWrap;
         label.raycastTarget = false;
 
         if (fontAsset != null)
