@@ -17,7 +17,7 @@ MonoBehaviour:
     text: The grove ahead responds to color patterns.
     autoAdvanceDelay: 0
   - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
-    text: Jump on the rainbow mushrooms to activate their glow.
+    text: Jump on the mushrooms in rainbow order to activate their glow.
     autoAdvanceDelay: 0
   - speaker: {fileID: 11400000, guid: a860fa40fee7e4c3abe85960a6250e56, type: 2}
     text: If you restore the correct sequence, something you need should rise from
@@ -27,4 +27,4 @@ MonoBehaviour:
     text: And with luck, the restless green ones will finally quiet down.
     autoAdvanceDelay: 0
   playOnce: 0
-  retriggerCooldown: 0
+  retriggerCooldown: 60
