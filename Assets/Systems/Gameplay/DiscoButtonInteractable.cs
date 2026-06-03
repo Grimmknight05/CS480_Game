@@ -44,7 +44,10 @@ public class DiscoButtonInteractable : MonoBehaviour
     [SerializeField] private float discoBallSpinSpeed = 115f;
     [SerializeField] private Vector3 discoBallSpinAxis = Vector3.up;
     [SerializeField] private float discoBallEmissionIntensity = 4f;
-
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip discoSong;
+    [SerializeField] [Range(0f, 1f)] private float volume = 1f;
     private bool playerInRange;
     private bool promptShown;
     private bool isDiscoRunning;
@@ -76,6 +79,7 @@ public class DiscoButtonInteractable : MonoBehaviour
         ResolveDiscoBall();
         ResolveHolographicIcon();
         RefreshHolographicIcon();
+        EnsureAudioSource();
     }
 
     private void Update()
@@ -150,6 +154,9 @@ public class DiscoButtonInteractable : MonoBehaviour
         EnsureDiscoLights();
         SetDiscoBallLowered(true);
 
+        // Play disco song
+        PlaySong();
+
         float endTime = Time.time + Mathf.Max(0.1f, discoDuration);
         WaitForSeconds delay = new WaitForSeconds(Mathf.Max(0.02f, flickerInterval));
 
@@ -186,7 +193,8 @@ public class DiscoButtonInteractable : MonoBehaviour
         ClearCapEmission();
         SetDiscoBallLowered(false);
         ClearDiscoBallEmission();
-
+        StopSong();
+        
         if (roomFillLight != null)
             roomFillLight.enabled = false;
 
@@ -567,5 +575,39 @@ public class DiscoButtonInteractable : MonoBehaviour
 
         promptChannel.Raise(new InteractionPromptData(this, false, string.Empty));
         promptShown = false;
+    }
+    // ----- Audio methods -----
+    private void EnsureAudioSource()
+    {
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
+
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
+
+        audioSource.playOnAwake = false;
+        audioSource.loop = false;
+        audioSource.volume = volume;
+    }
+    private void PlaySong()
+    {
+        if (discoSong == null || audioSource == null)
+            return;
+
+        // Stop any currently playing music before starting new
+        audioSource.Stop();
+        audioSource.clip = discoSong;
+        audioSource.Play();
+    }
+
+    private void StopSong()
+    {
+        if (audioSource == null)
+            return;
+
+        if (audioSource.isPlaying)
+            audioSource.Stop();
+
+        audioSource.clip = null;
     }
 }

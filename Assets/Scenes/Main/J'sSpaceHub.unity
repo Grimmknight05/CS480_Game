@@ -5428,7 +5428,7 @@ MonoBehaviour:
   capTransform: {fileID: 0}
   capName: Cap
   pressedLocalOffset: {x: 0, y: -0.08, z: 0}
-  discoDuration: 5
+  discoDuration: 10
   flickerInterval: 0.08
   autoLightCount: 8
   autoLightRadius: 0.5
@@ -5447,6 +5447,9 @@ MonoBehaviour:
   discoBallSpinSpeed: 115
   discoBallSpinAxis: {x: 0, y: 1, z: 0}
   discoBallEmissionIntensity: 4
+  audioSource: {fileID: 5984184653110822341}
+  discoSong: {fileID: 8300000, guid: 3b71c2b165f34b64c878730a79867eca, type: 3}
+  volume: 1
 --- !u!1001 &1689626988
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8169,6 +8172,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7595bd764e50994d97092783e4eb3ad, type: 3}
+--- !u!82 &5984184653110822341 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 6784723322786670051, guid: d7595bd764e50994d97092783e4eb3ad, type: 3}
+  m_PrefabInstance: {fileID: 5984184653110822340}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7026492928724712634
 PrefabInstance:
   m_ObjectHideFlags: 0
