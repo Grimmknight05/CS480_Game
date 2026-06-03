@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Events/Fuel State Channel", fileName = "FuelState.channel")]
+[CreateAssetMenu(menuName = "Events/Fuel State Channel", fileName = "FuelState.asset")]
 public class FuelStateChannel : EventChannelSO<FuelState>
 {
 }

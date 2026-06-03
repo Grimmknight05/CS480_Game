@@ -17,8 +17,8 @@ public class ShipTrigger : MonoBehaviour
         if (unlocked) return;
         if (!other.CompareTag(playerTag)) return;
 
-        GameManager gm = GameManager.Instance;
-        if (gm == null || !gm.IsFullyFueled) return;
+        FuelSessionData fuel = FuelSessionData.Instance;
+        if (fuel == null || !fuel.IsFullyFueled) return;
 
         IcePlayerController player = other.GetComponentInParent<IcePlayerController>();
         if (player == null) return;

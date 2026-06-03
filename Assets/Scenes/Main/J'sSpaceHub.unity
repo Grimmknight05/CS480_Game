@@ -6334,6 +6334,53 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2925000440924586263, guid: c8c7a0fa07f4e454390fe4ddef52f48a, type: 3}
+--- !u!1 &1773655720
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1773655722}
+  - component: {fileID: 1773655721}
+  m_Layer: 0
+  m_Name: FuelSessionRelay
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1773655721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773655720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a09e8ab32219241e3a95978d84d7001a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FuelSessionRelay
+  fuelSession: {fileID: 11400000, guid: d656769fdf824458a86389757e01a2eb, type: 2}
+  fuelCollectedChannel: {fileID: 11400000, guid: bd579f735248446f8b1c44851c975b10, type: 2}
+  fuelStateChannel: {fileID: 11400000, guid: 669f542f709074df99fe63ca0f134fd9, type: 2}
+--- !u!4 &1773655722
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773655720}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 177.14883, y: 0, z: 379.7777}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1813795100 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5964295931674424746, guid: c8c7a0fa07f4e454390fe4ddef52f48a, type: 3}
@@ -8278,3 +8325,4 @@ SceneRoots:
   - {fileID: 51764640}
   - {fileID: 1666160308}
   - {fileID: 5984184653110822340}
+  - {fileID: 1773655722}

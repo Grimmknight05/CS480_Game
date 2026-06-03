@@ -27,8 +27,6 @@ public class FuelTerminalUI : MonoBehaviour
 
     public event Action<bool> VisibilityChanged;
 
-    private GameManager subscribedGameManager;
-
     public bool IsOpen => panelRoot != null && panelRoot.activeSelf;
 
     private void Awake()
@@ -43,13 +41,11 @@ public class FuelTerminalUI : MonoBehaviour
         if (fuelStateChannel != null)
             fuelStateChannel.OnRaised += HandleFuelStateRaised;
 
-        TrySubscribeToGameManager();
         RefreshFuelReadout();
     }
 
     private void Start()
     {
-        TrySubscribeToGameManager();
         RefreshFuelReadout();
     }
 
@@ -63,8 +59,6 @@ public class FuelTerminalUI : MonoBehaviour
     {
         if (fuelStateChannel != null)
             fuelStateChannel.OnRaised -= HandleFuelStateRaised;
-
-        UnsubscribeFromGameManager();
     }
 
     public void Toggle()
@@ -239,34 +233,6 @@ public class FuelTerminalUI : MonoBehaviour
         rect.localRotation = Quaternion.identity;
     }
 
-    private void TrySubscribeToGameManager()
-    {
-        if (subscribedGameManager == GameManager.Instance)
-            return;
-
-        UnsubscribeFromGameManager();
-
-        if (GameManager.Instance == null)
-            return;
-
-        subscribedGameManager = GameManager.Instance;
-        subscribedGameManager.FuelChanged += HandleFuelChanged;
-    }
-
-    private void UnsubscribeFromGameManager()
-    {
-        if (subscribedGameManager == null)
-            return;
-
-        subscribedGameManager.FuelChanged -= HandleFuelChanged;
-        subscribedGameManager = null;
-    }
-
-    private void HandleFuelChanged(int collected, int target)
-    {
-        SetFuelReadout(collected, target);
-    }
-
     private void HandleFuelStateRaised(FuelState state)
     {
         SetFuelReadout(state.collected, state.target);
@@ -274,14 +240,14 @@ public class FuelTerminalUI : MonoBehaviour
 
     private void RefreshFuelReadout()
     {
-        TrySubscribeToGameManager();
-
-        if (GameManager.Instance != null)
+        // Prefer the persistent store (authoritative across scene loads).
+        if (FuelSessionData.Instance != null)
         {
-            SetFuelReadout(GameManager.Instance.FuelCollected, GameManager.Instance.FuelTarget);
+            SetFuelReadout(FuelSessionData.Instance.Collected, FuelSessionData.Instance.Target);
             return;
         }
 
+        // Fall back to the last broadcast state for late subscribers.
         if (fuelStateChannel != null && fuelStateChannel.HasValue)
         {
             FuelState state = fuelStateChannel.LastValue;
