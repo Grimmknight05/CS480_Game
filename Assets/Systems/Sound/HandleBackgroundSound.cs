@@ -30,7 +30,7 @@ public class HandleBackgroundSound : MonoBehaviour
         if (isEnter)
         {
             // Apply this zone's muffled settings
-            float targetCutoff = zone.MuffledVolume;
+            float targetCutoff = zone.MuffledCutoff;
             float targetVolume = zone.MuffledVolume;
             float time = zone.TransitionTime;
 
@@ -38,12 +38,8 @@ public class HandleBackgroundSound : MonoBehaviour
         }
         else
         {
-            // Exit – restore normal settings (could also use zone's normalCutoff/Volume if each zone defines them)
-            float targetCutoff = normalCutoff;      // you may still keep global normal values
-            float targetVolume = normalVolume;      // or read from zone.normalCutoff etc.
-            float time = zone.TransitionTime;
 
-            StartTransition(targetCutoff, targetVolume, time);
+            StartTransition(normalCutoff, normalVolume, zone.TransitionTime);
         }
     }
 
@@ -55,31 +51,40 @@ public class HandleBackgroundSound : MonoBehaviour
         activeVolumeTransition = StartCoroutine(SmoothVolumeChange(targetVolume, duration));
     }
 
-    private IEnumerator SmoothCutoffChange(float target, float duration)
+private IEnumerator SmoothCutoffChange(float target, float duration)
+{
+    float start = lowPass.cutoffFrequency;
+    float t = 0;
+    Debug.Log($"Cutoff START: {start} → {target} over {duration}s");
+    while (t < duration)
     {
-        float start = lowPass.cutoffFrequency;
-        float t = 0;
-        while (t < duration)
-        {
-            t += Time.deltaTime;
-            lowPass.cutoffFrequency = Mathf.Lerp(start, target, t / duration);
-            yield return null;
-        }
-        lowPass.cutoffFrequency = target;
-        activeFilterTransition = null;
+        t += Time.deltaTime;
+        float newCutoff = Mathf.Lerp(start, target, t / duration);
+        lowPass.cutoffFrequency = newCutoff;
+        Debug.Log($"Cutoff t={t:F3} val={newCutoff:F0}");
+        yield return null;
     }
+    lowPass.cutoffFrequency = target;
+    Debug.Log($"Cutoff END: {lowPass.cutoffFrequency}");
+    activeFilterTransition = null;
+}
 
-    private IEnumerator SmoothVolumeChange(float target, float duration)
+private IEnumerator SmoothVolumeChange(float target, float duration)
+{
+    float start = audioSource.volume;
+    float t = 0;
+    Debug.Log($"Volume transition start: {start} → {target} over {duration}s");
+    while (t < duration)
     {
-        float start = audioSource.volume;
-        float t = 0;
-        while (t < duration)
-        {
-            t += Time.deltaTime;
-            audioSource.volume = Mathf.Lerp(start, target, t / duration);
-            yield return null;
-        }
-        audioSource.volume = target;
-        activeVolumeTransition = null;
+        t += Time.deltaTime;
+        float factor = t / duration;
+        float newVol = Mathf.Lerp(start, target, factor);
+        audioSource.volume = newVol;
+        Debug.Log($"t={t:F3}, factor={factor:F3}, volume={newVol:F3}");
+        yield return null;
     }
+    audioSource.volume = target;
+    Debug.Log($"Volume transition finished: {audioSource.volume}");
+    activeVolumeTransition = null;
+}
 }
