@@ -15,7 +15,7 @@ MonoBehaviour:
   toolName: Laser
   toolDescription: Laser Weapon causes Burn Effect
   cooldown: 0.5
-  toolIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  toolIcon: {fileID: 21300054, guid: 56d84991286850f428b4e7df0cca7380, type: 3}
   useSFX: {fileID: 8300000, guid: 6b75b6252e9a23a429de87ad8e495083, type: 3}
   changeToolSFX: {fileID: 8300000, guid: ed358424143fd3e4f8a337b31ccaadbc, type: 3}
   visualPrefab: {fileID: 3702928971869361305, guid: ea6857fc6c2ec4d408147a30ae8c2a94, type: 3}

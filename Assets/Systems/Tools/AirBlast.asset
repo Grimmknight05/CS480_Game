@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ece3c42097186462f997c4f13e002d83, type: 3}
   m_Name: AirBlast
   m_EditorClassIdentifier: Assembly-CSharp::AirBlastTool
-  toolName: Push Tool?
+  toolName: Push Tool
   toolDescription: A generic tool
   cooldown: 0.5
-  toolIcon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  toolIcon: {fileID: 21300006, guid: 56d84991286850f428b4e7df0cca7380, type: 3}
   useSFX: {fileID: 8300000, guid: bc18fe1a807ecc04fab7d60e3e616add, type: 3}
   changeToolSFX: {fileID: 8300000, guid: ed358424143fd3e4f8a337b31ccaadbc, type: 3}
   visualPrefab: {fileID: 2303238674853305632, guid: b7acf4519c51f174b8bac84f90292360, type: 3}
