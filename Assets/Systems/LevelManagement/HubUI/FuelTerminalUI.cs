@@ -68,11 +68,13 @@ public class FuelTerminalUI : MonoBehaviour
 
     public void Show()
     {
+        UIClickSound.Play();
         SetOpen(true, true);
     }
 
     public void Hide()
     {
+        UIClickSound.Play();
         SetOpen(false, true);
     }
 
@@ -87,6 +89,8 @@ public class FuelTerminalUI : MonoBehaviour
             return;
 
         panelRoot.SetActive(open);
+
+        if (open) UIInputBlocker.Push(); else UIInputBlocker.Pop();
 
         if (open)
         {

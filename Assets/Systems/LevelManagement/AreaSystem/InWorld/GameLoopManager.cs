@@ -7,6 +7,9 @@ public class GameLoopManager : MonoBehaviour
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private GameObject gameOverUI; // assign in Inspector
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip deathSound;
+
     private bool isDead = false;
 
     private void OnEnable()
@@ -25,14 +28,20 @@ public class GameLoopManager : MonoBehaviour
     {
         if (isDead) return;
         isDead = true;
-        
+
+        // Play death SFX before timeScale hits 0 (audio is unaffected by timeScale).
+        if (deathSound != null)
+        {
+            Vector3 pos = Camera.main != null ? Camera.main.transform.position : Vector3.zero;
+            AudioSource.PlayClipAtPoint(deathSound, pos, 1f);
+        }
+
         // Show Game Over UI, pause game if needed
         if (gameOverUI != null)
             gameOverUI.SetActive(true);
-        
-        // Optionally lock cursor or stop player input
-        CursorHelper.Unlock(); // show cursor for UI
-        Time.timeScale = 0f; // pause game (if you want full pause)
+
+        CursorHelper.Unlock();
+        Time.timeScale = 0f;
     }
 
     public void RequestContinue()

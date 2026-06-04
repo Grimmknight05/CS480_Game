@@ -106,7 +106,7 @@ private Camera cam;
             if (found != null)
                 playerRef = found.transform;
             else
-                Debug.LogWarning("OrbitalCamera: Player not found yet. Will be assigned later."); // instead of error
+                Debug.LogWarning("OrbitalCamera: Player not found yet. Will be assigned later.");
         }
 
         if (playerRef != null)
@@ -114,6 +114,11 @@ private Camera cam;
             currentYaw = playerRef.eulerAngles.y;
             currentPitch = startingPitch;
         }
+
+        // Apply saved sensitivity from the main menu settings screen.
+        float savedSens = PlayerPrefs.GetFloat("MouseSensitivity", yawSpeed);
+        yawSpeed   = savedSens;
+        pitchSpeed = savedSens;
     }
 
     void LateUpdate()
@@ -121,17 +126,19 @@ private Camera cam;
         if (playerRef == null) return;
         if (externalControl) return;
         // 1. Get Mouse Input (Using your Mouse.current method)
-        Mouse m = Mouse.current;
-        if (m != null)
+        // Freeze camera rotation while any UI panel is open.
+        if (!UIInputBlocker.IsAnyUIOpen)
         {
-            float mouseX = m.delta.ReadValue().x;
-            float mouseY = m.delta.ReadValue().y;
+            Mouse m = Mouse.current;
+            if (m != null)
+            {
+                float mouseX = m.delta.ReadValue().x;
+                float mouseY = m.delta.ReadValue().y;
 
-            currentYaw += mouseX * yawSpeed;
-            currentPitch -= mouseY * pitchSpeed; // Subtract to avoid inverted Y axis
-            
-            // Clamp the pitch so the camera doesn't flip over the player's head
-            currentPitch = Mathf.Clamp(currentPitch, minPitch, maxPitch);
+                currentYaw += mouseX * yawSpeed;
+                currentPitch -= mouseY * pitchSpeed;
+                currentPitch = Mathf.Clamp(currentPitch, minPitch, maxPitch);
+            }
         }
 
         // 2. Calculate the new Rotation

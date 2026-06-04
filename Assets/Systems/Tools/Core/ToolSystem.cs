@@ -191,6 +191,9 @@ public class ToolSystem : MonoBehaviour, IAimContext
     public void OnAttack(InputValue value)
     {
         if (!inputEnabled) return;
+        // Suppress weapon fire while any UI panel (menu, terminal, tutorial) is open
+        // so that clicking UI buttons does not simultaneously fire the laser.
+        if (UIInputBlocker.IsAnyUIOpen) return;
         if (!value.isPressed) return;
         Tool current = GetCurrentTool();
         if (current == null) return;

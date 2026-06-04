@@ -51,9 +51,17 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        // Start at hub if no current world
         if (currentWorld == null)
-            LoadHub();
+        {
+            WorldSO hub = GetHubWorld();
+            // If we are already sitting in the hub scene (e.g. arrived via the
+            // loading screen from the main menu, or opened it directly in the
+            // editor) just set currentWorld in place — no need to reload it.
+            if (hub != null && SceneManager.GetActiveScene().name == hub.sceneName)
+                currentWorld = hub;
+            else
+                LoadHub(); // genuinely need to navigate there
+        }
         GameProgress.UsePersistentSession(playerSession);
     }
 

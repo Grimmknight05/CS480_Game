@@ -17,7 +17,8 @@ public class FPSCamera : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        // Confined: cursor invisible but position is tracked, so UI buttons work.
+        Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
     }
 

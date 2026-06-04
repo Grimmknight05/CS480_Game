@@ -9,7 +9,7 @@ public class TutorialScreenUI : MonoBehaviour
     [Header("Tutorial Content")]
     [SerializeField] private string title = "SHIP SYSTEMS TUTORIAL";
     [SerializeField] private string introText = "Welcome aboard the Space Hub.\nYour suit link is active.\nReview mission systems before launch.";
-    [SerializeField] private string movementText = "WASD move\nMouse aim\nSpace jump or rise in zero-g\nC descend in zero-g";
+    [SerializeField] private string movementText = "WASD move\nMouse aim\nSpace jump or rise in zero-g\nC descend in zero-g\nQ switch weapons";
     [SerializeField] private string interactText = "Look for cyan holograms\nPress E near terminals, buttons, and ship systems";
     [SerializeField] private string objectiveText = "Explore planets\nCollect fuel\nReturn to the Space Hub to launch";
     [SerializeField] private Sprite movementImage;
@@ -74,11 +74,13 @@ public class TutorialScreenUI : MonoBehaviour
 
     public void Show()
     {
+        UIClickSound.Play();
         SetOpen(true, true);
     }
 
     public void Hide()
     {
+        UIClickSound.Play();
         SetOpen(false, true);
     }
 
@@ -107,6 +109,8 @@ public class TutorialScreenUI : MonoBehaviour
         }
 
         panelRoot.SetActive(open);
+
+        if (open) UIInputBlocker.Push(); else UIInputBlocker.Pop();
 
         if (adjustCursor)
         {
@@ -346,11 +350,13 @@ public class TutorialScreenUI : MonoBehaviour
 
     private void ShowPreviousPage()
     {
+        UIClickSound.Play();
         ShowPage(currentPageIndex - 1);
     }
 
     private void ShowNextPage()
     {
+        UIClickSound.Play();
         ShowPage(currentPageIndex + 1);
     }
 

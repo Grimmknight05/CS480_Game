@@ -194,6 +194,13 @@ public class PlayerControllerRefactored : MonoBehaviour
         bool inZeroG = IsInZeroG;
 
         checkGround();
+        if (UIInputBlocker.IsAnyUIOpen)
+        {
+            // Hard-stop the Rigidbody so mid-stride momentum doesn't keep sliding the player.
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            return;
+        }
         if (!inZeroG)
             SnapToGroundIfClose();
         currentState.FixedTick(this);
@@ -204,6 +211,10 @@ public class PlayerControllerRefactored : MonoBehaviour
 
     void Update()
     {
+        // Zero movement while any UI is open so the player can't walk/run.
+        if (UIInputBlocker.IsAnyUIOpen)
+            moveX = moveY = moveZ = 0f;
+
         currentState.Tick(this);
         UpdateAnimations();
         jumpAbility.UpdateAbility(this);
