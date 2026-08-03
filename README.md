@@ -1,6 +1,9 @@
 # CS-480 Game
 
-Documentation
+Unity play link (Click to play)
+https://play.unity.com/en/games/01c9322b-8008-4bd0-8d07-5566c014b716/gravity-guy-full-game
+
+Documentation(out of date)
 ---
 
 ## PlayerController
